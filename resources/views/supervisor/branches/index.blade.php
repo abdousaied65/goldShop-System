@@ -17,8 +17,9 @@
         width: 20px;
         height: 20px;
     }
-    span.badge{
-        padding: 10px!important;
+
+    span.badge {
+        padding: 10px !important;
     }
 </style>
 @section('content')
@@ -71,86 +72,95 @@
                     </a>
                 </div>
                 <div class="card-body p-1 m-1">
-                    <div class="table-responsive hoverable-table">
-                        <table class="display w-100  text-nowrap table-bordered" id="example-table"
-                               style="text-align: center;">
-                            <thead>
-                            <tr>
-                                <th class="border-bottom-0 text-center">
-                                    <input type="checkbox" id="check_all"/>
-                                </th>
-                                <th class="border-bottom-0 text-center">#</th>
-                                <th class="border-bottom-0 text-center">اسم الفرع</th>
-                                <th class="border-bottom-0 text-center"> رصيد الفرع</th>
-                                <th class="border-bottom-0 text-center"> نوع الفرع</th>
-                                <th style="width: 5%!important;" class="border-bottom-0 text-center">تحكم</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $i = 0;
-                            @endphp
+                    <table
+                        class="table table-condensed table-striped table-hover display w-100 table-bordered"
+                        id="example-table"
+                        style="text-align: center;">
+                        <thead>
+                        <tr>
+                            <th class="border-bottom-0 text-center">
+                                <input type="checkbox" id="check_all"/>
+                            </th>
+                            <th class="border-bottom-0 text-center">#</th>
+                            <th class="border-bottom-0 text-center">اسم الفرع</th>
+                            <th class="border-bottom-0 text-center"> رقم جوال الفرع</th>
+                            <th class="border-bottom-0 text-center"> عنوان الفرع</th>
+                            <th class="border-bottom-0 text-center"> سجل تجارى</th>
+                            <th class="border-bottom-0 text-center"> رقم ترخيص</th>
+                            <th class="border-bottom-0 text-center"> snap</th>
+                            <th style="width: 5%!important;" class="border-bottom-0 text-center">تحكم</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @php
+                            $i = 0;
+                        @endphp
 
-                            @foreach ($data as $key => $branch)
-                                <tr>
-                                    <td>
-                                        <input class="check" name="branches[]" form="myForm"
-                                               value="{{$branch->id}}"
-                                               type="checkbox">
-                                    </td>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $branch->branch_name}}</td>
-                                    <td>{{ $branch->branch_phone }}</td>
-                                    <td>{{ $branch->branch_address }}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                    data-toggle="dropdown">
-                                                <i class="fa fa-wrench"></i>
-                                                ادارة
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                @can('عرض فرع')
-                                                    <a href="{{ route('supervisor.branches.show', $branch->id) }}"
-                                                       class="dropdown-item">
-                                                        <i class="fa fa-eye"></i>
-                                                        عرض
-                                                    </a>
-                                                @endcan
-                                                @can('تعديل فرع')
-                                                    <a href="{{ route('supervisor.branches.edit', $branch->id) }}"
-                                                       class="dropdown-item">
-                                                        <i class="fa fa-edit"></i>
-                                                        تعديل
-                                                    </a>
-                                                @endcan
-                                                @can('حذف فرع')
-                                                    <a class="dropdown-item delete_branch"
-                                                       branch_id="{{ $branch->id }}"
-                                                       branch_name="{{ $branch->branch_name }}" data-toggle="modal"
-                                                       href="#modaldemo8">
-                                                        <i class="fa fa-trash"></i>
-                                                        حذف
-                                                    </a>
-                                                @endcan
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            <tfoot>
+                        @foreach ($data as $key => $branch)
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <td>
+                                    <input class="check" name="branches[]" form="myForm"
+                                           value="{{$branch->id}}"
+                                           type="checkbox">
+                                </td>
+                                <td>{{ ++$i }}</td>
+                                <td>{{ $branch->branch_name}}</td>
+                                <td>{{ $branch->branch_phone }}</td>
+                                <td>{{ $branch->branch_address }}</td>
+                                <td>{{ $branch->commercial_record }}</td>
+                                <td>{{ $branch->license_number }}</td>
+                                <td>{{ $branch->snap }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown">
+                                            <i class="fa fa-wrench"></i>
+                                            ادارة
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            @can('عرض فرع')
+                                                <a href="{{ route('supervisor.branches.show', $branch->id) }}"
+                                                   class="dropdown-item">
+                                                    <i class="fa fa-eye"></i>
+                                                    عرض
+                                                </a>
+                                            @endcan
+                                            @can('تعديل فرع')
+                                                <a href="{{ route('supervisor.branches.edit', $branch->id) }}"
+                                                   class="dropdown-item">
+                                                    <i class="fa fa-edit"></i>
+                                                    تعديل
+                                                </a>
+                                            @endcan
+                                            @can('حذف فرع')
+                                                <a class="dropdown-item delete_branch"
+                                                   branch_id="{{ $branch->id }}"
+                                                   branch_name="{{ $branch->branch_name }}" data-toggle="modal"
+                                                   href="#modaldemo8">
+                                                    <i class="fa fa-trash"></i>
+                                                    حذف
+                                                </a>
+                                            @endcan
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
-                            </tfoot>
-                            </tbody>
-                        </table>
-                    </div>
+                        @endforeach
+                        <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -216,9 +226,12 @@
         $('#example-table tfoot tr th:nth-child(3)').html('<input class="form-control" type="text" placeholder="اسم الفرع" />');
         $('#example-table tfoot tr th:nth-child(4)').html('<input class="form-control" type="text" placeholder="جوال الفرع" />');
         $('#example-table tfoot tr th:nth-child(5)').html('<input class="form-control" type="text" placeholder="عنوان الفرع" />');
+        $('#example-table tfoot tr th:nth-child(6)').html('<input class="form-control" type="text" placeholder="سجل تجارى" />');
+        $('#example-table tfoot tr th:nth-child(7)').html('<input class="form-control" type="text" placeholder="رقم ترخيص" />');
+        $('#example-table tfoot tr th:nth-child(8)').html('<input class="form-control" type="text" placeholder="snap" />');
         $('#example-table').DataTable({
             "columnDefs": [
-                {"orderable": false, "targets": [0, 5]}
+                {"orderable": false, "targets": [0, 8]}
             ],
             "order": [[1, "desc"]],
             initComplete: function () {

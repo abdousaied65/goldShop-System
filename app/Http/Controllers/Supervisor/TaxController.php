@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\Supervisor;
 
-use App\Exports\SimplifiedExport;
+use App\Exports\TaxExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Product;
-use App\Models\SimplifiedInvoice;
-use App\Models\SimplifiedInvoiceElement;
-use App\Models\SimplifiedPayment;
+use App\Models\TaxInvoice;
+use App\Models\TaxInvoiceElement;
+use App\Models\TaxPayment;
 use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
-class SimplifiedController extends Controller
+class TaxController extends Controller
 {
     public function index(Request $request)
     {
         $auth_id = Auth::user()->id;
         if(Auth::user()->role_name == "مدير النظام"){
-            $data = SimplifiedInvoice::where('status','done')->get();
+            $data = TaxInvoice::where('status','done')->get();
         }
         else{
-            $data = SimplifiedInvoice::where('supervisor_id',$auth_id)->where('status','done')->get();
+            $data = TaxInvoice::where('supervisor_id',$auth_id)->where('status','done')->get();
         }
         $branches = Branch::all();
-        return view('supervisor.simplified.index', compact('data','branches'));
+        return view('supervisor.tax.index', compact('data','branches'));
     }
 
     public function search(Request $request)
@@ -34,25 +34,25 @@ class SimplifiedController extends Controller
         $branch_id = $request->branch_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $data = SimplifiedInvoice::where('branch_id',$branch_id)->where('status','done')
+        $data = TaxInvoice::where('branch_id',$branch_id)->where('status','done')
             ->whereBetween('date', [$from_date, $to_date])
             ->get();
         $branches = Branch::all();
-        return view('supervisor.simplified.index', compact('data','branch_id','from_date','to_date','branches'));
+        return view('supervisor.tax.index', compact('data','branch_id','from_date','to_date','branches'));
     }
 
     public function create()
     {
         $products = Product::all();
-        $check = SimplifiedInvoice::all();
+        $check = TaxInvoice::all();
         if ($check->isEmpty()) {
             $unified_serial_number = 1;
         } else {
-            $old_pre_counter = SimplifiedInvoice::max('unified_serial_number');
+            $old_pre_counter = TaxInvoice::max('unified_serial_number');
             $unified_serial_number = $old_pre_counter + 1;
         }
         $auth_id = Auth::user()->id;
-        $step = SimplifiedInvoice::where('supervisor_id', $auth_id)
+        $step = TaxInvoice::where('supervisor_id', $auth_id)
             ->where('status', 'open')
             ->first();
         if (!empty($step)) {
@@ -60,7 +60,7 @@ class SimplifiedController extends Controller
         } else {
             $open_invoice = "";
         }
-        return view('supervisor.simplified.create', compact('products', 'open_invoice', 'unified_serial_number'));
+        return view('supervisor.tax.create', compact('products', 'open_invoice', 'unified_serial_number'));
     }
 
     public function store(Request $request)
@@ -71,17 +71,17 @@ class SimplifiedController extends Controller
         $branch_id = $supervisor->branch_id;
         $data['branch_id'] = $branch_id;
         $product_id = $request->product_id;
-        $open_invoice = SimplifiedInvoice::where('supervisor_id', $supervisor_id)
+        $open_invoice = TaxInvoice::where('supervisor_id', $supervisor_id)
             ->where('status', 'open')
             ->first();
         if (empty($open_invoice)) {
-            $open_invoice = SimplifiedInvoice::create($data);
+            $open_invoice = TaxInvoice::create($data);
         } else {
             $open_invoice->update($data);
         }
-        $data['simplified_id'] = $open_invoice->id;
-        $element = SimplifiedInvoiceElement::where('product_id', $product_id)
-            ->where('simplified_id', $open_invoice->id)
+        $data['tax_id'] = $open_invoice->id;
+        $element = TaxInvoiceElement::where('product_id', $product_id)
+            ->where('tax_id', $open_invoice->id)
             ->first();
         // 'weight','karat','count','total','gram_price','amount','tax'
         $data['product_id'] = $product_id;
@@ -98,7 +98,7 @@ class SimplifiedController extends Controller
 
 
         $data['gram_price'] = round($data['amount'] / $request->weight, 2);
-        $simplified_element = SimplifiedInvoiceElement::create($data);
+        $tax_element = TaxInvoiceElement::create($data);
 
 
         $elements = $open_invoice->elements;
@@ -133,21 +133,21 @@ class SimplifiedController extends Controller
 
         $open_invoice->update($data);
 
-        return redirect()->route('supervisor.simplified.create')
+        return redirect()->route('supervisor.tax.create')
             ->with('success', 'تمت الاضافة بنجاح');
     }
 
     public function delete_element(Request $request)
     {
         $element_id = $request->element_id;
-        $element = SimplifiedInvoiceElement::FindOrFail($element_id);
-        $simplified_invoice = $element->simplified;
+        $element = TaxInvoiceElement::FindOrFail($element_id);
+        $tax_invoice = $element->TaxInvoice;
 
-        $total_count = $simplified_invoice->total_count;
-        $total_weight = $simplified_invoice->total_weight;
-        $amount_total = $simplified_invoice->amount_total;
-        $tax_total = $simplified_invoice->tax_total;
-        $final_total = $simplified_invoice->final_total;
+        $total_count = $tax_invoice->total_count;
+        $total_weight = $tax_invoice->total_weight;
+        $amount_total = $tax_invoice->amount_total;
+        $tax_total = $tax_invoice->tax_total;
+        $final_total = $tax_invoice->final_total;
 
         $total_count = $total_count - $element->count;
         $total_weight = $total_weight - $element->weight;
@@ -160,7 +160,7 @@ class SimplifiedController extends Controller
             $gram_total_price = $amount_total / $total_weight;
         }
 
-        $simplified_invoice->update([
+        $tax_invoice->update([
             'total_count' => $total_count,
             'total_weight' => $total_weight,
             'amount_total' => $amount_total,
@@ -171,50 +171,50 @@ class SimplifiedController extends Controller
         $element->delete();
     }
 
-    public function delete_simplified(Request $request)
+    public function delete_tax(Request $request)
     {
-        $simplified_id = $request->simplified_id;
-        $simplified = SimplifiedInvoice::FindOrFail($simplified_id);
-        $simplified->delete();
+        $tax_id = $request->tax_id;
+        $tax = TaxInvoice::FindOrFail($tax_id);
+        $tax->delete();
     }
 
-    public function save_simplified(Request $request)
+    public function save_tax(Request $request)
     {
-        $simplified_id = $request->simplified_id;
-        $simplified = SimplifiedInvoice::FindOrFail($simplified_id);
-        if ($simplified->payment_method == "cash" || $simplified->payment_method == "visa") {
-            $payment = SimplifiedPayment::create([
-                'simplified_id' => $simplified->id,
-                'amount' => $simplified->final_total,
-                'payment_method' => $simplified->payment_method,
+        $tax_id = $request->tax_id;
+        $tax = TaxInvoice::FindOrFail($tax_id);
+        if ($tax->payment_method == "cash" || $tax->payment_method == "visa") {
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
+                'amount' => $tax->final_total,
+                'payment_method' => $tax->payment_method,
             ]);
-            if ($simplified->payment_method == "cash") {
-                $simplified->update([
+            if ($tax->payment_method == "cash") {
+                $tax->update([
                     'status' => 'done',
-                    'cash_amount' => $simplified->final_total,
+                    'cash_amount' => $tax->final_total,
                     'visa_amount' => null,
                 ]);
-            } elseif ($simplified->payment_method == "visa") {
-                $simplified->update([
+            } elseif ($tax->payment_method == "visa") {
+                $tax->update([
                     'status' => 'done',
-                    'visa_amount' => $simplified->final_total,
+                    'visa_amount' => $tax->final_total,
                     'cash_amount' => null,
                 ]);
             }
         } else {
             $cash_amount = $request->cash_amount;
             $visa_amount = $request->visa_amount;
-            $payment = SimplifiedPayment::create([
-                'simplified_id' => $simplified->id,
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
                 'amount' => $cash_amount,
                 'payment_method' => "cash",
             ]);
-            $payment = SimplifiedPayment::create([
-                'simplified_id' => $simplified->id,
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
                 'amount' => $visa_amount,
                 'payment_method' => "visa",
             ]);
-            $simplified->update([
+            $tax->update([
                 'status' => 'done',
                 'cash_amount' => $cash_amount,
                 'visa_amount' => $visa_amount,
@@ -222,20 +222,20 @@ class SimplifiedController extends Controller
         }
     }
 
-    public function export_simplified_excel ()
+    public function export_tax_excel ()
     {
-        return Excel::download(new SimplifiedExport(), 'كل الفواتير الضريبية المبسطة.xlsx');
+        return Excel::download(new TaxExport(), 'كل الفواتير الضريبية للشركات والمؤسسات.xlsx');
     }
 
     public function print($id)
     {
-        $simplified = SimplifiedInvoice::FindOrFail($id);
-        if (!empty($simplified)) {
-            $elements = $simplified->elements;
+        $tax = TaxInvoice::FindOrFail($id);
+        if (!empty($tax)) {
+            $elements = $tax->elements;
             if ($elements->isEmpty()) {
                 return abort('404');
             } else {
-                return view('supervisor.simplified.print', compact('simplified'));
+                return view('supervisor.tax.print', compact('tax'));
             }
         } else {
             return abort('404');

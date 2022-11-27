@@ -9,11 +9,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static where(string $string, $id)
  * @method static findOrFail($admin_id)
  */
-class Branch extends Model
+class TaxPayment extends Model
 {
-    protected $table = "branches";
+    protected $table = "tax_payments";
     protected $fillable = [
-        'branch_name','branch_phone','branch_address','commercial_record','license_number','snap'
+        'tax_id',
+        'payment_method',
+        'amount',
     ];
+    public function tax(){
+        return $this->belongsTo('\App\Models\TaxInvoice','tax_id','id');
+    }
 
 }

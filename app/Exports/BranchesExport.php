@@ -9,7 +9,8 @@ class BranchesExport implements FromCollection,WithHeadings
 {
     public function collection()
     {
-        return Branch::select('branch_name','branch_phone','branch_address','created_at')->get();
+        return Branch::select('branch_name','branch_phone','branch_address','commercial_record',
+            'license_number','snap','created_at')->get();
     }
     public function headings(): array
     {
@@ -17,6 +18,9 @@ class BranchesExport implements FromCollection,WithHeadings
             'اسم الفرع',
             'رقم الجوال',
             'عنوان الفرع',
+            'سجل تجارى',
+            'رقم ترخيص',
+            'snap',
             'تاريخ الاضافة'
         ];
     }

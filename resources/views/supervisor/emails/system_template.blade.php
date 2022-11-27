@@ -52,7 +52,7 @@
                             </p>
                         <p style="box-sizing: border-box; font-family: 'Almarai'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: right;">
                             مع خالص التحيات<br>
-                            مؤسسة الذهب للتجارة </p>
+                            مجوهرات العقاب </p>
                     </td>
                 </tr>
             </table>

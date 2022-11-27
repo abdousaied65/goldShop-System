@@ -7,6 +7,9 @@
             <div class="brand text-center">
                 <a class="link text-white text-center" href="{{route('index')}}">
                     <img class="text-center" src="{{asset('admin-assets/img/logo.png')}}" style="width:20%; margin: 10px auto ;" />
+                    <h1 style="color: black !important;">
+                        مجوهرات العقاب
+                    </h1>
                 </a>
             </div>
             <div class="card">

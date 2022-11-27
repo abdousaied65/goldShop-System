@@ -2,7 +2,7 @@
     <div class="container-fluid pd-t-0-f ht-100p" dir="rtl">
         <span>
             تمت البرمجة بواسطه
-            مؤسسة الذهب للتجارة
+            مجوهرات العقاب
             جميع الحقوق محفوظة.
             {{date('Y')}}
         </span>

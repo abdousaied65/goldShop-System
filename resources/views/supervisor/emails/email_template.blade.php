@@ -39,7 +39,7 @@
                         style="box-sizing: border-box; font-family: 'Almarai'; position: relative; max-width: 100vw; padding: 32px;">
                         <div style="width: 90%; height: 30px; padding: 10px; background: #0d3349; color:#fff; font-family: 'Almarai';
                             font-size: 16px; margin: 10px auto; border-radius: 5px; text-align: center;"> رسالة من
-                            مؤسسة الذهب للتجارة
+                            مجوهرات العقاب
                         </div>
                         <h1 style="box-sizing: border-box; font-family: 'Almarai';
                         position: relative; color: #3d4852; font-size: 18px;
@@ -52,7 +52,7 @@
                             </p>
                         <p style="box-sizing: border-box; font-family: 'Almarai'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: right;">
                             مع خالص التحيات,<br>
-                            مؤسسة الذهب للتجارة </p>
+                            مجوهرات العقاب </p>
                     </td>
                 </tr>
             </table>

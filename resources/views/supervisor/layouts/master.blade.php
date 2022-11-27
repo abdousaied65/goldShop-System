@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="Description" content="مؤسسة الذهب للتجارة">
-    <meta name="Author" content="مؤسسة الذهب للتجارة">
-    <link rel="icon" href="{{asset('admin-assets/img/favicon.png')}}" type="image/png">
+    <meta name="Description" content="مجوهرات العقاب">
+    <meta name="Author" content="مجوهرات العقاب">
+    <link rel="icon" href="{{asset('admin-assets/img/logo.png')}}" type="image/png">
     <meta name="Keywords" content=""/>
     @include('supervisor.layouts.head')
 

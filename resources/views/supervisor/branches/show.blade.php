@@ -22,6 +22,9 @@
                     <th class="border-bottom-0 text-center">اسم الفرع</th>
                     <th class="border-bottom-0 text-center"> رقم جوال الفرع</th>
                     <th class="border-bottom-0 text-center"> عنوان الفرع</th>
+                    <th class="border-bottom-0 text-center"> سجل تجارى</th>
+                    <th class="border-bottom-0 text-center"> رقم ترخيص</th>
+                    <th class="border-bottom-0 text-center"> snap</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,6 +32,9 @@
                     <td>{{ $branch->branch_name}}</td>
                     <td>{{ $branch->branch_phone }}</td>
                     <td>{{ $branch->branch_address }}</td>
+                    <td>{{ $branch->commercial_record }}</td>
+                    <td>{{ $branch->license_number }}</td>
+                    <td>{{ $branch->snap }}</td>
                 </tr>
                 </tbody>
             </table>

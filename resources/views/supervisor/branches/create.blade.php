@@ -45,6 +45,23 @@
                             </div>
 
                         </div>
+                        <div class="row m-t-3 mb-3">
+                            <div class="col-md-4">
+                                <label> سجل تجارى <span class="text-danger">*</span></label>
+                                <input class="form-control mg-b-20" min="1" name="commercial_record" dir="ltr" required="" type="number">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label> رقم ترخيص <span class="text-danger">*</span></label>
+                                <input class="form-control mg-b-20" dir="ltr" name="license_number" required="" type="text">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label> snap <span class="text-danger">*</span></label>
+                                <input class="form-control mg-b-20" dir="ltr" name="snap" required="" type="text">
+                            </div>
+
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <button class="btn btn-info pd-x-20" type="submit">
                                 اضافة

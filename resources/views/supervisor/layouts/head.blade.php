@@ -1,7 +1,7 @@
 <!-- Title -->
-<title> مؤسسة الذهب للتجارة </title>
+<title> مجوهرات العقاب </title>
 <!-- Favicon -->
-<link rel="icon" href="{{URL::asset('admin-assets/img/favicon.png')}}" type="image/x-icon"/>
+<link rel="icon" href="{{URL::asset('admin-assets/img/logo.png')}}" type="image/x-icon"/>
 <!-- Icons css -->
 <link href="{{URL::asset('admin-assets/css/icons.css')}}" rel="stylesheet">
 <!--  Custom Scroll bar-->

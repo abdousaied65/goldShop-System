@@ -41,6 +41,23 @@
                             <input value="{{$branch->branch_address}}" class="form-control mg-b-20" dir="rtl" name="branch_address" required="" type="text">
                         </div>
                     </div>
+                    <div class="row m-t-3 mb-3">
+                        <div class="col-md-4">
+                            <label> سجل تجارى <span class="text-danger">*</span></label>
+                            <input class="form-control mg-b-20" value="{{$branch->commercial_record}}" min="1" name="commercial_record" dir="ltr" required="" type="number">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label> رقم ترخيص <span class="text-danger">*</span></label>
+                            <input class="form-control mg-b-20" value="{{$branch->license_number}}" dir="ltr" name="license_number" required="" type="text">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label> snap <span class="text-danger">*</span></label>
+                            <input class="form-control mg-b-20" value="{{$branch->snap}}" dir="ltr" name="snap" required="" type="text">
+                        </div>
+
+                    </div>
 
                     <div class="col-lg-12 text-center mt-3 mb-3 text-center">
                         <button class="btn btn-info btn-md" type="submit"> تحديث</button>

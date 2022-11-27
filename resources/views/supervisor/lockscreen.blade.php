@@ -10,6 +10,9 @@
             <!-- The image half -->
             <div class="col-lg-6 col-sm-12 pull-right align-content-center justify-content-center text-center">
                 <img src="{{asset('admin-assets/img/logo.png')}}" style="width: 70%;height: 450px;">
+                <h1 style="color: black !important;">
+                    مجوهرات العقاب
+                </h1>
             </div>
             <!-- The content half -->
             <div class="col-md-6 col-lg-6 col-xl-5 bg-white">
@@ -22,7 +25,7 @@
                                     <a href="javascript:;"
                                        class="mx-auto d-flex">
                                         <h1 class="main-logo1 ml-1 mr-0 my-auto tx-28 text-dark ml-2">
-                                            مؤسسة الذهب للتجارة
+                                            مجوهرات العقاب
                                         </h1>
                                     </a></div>
                                 <div class="main-card-signin d-md-flex bg-white">

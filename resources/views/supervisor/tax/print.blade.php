@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>
-        <?php echo " فاتورة ضريبية مبسطة رقم " . $simplified->unified_serial_number;  ?>
+        <?php echo " فاتورة ضريبية للشركات والمؤسسات رقم " . $tax->unified_serial_number;  ?>
     </title>
     <meta charset="utf-8"/>
     <link href="{{asset('/admin-assets/css/bootstrap.min.css')}}" rel="stylesheet"/>
@@ -102,21 +102,21 @@
             مجوهرات العقاب
         </h3>
         <h6 class="text-center mt-1" style="font-weight: bold;">
-            {{$simplified->branch->branch_address}}
+            {{$tax->branch->branch_address}}
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
-            {{$simplified->branch->branch_name}}
+            {{$tax->branch->branch_name}}
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             هاتف :
-            {{$simplified->branch->branch_phone}}
+            {{$tax->branch->branch_phone}}
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             Snap :
-            {{$simplified->branch->snap}}
+            {{$tax->branch->snap}}
         </h6>
         <h5 class="text-center mt-1" style="font-weight: bold;">
-            فاتورة ضريبية مبسطة
+            فاتورة ضريبية للشركات والمؤسسات
         </h5>
         <div class="clearfix"></div>
         <div class="visible-print text-center mt-1">
@@ -130,9 +130,9 @@
             $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                 new Seller("مجوهرات العقاب"), // seller name
                 new TaxNumber(302063352400003), // seller tax number
-                new InvoiceDate($simplified->created_at), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-                new InvoiceTotalAmount($simplified->final_total), // invoice total amount
-                new InvoiceTaxAmount($simplified->tax_total) // invoice tax amount
+                new InvoiceDate($tax->created_at), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
+                new InvoiceTotalAmount($tax->final_total), // invoice total amount
+                new InvoiceTaxAmount($tax->tax_total) // invoice tax amount
                 // TODO :: Support others tags
             ])->render();
             ?>
@@ -144,31 +144,38 @@
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             س . ت :
-            {{$simplified->branch->commercial_record}}
+            {{$tax->branch->commercial_record}}
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             رقم الترخيص :
             <span dir="ltr">
-                {{$simplified->branch->license_number}}
+                {{$tax->branch->license_number}}
             </span>
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             رقم الفاتورة :
             <span dir="ltr">
-                {{$simplified->unified_serial_number}}
+                {{$tax->unified_serial_number}}
             </span>
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             التاريخ :
             <span dir="ltr">
-                {{$simplified->date}}
-                {{date('H:i:s a',strtotime($simplified->time))}}
+                {{$tax->date}}
+                {{date('H:i:s a',strtotime($tax->time))}}
+            </span>
+        </h6>
+
+        <h6 class="text-center mt-1" style="font-weight: bold;">
+            اسم الشركة او المؤسسة :
+            <span dir="ltr">
+                {{$tax->company_name}}
             </span>
         </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
-            المباع على المكرم :
+            الرقم الضريبى للشركة :
             <span dir="ltr">
-                -----------------------------------
+                {{$tax->company_tax_number}}
             </span>
         </h6>
     </div>
@@ -218,10 +225,10 @@
             </tr>
             </thead>
             <tbody>
-            <?php $simplified_elements = $simplified->elements; ?>
-            @if(isset($simplified) && isset($simplified_elements) && !$simplified_elements->isEmpty())
+            <?php $tax_elements = $tax->elements; ?>
+            @if(isset($tax) && isset($tax_elements) && !$tax_elements->isEmpty())
                 <?php
-                foreach ($simplified_elements as $element) {
+                foreach ($tax_elements as $element) {
                     echo "<td style='border: 1px solid #aaa' dir='rtl'>" . $element->product->product_name . "</td>";
                     echo "<td style='border: 1px solid #aaa' dir='rtl'>" . $element->karat . "</td>";
                     echo "<td style='border: 1px solid #aaa' dir='rtl'>" . $element->weight . "</td>";
@@ -242,7 +249,7 @@
                     مجموع الذهب
                 </td>
                 <td>
-                    {{$simplified->total_weight}}
+                    {{$tax->total_weight}}
                 </td>
                 <td>
                     Weight Sum
@@ -253,7 +260,7 @@
                     المجموع
                 </td>
                 <td>
-                    {{$simplified->amount_total}}
+                    {{$tax->amount_total}}
                 </td>
                 <td>
                     Sub Total
@@ -264,7 +271,7 @@
                     الضريبة 15%
                 </td>
                 <td>
-                    {{$simplified->tax_total}}
+                    {{$tax->tax_total}}
                 </td>
                 <td>
                     VAT 15%
@@ -275,7 +282,7 @@
                     قيمة الفاتورة
                 </td>
                 <td>
-                    {{$simplified->final_total}}
+                    {{$tax->final_total}}
                 </td>
                 <td>
                     Total

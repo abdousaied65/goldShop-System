@@ -11,10 +11,14 @@
                         <div class="row">
                             <div class="col-md-10 col-lg-10 col-xl-9 mx-auto">
                                 <div class="card-sigin">
-                                    <div class="mb-5 text-center"><a href="{{route('index')}}"><img
+                                    <div class="mb-5 text-center">
+                                        <a href="{{route('index')}}"><img
                                                 src="{{URL::asset('admin-assets/img/logo.png')}}"
-                                                class="sign-favicon ht-100" alt="logo"></a>
-
+                                                class="sign-favicon ht-100" alt="logo">
+                                        </a>
+                                        <h2>
+                                            مجوهرات العقاب
+                                        </h2>
                                     </div>
                                     <div class="card-sigin">
                                         <div class="main-signup-header">
@@ -93,6 +97,9 @@
                 <div class="row wd-100p mx-auto text-center">
                     <div class="col-md-12 col-lg-12 col-xl-12 my-auto mx-auto wd-100p">
                         <img src="{{URL::asset('admin-assets/img/logo.png')}}" class="w-50 h-50" alt="logo">
+                        <h1>
+                            مجوهرات العقاب
+                        </h1>
                     </div>
                 </div>
             </div>

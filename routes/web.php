@@ -109,9 +109,25 @@ Route::group(
     Route::post('save-simplified','SimplifiedController@save_simplified')->name('save.simplified');
 
     Route::get('print-simplified/{id?}','SimplifiedController@print')->name('supervisor.simplified.print');
+    Route::post('search-simplified','SimplifiedController@search')->name('search.simplified');
 
 
+    // tax Routes
+    Route::resource('tax', 'TaxController')->names([
+        'index' => 'supervisor.tax.index',
+        'create' => 'supervisor.tax.create',
+        'destroy' => 'supervisor.tax.destroy',
+        'store' => 'supervisor.tax.store',
+    ]);
 
+    Route::post('/export-tax-excel', 'TaxController@export_tax_excel')->name('export.tax.excel');
+
+    Route::post('delete-element-tax','TaxController@delete_element')->name('delete.element.tax');
+    Route::post('delete-tax','TaxController@delete_tax')->name('delete.tax');
+    Route::post('save-tax','TaxController@save_tax')->name('save.tax');
+
+    Route::get('print-tax/{id?}','TaxController@print')->name('supervisor.tax.print');
+    Route::post('search-tax','TaxController@search')->name('search.tax');
 
 
 });

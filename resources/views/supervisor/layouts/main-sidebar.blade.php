@@ -9,7 +9,7 @@
         <a class="desktop-logo logo-light active" href="{{ url('/supervisor/' . $page='home') }}"><img
                 src="{{URL::asset('admin-assets/img/logo.png')}}" class="main-logo" alt="logo"></a>
         <a class="logo-icon mobile-logo icon-light active" href="{{ url('/supervisor/' . $page='home') }}"><img
-                src="{{URL::asset('admin-assets/img/favicon.png')}}" class="logo-icon" alt="logo"></a>
+                src="{{URL::asset('admin-assets/img/logo.png')}}" class="logo-icon" alt="logo"></a>
     </div>
 
     <div class="main-sidemenu" style="overflow: auto!important;">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="user-info">
                         <h4 style="color: #000!important;" class="mt-3 pt-0 pb-0 pr-4 pl-4 mb-0">
-                            مؤسسة الذهب للتجارة
+                            مجوهرات العقاب
                         </h4>
                     </div>
                 </a>
@@ -156,6 +156,30 @@
                             <li>
                                 <a class="slide-item" href="{{ route('supervisor.simplified.index') }}">
                                     عرض الفواتير الضريبية المبسطة
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#">
+                        <i class="fa fa-building side-menu__icon"></i>
+                        <span class="side-menu__label">
+                        الفواتير الضريبية للشركات
+                    </span><i class="angle fe fe-chevron-down"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        @can('اضافة فاتورة')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.tax.create') }}">
+                                    اضافة فاتورة ضريبية لشركة
+                                </a>
+                            </li>
+                        @endcan
+                        @can('عرض فاتورة')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.tax.index') }}">
+                                    عرض الفواتير الضريبية للشركات
                                 </a>
                             </li>
                         @endcan

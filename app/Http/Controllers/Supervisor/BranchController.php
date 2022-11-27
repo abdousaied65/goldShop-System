@@ -25,7 +25,12 @@ class BranchController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'branch_name' => 'required'
+            'branch_name' => 'required',
+            'branch_phone' => 'required',
+            'branch_address' => 'required',
+            'commercial_record' => 'required',
+            'license_number' => 'required',
+            'snap' => 'required',
         ]);
         $input = $request->all();
         $branch = Branch::create($input);
@@ -49,7 +54,12 @@ class BranchController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'branch_name' => 'required'
+            'branch_name' => 'required',
+            'branch_phone' => 'required',
+            'branch_address' => 'required',
+            'commercial_record' => 'required',
+            'license_number' => 'required',
+            'snap' => 'required',
         ]);
         $input = $request->all();
         $branch = Branch::findOrFail($id);

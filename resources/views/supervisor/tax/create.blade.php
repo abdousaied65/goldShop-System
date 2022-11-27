@@ -58,9 +58,10 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <h5 class="alert alert-md alert-secondary text-center">
-                        اضافة فاتورة ضريبية مبسطة جديدة
-                        <div style="color:orangered;margin-top: 10px;">
+                    <h5 class="alert alert-md alert-warning text-center text-white"
+                        style="font-weight: bold!important;text-shadow: 1px 1px 5px #000;">
+                        اضافة فاتورة ضريبية لشركة او مؤسسة
+                        <div style="margin-top: 10px;">
                             رقم الفاتورة
                             [
                             @if(isset($open_invoice) && !empty($open_invoice))
@@ -73,7 +74,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('supervisor.simplified.store')}}" method="POST">
+                    <form action="{{route('supervisor.tax.store')}}" method="POST">
                         @csrf
                         @method('POST')
                         <input type="hidden" name="supervisor_id" value="{{Auth::user()->id}}"/>
@@ -154,7 +155,8 @@
                                     <label class="d-block">
                                         اسم الفرع
                                     </label>
-                                    <input class="form-control" type="text" readonly value="{{Auth::user()->branch->branch_name}}"/>
+                                    <input class="form-control" type="text" readonly
+                                           value="{{Auth::user()->branch->branch_name}}"/>
                                 </div>
                             </div>
                             <div class="col-lg-3 pull-right">
@@ -165,6 +167,42 @@
                                     <input class="form-control" type="text" readonly value="{{Auth::user()->name}}"/>
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row text-center justify-content-center">
+
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        اسم الشركة او المؤسسة
+                                    </label>
+                                    <input class="form-control" required type="text" name="company_name"
+                                           @if(isset($open_invoice) && !empty($open_invoice))
+                                           value="{{$open_invoice->company_name}}" readonly
+                                           @else
+                                           value=""
+                                        @endif
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الرقم الضريبى للشركة او المؤسسة
+                                    </label>
+                                    <input class="form-control" required
+                                           minlength="15"
+                                           maxlength="15"
+                                           type="text" dir="ltr" name="company_tax_number"
+                                           @if(isset($open_invoice) && !empty($open_invoice))
+                                           value="{{$open_invoice->company_tax_number}}" readonly
+                                           @else
+                                           value=""
+                                        @endif
+                                    />
+                                </div>
+                            </div>
+
                             <div class="clearfix"></div>
                         </div>
                         <hr/>
@@ -272,7 +310,8 @@
                                     اضافة الى الفاتورة
                                 </button>
                                 @if(isset($open_invoice) && !empty($open_invoice))
-                                    <a href="{{route('supervisor.simplified.print',$open_invoice->id)}}" id="print" role="button" class="btn btn-md btn-info">
+                                    <a href="{{route('supervisor.tax.print',$open_invoice->id)}}" id="print"
+                                       role="button" class="btn btn-md btn-info">
                                         <i class="fa fa-print"></i>
                                         معاينة وطباعة الفاتورة
                                     </a>
@@ -282,7 +321,7 @@
                         <hr/>
                         @if(isset($open_invoice) && !empty($open_invoice))
                             <div class="row text-center">
-                                <h5 class="w-100 alert alert-secondary text-center">
+                                <h5 class="w-100 alert alert-warning text-center">
                                     <i class="fa fa-info-circle"></i>
                                     عرض تفاصيل الفاتورة
                                     <<<<<<<
@@ -375,7 +414,7 @@
                                         </h5>
                                     </div>
                                     <div class="col-lg-3 pull-right mt-3">
-                                        <button id="cancel" simplified_id={{$open_invoice->id}} type="button"
+                                        <button id="cancel" tax_id={{$open_invoice->id}} type="button"
                                                 class="btn btn-md btn-danger w-100">
                                             <i class="fa fa-cancel"></i>
                                             الغاء الفاتورة
@@ -395,7 +434,7 @@
                                                 <div class="col-lg-4 pull-right">
                                                     <button id="save" final_total="{{$open_invoice->final_total}}"
                                                             payment_method="mixed"
-                                                            simplified_id={{$open_invoice->id}} type="button"
+                                                            tax_id={{$open_invoice->id}} type="button"
                                                             class="btn btn-md btn-success w-100">
                                                         <i class="fa fa-check"></i>
                                                         حفظ الفاتورة
@@ -405,7 +444,7 @@
                                         @else
                                             <button id="save" final_total="{{$open_invoice->final_total}}"
                                                     payment_method="{{$open_invoice->payment_method}}"
-                                                    simplified_id={{$open_invoice->id}} type="button"
+                                                    tax_id={{$open_invoice->id}} type="button"
                                                     class="btn btn-md btn-success w-100">
                                                 <i class="fa fa-check"></i>
                                                 حفظ الفاتورة
@@ -433,7 +472,7 @@
             });
             $('.delete_element').on('click', function () {
                 let element_id = $(this).attr('element_id');
-                $.post("{{route('delete.element.simplified')}}", {
+                $.post("{{route('delete.element.tax')}}", {
                     element_id: element_id,
                     "_token": "{{ csrf_token() }}"
                 }, function (data) {
@@ -441,9 +480,9 @@
                 });
             });
             $('#cancel').on('click', function () {
-                let simplified_id = $(this).attr('simplified_id');
-                $.post("{{route('delete.simplified')}}", {
-                    simplified_id: simplified_id,
+                let tax_id = $(this).attr('tax_id');
+                $.post("{{route('delete.tax')}}", {
+                    tax_id: tax_id,
                     "_token": "{{ csrf_token() }}"
                 }, function (data) {
                     window.location.reload();
@@ -452,7 +491,7 @@
 
             $('#save').on('click', function () {
 
-                let simplified_id = $(this).attr('simplified_id');
+                let tax_id = $(this).attr('tax_id');
                 let payment_method = $(this).attr('payment_method');
                 let final_total = $(this).attr('final_total');
 
@@ -465,10 +504,9 @@
                         let total_amount = parseFloat(cash_amount) + parseFloat(visa_amount);
                         if (total_amount != final_total) {
                             alert('لابد ان يكون مجموع المبلغين مساويا لاجمالى الفاتورة');
-                        }
-                        else{
-                            $.post("{{route('save.simplified')}}", {
-                                simplified_id: simplified_id,
+                        } else {
+                            $.post("{{route('save.tax')}}", {
+                                tax_id: tax_id,
                                 cash_amount: cash_amount,
                                 visa_amount: visa_amount,
                                 "_token": "{{ csrf_token() }}"
@@ -479,8 +517,8 @@
                     }
 
                 } else {
-                    $.post("{{route('save.simplified')}}", {
-                        simplified_id: simplified_id,
+                    $.post("{{route('save.tax')}}", {
+                        tax_id: tax_id,
                         "_token": "{{ csrf_token() }}"
                     }, function (data) {
                         window.location.reload();

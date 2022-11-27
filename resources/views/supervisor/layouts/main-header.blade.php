@@ -7,7 +7,7 @@
                     <img src="{{URL::asset('admin-assets/img/logo.png')}}"
                          class="logo-1" alt="logo"></a>
                 <a href="{{ url('/supervisor/' . $page='home') }}">
-                    <img src="{{URL::asset('admin-assets/img/favicon.png')}}"
+                    <img src="{{URL::asset('admin-assets/img/logo.png')}}"
                          class="logo-2" alt="logo"></a>
             </div>
             <div class="app-sidebar__toggle" data-toggle="sidebar">

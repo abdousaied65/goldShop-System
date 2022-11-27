@@ -41,16 +41,16 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="col-lg-12 margin-tb">
-                        <h5 class="text-center alert alert-md alert-success w-100">
-                            <a href="{{route('supervisor.simplified.index')}}" class="text-dark">
-                                عرض كل الفواتير الضريبية المبسطة
+                        <h5 class="text-center alert alert-md alert-danger w-100">
+                            <a href="{{route('supervisor.tax.index')}}" class="text-dark">
+                                عرض كل الفواتير الضريبية للشركات والمؤسسات
                             </a>
                         </h5>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="row mt-1 mb-1 text-center justify-content-center align-content-center">
-                    <form method="POST" action="{{route('export.simplified.excel')}}">
+                    <form method="POST" action="{{route('export.tax.excel')}}">
                         @csrf
                         @method('POST')
                         <button type="submit" class="btn btn-md btn-success m-1">
@@ -59,13 +59,13 @@
                         </button>
                     </form>
 
-                    <a href="{{route('supervisor.simplified.create')}}" role="button" class="btn btn-md btn-info m-1">
+                    <a href="{{route('supervisor.tax.create')}}" role="button" class="btn btn-md btn-info m-1">
                         <i class="fa fa-plus"></i>
                         اضافة
                     </a>
                 </div>
                 <div class="col-lg-12 mt-1 mb-1 p-1" style="border: 1px solid #bbb;">
-                    <form method="POST" action="{{route('search.simplified')}}">
+                    <form method="POST" action="{{route('search.tax')}}">
                         @csrf
                         @method('POST')
                         <div class="row p-2">
@@ -162,34 +162,34 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($data as $key => $simplified)
+                            @foreach ($data as $key => $tax)
                                 <tr>
-                                    <td>{{ $simplified->unified_serial_number }}</td>
-                                    <td>{{ $simplified->date}} - {{ $simplified->time}} </td>
+                                    <td>{{ $tax->unified_serial_number }}</td>
+                                    <td>{{ $tax->date}} - {{ $tax->time}} </td>
                                     <td>
-                                        @if($simplified->payment_method == "cash")
-                                            {{$simplified->cash_amount}} كاش
-                                        @elseif($simplified->payment_method == "visa")
-                                            {{$simplified->visa_amount}} فيزا
+                                        @if($tax->payment_method == "cash")
+                                            {{$tax->cash_amount}} كاش
+                                        @elseif($tax->payment_method == "visa")
+                                            {{$tax->visa_amount}} فيزا
                                         @else
-                                            {{$simplified->cash_amount}} كاش
+                                            {{$tax->cash_amount}} كاش
                                             +
-                                            {{$simplified->visa_amount}} فيزا
+                                            {{$tax->visa_amount}} فيزا
                                         @endif
                                     </td>
                                     <td>
-                                        @if(empty($simplified->branch_id))
+                                        @if(empty($tax->branch_id))
                                             كل الفروع
                                         @else
-                                            {{ $simplified->branch->branch_name }}
+                                            {{ $tax->branch->branch_name }}
                                         @endif
                                     </td>
-                                    <td>{{ $simplified->supervisor->name }}</td>
-                                    <td>{{ $simplified->tax_total }}</td>
-                                    <td>{{ $simplified->final_total }}</td>
+                                    <td>{{ $tax->supervisor->name }}</td>
+                                    <td>{{ $tax->tax_total }}</td>
+                                    <td>{{ $tax->final_total }}</td>
                                     <td>
                                         @can('عرض فاتورة')
-                                            <a href="{{ route('supervisor.simplified.print', $simplified->id) }}"
+                                            <a href="{{ route('supervisor.tax.print', $tax->id) }}"
                                                class="btn btn-sm p-2 m-1 tx-13 btn-info">
                                                 <i class="fa fa-print"></i>
                                                 طباعة
