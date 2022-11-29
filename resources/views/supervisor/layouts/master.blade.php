@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
@@ -115,7 +115,7 @@
     </style>
 </head>
 
-<body class="main-body app sidebar-mini">
+<body dir="rtl" class=" app sidebar-mini">
 @include('supervisor.layouts.main-sidebar')
 <!-- main-content -->
 <div class="main-content app-content">

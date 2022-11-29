@@ -141,6 +141,14 @@
                                 <th class="border-bottom-0 text-center">
                                     تاريخ - وقت
                                 </th>
+
+                                <th class="border-bottom-0 text-center">
+                                    اسم الشركة او المؤسسة
+                                </th>
+                                <th class="border-bottom-0 text-center">
+                                    الرقم الضريبى للشركة
+                                </th>
+
                                 <th class="border-bottom-0 text-center">
                                     طريقة الدفع
                                 </th>
@@ -166,6 +174,8 @@
                                 <tr>
                                     <td>{{ $tax->unified_serial_number }}</td>
                                     <td>{{ $tax->date}} - {{ $tax->time}} </td>
+                                    <td>{{$tax->company_name}}</td>
+                                    <td>{{$tax->company_tax_number}}</td>
                                     <td>
                                         @if($tax->payment_method == "cash")
                                             {{$tax->cash_amount}} كاش
@@ -188,8 +198,8 @@
                                     <td>{{ $tax->tax_total }}</td>
                                     <td>{{ $tax->final_total }}</td>
                                     <td>
-                                        @can('عرض فاتورة')
-                                            <a href="{{ route('supervisor.tax.print', $tax->id) }}"
+                                        @can('عرض فاتورة ضريبية')
+                                            <a target="_blank" href="{{ route('supervisor.tax.print', $tax->id) }}"
                                                class="btn btn-sm p-2 m-1 tx-13 btn-info">
                                                 <i class="fa fa-print"></i>
                                                 طباعة
@@ -201,6 +211,8 @@
                             </tbody>
                             <tfoot>
                             <tr>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -225,14 +237,16 @@
     $(document).ready(function () {
         $('#example-table tfoot tr th:nth-child(1)').html('<input class="form-control" type="number" placeholder="رقم الفاتورة" />');
         $('#example-table tfoot tr th:nth-child(2)').html('<input class="form-control" value="{{date('Y-m-d')}}" type="date" placeholder="تاريخ" />');
-        $('#example-table tfoot tr th:nth-child(3)').html('<input class="form-control" type="text" placeholder="طريقة الدفع" />');
-        $('#example-table tfoot tr th:nth-child(4)').html('<input class="form-control" type="text" placeholder="الفرع" />');
-        $('#example-table tfoot tr th:nth-child(5)').html('<input class="form-control" type="text" placeholder="الموظف" />');
-        $('#example-table tfoot tr th:nth-child(6)').html('<input class="form-control" type="text" placeholder="الضريبة" />');
-        $('#example-table tfoot tr th:nth-child(7)').html('<input class="form-control" type="text" placeholder="الاجمالى" />');
+        $('#example-table tfoot tr th:nth-child(3)').html('<input class="form-control" type="text" placeholder="اسم الشركة" />');
+        $('#example-table tfoot tr th:nth-child(4)').html('<input class="form-control" type="text" placeholder="الرقم الضريبى للشركة" />');
+        $('#example-table tfoot tr th:nth-child(5)').html('<input class="form-control" type="text" placeholder="طريقة الدفع" />');
+        $('#example-table tfoot tr th:nth-child(6)').html('<input class="form-control" type="text" placeholder="الفرع" />');
+        $('#example-table tfoot tr th:nth-child(7)').html('<input class="form-control" type="text" placeholder="الموظف" />');
+        $('#example-table tfoot tr th:nth-child(8)').html('<input class="form-control" type="text" placeholder="الضريبة" />');
+        $('#example-table tfoot tr th:nth-child(9)').html('<input class="form-control" type="text" placeholder="الاجمالى" />');
         $('#example-table').DataTable({
             "columnDefs": [
-                {"orderable": false, "targets": [7]}
+                {"orderable": false, "targets": [9]}
             ],
             "order": [[0, "desc"]],
             initComplete: function () {

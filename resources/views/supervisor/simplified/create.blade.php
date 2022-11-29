@@ -272,7 +272,7 @@
                                     اضافة الى الفاتورة
                                 </button>
                                 @if(isset($open_invoice) && !empty($open_invoice))
-                                    <a href="{{route('supervisor.simplified.print',$open_invoice->id)}}" id="print" role="button" class="btn btn-md btn-info">
+                                    <a target="_blank" href="{{route('supervisor.simplified.print',$open_invoice->id)}}" id="print" role="button" class="btn btn-md btn-info">
                                         <i class="fa fa-print"></i>
                                         معاينة وطباعة الفاتورة
                                     </a>

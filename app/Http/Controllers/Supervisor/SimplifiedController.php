@@ -83,14 +83,14 @@ class SimplifiedController extends Controller
         $element = SimplifiedInvoiceElement::where('product_id', $product_id)
             ->where('simplified_id', $open_invoice->id)
             ->first();
-        // 'weight','karat','count','total','gram_price','amount','tax'
+
         $data['product_id'] = $product_id;
 
         $product = Product::FindOrFail($product_id);
 
         $product_tax = $product->tax;
 
-        $tax_v1 = 1 + $product_tax / 100;
+        $tax_v1 = 1 + ($product_tax / 100);
         $tax_v2 = $product_tax / 100;
 
         $data['amount'] = round($request->total / $tax_v1, 2);

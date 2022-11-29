@@ -130,5 +130,41 @@ Route::group(
     Route::post('search-tax','TaxController@search')->name('search.tax');
 
 
+    // purchases Routes
+    Route::resource('purchases', 'PurchaseController')->names([
+        'index' => 'supervisor.purchases.index',
+        'create' => 'supervisor.purchases.create',
+        'store' => 'supervisor.purchases.store',
+        'edit' => 'supervisor.purchases.edit',
+        'update' => 'supervisor.purchases.update',
+    ]);
+
+    Route::get('/print-selected-purchases', 'PurchaseController@print_selected')->name('print.selected.purchases');
+    Route::post('/export-purchases-excel', 'PurchaseController@export_purchases_excel')->name('export.purchases.excel');
+
+
+    // simplified_return Routes
+    Route::resource('simplified_return', 'SimplifiedReturnController')->names([
+        'index' => 'supervisor.simplified_return.index',
+        'create' => 'supervisor.simplified_return.create',
+        'store' => 'supervisor.simplified_return.store',
+    ]);
+
+    Route::post('/get-simplified-details','SimplifiedReturnController@get_simplified_details')
+        ->name('get.simplified.details');
+
+    // tax_return Routes
+    Route::resource('tax_return', 'TaxReturnController')->names([
+        'index' => 'supervisor.tax_return.index',
+        'create' => 'supervisor.tax_return.create',
+        'store' => 'supervisor.tax_return.store',
+    ]);
+
+    Route::post('/get-tax-details','TaxReturnController@get_tax_details')
+        ->name('get.tax.details');
+
+
+
+
 });
 ?>

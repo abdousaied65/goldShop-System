@@ -1,0 +1,111 @@
+@extends('supervisor.layouts.master')
+<style>
+
+</style>
+@section('content')
+    <!-- main-content closed -->
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Errors :</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <!-- row opened -->
+    <div class="row row-sm">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h5 class="text-center alert alert-md alert-primary">
+                        تعديل فاتورة مشتريات
+                    </h5>
+                </div>
+                <div class="card-body p-1 m-1">
+                    <form action="{{route('supervisor.purchases.update',$purchase->id)}}" method="post"
+                          enctype="multipart/form-data">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="supervisor_id" value="{{Auth::user()->id}}"/>
+                        <div class="row m-t-3 mb-3">
+                            <div class="col-lg-3 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        رقم فاتورة المشتريات
+                                    </label>
+                                    <input class="form-control" dir="ltr" type="text"
+                                           value="{{$purchase->invoice_number}}" required name="invoice_number"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        التاريخ
+                                    </label>
+                                    <input class="form-control" type="date" required name="date"
+                                           value="{{$purchase->date}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        اسم الفرع
+                                    </label>
+                                    <input required class="form-control" type="text" readonly
+                                           value="{{$purchase->branch->branch_name}}"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الموظف
+                                    </label>
+                                    <input required class="form-control" type="text" readonly
+                                           value="{{$purchase->supervisor->name}}"/>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row m-t-3 mb-3">
+                            <div class="col-lg-4 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        اجمالى الضريبة
+                                    </label>
+                                    <input class="form-control" value="{{$purchase->tax_total}}" type="text" dir="ltr" required name="tax_total"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        اجمالى الفاتورة
+                                    </label>
+                                    <input class="form-control" type="text" value="{{$purchase->final_total}}" dir="ltr" required name="final_total"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-2">
+                                <label for=""> إرفاق صورة فاتورة المشتريات </label>
+                                <input accept="image/*" type="file"
+                                       oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
+                                       name="attachment" class="form-control">
+                                <label for="" class="d-block"> معاينة الصورة </label>
+                                <img id="pic" src="{{asset($purchase->attachment)}}"
+                                     style="width: 100%; height:auto;"/>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">
+                                تعديل
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
+@endsection

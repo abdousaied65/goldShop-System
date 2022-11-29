@@ -188,8 +188,8 @@
                                     <td>{{ $simplified->tax_total }}</td>
                                     <td>{{ $simplified->final_total }}</td>
                                     <td>
-                                        @can('عرض فاتورة')
-                                            <a href="{{ route('supervisor.simplified.print', $simplified->id) }}"
+                                        @can('عرض فاتورة مبسطة')
+                                            <a target="_blank" href="{{ route('supervisor.simplified.print', $simplified->id) }}"
                                                class="btn btn-sm p-2 m-1 tx-13 btn-info">
                                                 <i class="fa fa-print"></i>
                                                 طباعة

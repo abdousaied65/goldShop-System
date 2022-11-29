@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title> طباعة الفروع </title>
+    <title> طباعة فواتير المشتريات </title>
     <meta charset="utf-8"/>
     <link href="{{asset('/admin-assets/css/bootstrap.min.css')}}" rel="stylesheet"/>
     <style type="text/css" media="screen">
@@ -65,32 +65,40 @@
     </tr>
     <tr>
         <td>
-            <h4 class="text-center mt-2 mb-4">طباعة كل الفروع</h4>
+            <h4 class="text-center mt-2 mb-4">طباعة كل فواتير المشتريات</h4>
             <table dir="rtl" class="table table-condensed display table-bordered text-center">
                 <thead>
                 <tr>
-                    <th class="border-bottom-0 text-center">#</th>
+                    <th class="border-bottom-0 text-center">رقم الفاتورة</th>
+                    <th class="border-bottom-0 text-center">التاريخ</th>
                     <th class="border-bottom-0 text-center">اسم الفرع</th>
-                    <th class="border-bottom-0 text-center"> رقم جوال الفرع</th>
-                    <th class="border-bottom-0 text-center"> عنوان الفرع</th>
-                    <th class="border-bottom-0 text-center"> سجل تجارى</th>
-                    <th class="border-bottom-0 text-center"> رقم ترخيص</th>
-                    <th class="border-bottom-0 text-center"> snap</th>
+                    <th class="border-bottom-0 text-center">الموظف</th>
+                    <th class="border-bottom-0 text-center"> اجمالى الضريبة</th>
+                    <th class="border-bottom-0 text-center"> اجمالى الفاتورة</th>
+                    <th class="border-bottom-0 text-center"> صورة الفاتورة</th>
                 </tr>
                 </thead>
                 <tbody>
-                @php
-                    $i = 0;
-                @endphp
-                @foreach ($branches as $branch)
+                @foreach ($purchases as $purchase)
                     <tr>
-                        <td>{{ ++$i }}</td>
-                        <td>{{ $branch->branch_name}}</td>
-                        <td>{{ $branch->branch_phone }}</td>
-                        <td>{{ $branch->branch_address }}</td>
-                        <td>{{ $branch->commercial_record }}</td>
-                        <td>{{ $branch->license_number }}</td>
-                        <td>{{ $branch->snap }}</td>
+                        <td>{{ $purchase->invoice_number }}</td>
+                        <td>{{ $purchase->date}}</td>
+                        <td>
+                            @if(empty($purchase->branch_id))
+                                كل الفروع
+                            @else
+                                {{ $purchase->branch->branch_name }}
+                            @endif
+                        </td>
+                        <td>{{ $purchase->supervisor->name }}</td>
+                        <td>{{ $purchase->tax_total }}</td>
+                        <td>{{ $purchase->final_total }}</td>
+                        <td>
+                            <img data-toggle="modal" href="#modaldemo9"
+                                 src="{{asset($purchase->attachment)}}"
+                                 style="width: 100px!important;cursor: pointer; height: 100px!important;
+                                         border-radius: 100%; padding: 3px; border: 1px solid #aaa;">
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -136,7 +136,7 @@
                 </li>
             @endcan
 
-            @can('اضافة فاتورة','عرض فاتورة')
+            @can('اضافة فاتورة مبسطة','عرض فاتورة مبسطة')
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <i class="fa fa-copy side-menu__icon"></i>
@@ -145,14 +145,14 @@
                     </span><i class="angle fe fe-chevron-down"></i>
                     </a>
                     <ul class="slide-menu">
-                        @can('اضافة فاتورة')
+                        @can('اضافة فاتورة مبسطة')
                             <li>
                                 <a class="slide-item" href="{{ route('supervisor.simplified.create') }}">
                                     اضافة فاتورة ضريبية مبسطة
                                 </a>
                             </li>
                         @endcan
-                        @can('عرض فاتورة')
+                        @can('عرض فاتورة مبسطة')
                             <li>
                                 <a class="slide-item" href="{{ route('supervisor.simplified.index') }}">
                                     عرض الفواتير الضريبية المبسطة
@@ -161,6 +161,8 @@
                         @endcan
                     </ul>
                 </li>
+            @endcan
+            @can('اضافة فاتورة ضريبية','عرض فاتورة ضريبية')
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="#">
                         <i class="fa fa-building side-menu__icon"></i>
@@ -169,17 +171,97 @@
                     </span><i class="angle fe fe-chevron-down"></i>
                     </a>
                     <ul class="slide-menu">
-                        @can('اضافة فاتورة')
+                        @can('اضافة فاتورة ضريبية')
                             <li>
                                 <a class="slide-item" href="{{ route('supervisor.tax.create') }}">
                                     اضافة فاتورة ضريبية لشركة
                                 </a>
                             </li>
                         @endcan
-                        @can('عرض فاتورة')
+                        @can('عرض فاتورة ضريبية')
                             <li>
                                 <a class="slide-item" href="{{ route('supervisor.tax.index') }}">
                                     عرض الفواتير الضريبية للشركات
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
+
+            @can('اضافة فاتورة مشتريات','عرض فاتورة مشتريات')
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#">
+                        <i class="fa fa-shopping-cart side-menu__icon"></i>
+                        <span class="side-menu__label">
+                        فواتير المشتريات
+                    </span><i class="angle fe fe-chevron-down"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        @can('اضافة فاتورة مشتريات')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.purchases.create') }}">
+                                    اضافة فاتورة مشتريات
+                                </a>
+                            </li>
+                        @endcan
+                        @can('عرض فاتورة مشتريات')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.purchases.index') }}">
+                                    عرض فواتير المشتريات
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
+
+            @can('اضافة مرتجع فاتورة مبسطة','عرض مرتجع فاتورة مبسطة')
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#">
+                        <i class="fa fa-copy side-menu__icon"></i>
+                        <span class="side-menu__label">
+                        مرتجع الفواتير الضريبية المبسطة
+                    </span><i class="angle fe fe-chevron-down"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        @can('اضافة مرتجع فاتورة مبسطة')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.simplified_return.create') }}">
+                                    اضافة مرتجع فاتورة ضريبية مبسطة
+                                </a>
+                            </li>
+                        @endcan
+                        @can('عرض مرتجع فاتورة مبسطة')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.simplified_return.index') }}">
+                                    عرض مرتجع الفواتير الضريبية المبسطة
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
+            @can('اضافة مرتجع فاتورة ضريبية','عرض مرتجع فاتورة ضريبية')
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="#">
+                        <i class="fa fa-copy side-menu__icon"></i>
+                        <span class="side-menu__label">
+                        مرتجع الفواتير الضريبية للشركات
+                    </span><i class="angle fe fe-chevron-down"></i>
+                    </a>
+                    <ul class="slide-menu">
+                        @can('اضافة مرتجع فاتورة ضريبية')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.tax_return.create') }}">
+                                    اضافة مرتجع فاتورة ضريبية للشركات
+                                </a>
+                            </li>
+                        @endcan
+                        @can('عرض مرتجع فاتورة ضريبية')
+                            <li>
+                                <a class="slide-item" href="{{ route('supervisor.tax_return.index') }}">
+                                    عرض مرتجع الفواتير الضريبية للشركات
                                 </a>
                             </li>
                         @endcan

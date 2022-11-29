@@ -276,7 +276,7 @@
 
                             <tr>
                                 <td>5</td>
-                                <td> الفواتير </td>
+                                <td> الفواتير الضريبية المبسطة </td>
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" name="permission[]"
@@ -292,6 +292,111 @@
                                                <?php if (in_array("18", $rolePermissions)) {
                                                    echo "checked";
                                                } ?> value="18">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td> الفواتير الضريبية للشركات والمؤسسات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("19", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="19">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("20", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="20">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td> فواتير المشتريات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("21", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="21">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("22", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="22">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("23", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="23">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>8</td>
+                                <td> مرتجعات الفواتير الضريبية المبسطة </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("24", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="24">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("25", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="25">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td> مرتجعات الفواتير الضريبية للشركات والمؤسسات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("26", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="26">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]"
+                                               <?php if (in_array("27", $rolePermissions)) {
+                                                   echo "checked";
+                                               } ?> value="27">
                                         <span class="slider round"></span>
                                     </label>
                                 </td>

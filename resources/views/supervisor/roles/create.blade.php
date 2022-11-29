@@ -225,7 +225,7 @@
 
                             <tr>
                                 <td>5</td>
-                                <td> الفواتير </td>
+                                <td> الفواتير الضريبية المبسطة </td>
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" name="permission[]" value="17">
@@ -235,6 +235,86 @@
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" name="permission[]" value="18">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>
+                                    الفواتير الضريبية للشركات والمؤسسات
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="19">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="20">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td> فواتير المشتريات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="21">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="22">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="23">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>  مرتجعات الفواتير الضريبية المبسطة </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="24">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="25">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            <tr>
+                                <td>9</td>
+                                <td>  مرتجعات الفواتير الضريبية للشركات والمؤسسات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="26">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="27">
                                         <span class="slider round"></span>
                                     </label>
                                 </td>

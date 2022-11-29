@@ -70,6 +70,9 @@
     <tr>
         <td class="text-center">
             <img style="width: 100px!important; height: 100px!important;" src="{{asset('admin-assets/img/logo.png')}}" alt="">
+            <h1 style="color: black !important;">
+                مجوهرات العقاب
+            </h1>
         </td>
     </tr>
     <tr>

@@ -310,7 +310,7 @@
                                     اضافة الى الفاتورة
                                 </button>
                                 @if(isset($open_invoice) && !empty($open_invoice))
-                                    <a href="{{route('supervisor.tax.print',$open_invoice->id)}}" id="print"
+                                    <a target="_blank" href="{{route('supervisor.tax.print',$open_invoice->id)}}" id="print"
                                        role="button" class="btn btn-md btn-info">
                                         <i class="fa fa-print"></i>
                                         معاينة وطباعة الفاتورة
