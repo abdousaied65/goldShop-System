@@ -30,4 +30,21 @@
     $('.js-example-basic-single').select2({
         placeholder: "اختر مما يلى"
     });
+    $('.progress-pie-chart').each(function () {
+        var $ppc = $(this),
+            percent = parseInt($ppc.data('percent')),
+            deg = 360 * percent / 100;
+        if (percent > 50) {
+            $ppc.addClass('gt-50');
+        }
+        if (percent <= 25) {
+            $ppc.addClass('red');
+        } else if (percent >= 25 && percent <= 90) {
+            $ppc.addClass('orange');
+        } else if (percent >= 90) {
+            $ppc.addClass('green');
+        }
+        $ppc.find('.ppc-progress-fill').css('transform', 'rotate(' + deg + 'deg)');
+        $ppc.find('.ppc-percents span').html('<cite>' + percent + '</cite>' + '%');
+    });
 </script>

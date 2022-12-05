@@ -73,24 +73,20 @@
                                 <label for="" class="d-block">
                                     اختر الفرع
                                 </label>
-                                <select required class="js-example-basic-single w-100" name="branch_id"
-                                        id="branch_id">
-                                    <option value="">
-                                        اختر
-                                    </option>
-                                    @if(isset($branches) && !$branches->isEmpty())
+                                @if(empty(Auth::user()->branch_id))
+                                    <select
+                                        class="js-example-basic-single w-100" name="branch_id" id="branch_id">
+                                        <option value=""></option>
                                         @foreach($branches as $branch)
-                                            <option
-                                                @if(isset($branch_id) && !empty($branch_id) && $branch_id == $branch->id)
-                                                selected
-                                                @endif
-
-                                                value="{{$branch->id}}">
-                                                {{$branch->branch_name}}
-                                            </option>
+                                            <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
                                         @endforeach
-                                    @endif
-                                </select>
+                                    </select>
+                                @else
+                                    <input class="form-control" type="text" readonly
+                                           value="{{Auth::user()->branch->branch_name}}"/>
+                                    <input class="form-control" type="hidden" readonly name="branch_id" id="branch_id"
+                                           value="{{Auth::user()->branch_id}}"/>
+                                @endif
 
                             </div>
                             <div class="form-group col-lg-3 pull-right">
@@ -130,7 +126,7 @@
                 <div class="card-body p-1 m-1">
                     <div class="table-responsive hoverable-table">
                         <table
-                            class="table table-condensed table-striped table-hover display w-100 table-bordered"
+                            class="table table-condensed table-striped text-nowrap table-hover display w-100 table-bordered"
                             id="example-table"
                             style="text-align: center;">
                             <thead>
@@ -157,7 +153,7 @@
                                     الاجمالى
                                 </th>
                                 <th style="width: 5%!important;" class="border-bottom-0 text-center">
-                                    طباعة الفاتورة
+                                    تحكم
                                 </th>
                             </tr>
                             </thead>
@@ -184,17 +180,25 @@
                                             {{ $simplified->branch->branch_name }}
                                         @endif
                                     </td>
-                                    <td>{{ $simplified->supervisor->name }}</td>
+                                    <td>{{ $simplified->employee->name }}</td>
                                     <td>{{ $simplified->tax_total }}</td>
                                     <td>{{ $simplified->final_total }}</td>
                                     <td>
                                         @can('عرض فاتورة مبسطة')
-                                            <a target="_blank" href="{{ route('supervisor.simplified.print', $simplified->id) }}"
+                                            <a target="_blank"
+                                               href="{{ route('supervisor.simplified.print', $simplified->id) }}"
                                                class="btn btn-sm p-2 m-1 tx-13 btn-info">
                                                 <i class="fa fa-print"></i>
                                                 طباعة
                                             </a>
                                         @endcan
+{{--                                        @can('تعديل فاتورة مبسطة')--}}
+{{--                                            <a href="{{ route('supervisor.simplified.edit', $simplified->id) }}"--}}
+{{--                                               class="btn btn-sm p-2 m-1 tx-13 btn-success">--}}
+{{--                                                <i class="fa fa-edit"></i>--}}
+{{--                                                تعديل--}}
+{{--                                            </a>--}}
+{{--                                        @endcan--}}
                                     </td>
                                 </tr>
                             @endforeach

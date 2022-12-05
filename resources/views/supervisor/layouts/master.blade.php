@@ -118,7 +118,7 @@
 <body dir="rtl" class=" app sidebar-mini">
 @include('supervisor.layouts.main-sidebar')
 <!-- main-content -->
-<div class="main-content app-content">
+<div class="main-content app-content" style="margin-right: 280px!important;">
 @include('supervisor.layouts.main-header')
 <!-- container -->
     <div class="container-fluid">

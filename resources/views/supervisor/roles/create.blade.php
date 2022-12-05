@@ -238,7 +238,12 @@
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="32">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -258,7 +263,12 @@
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="33">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -320,6 +330,101 @@
                                 </td>
                                 <td></td>
                                 <td></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td> موظفين الفروع </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="28">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="29">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="30">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="31">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td> المصروفات الثابتة </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="34">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="35">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="36">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="37">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td> المصروفات </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="38">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="39">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="40">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="41">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>13</td>
+                                <td> التقارير </td>
+                                <td colspan="4">
+                                    <label class="switch">
+                                        <input type="checkbox" name="permission[]" value="42">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
                             </tr>
 
                             </tbody>

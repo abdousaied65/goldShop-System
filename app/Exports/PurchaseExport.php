@@ -3,7 +3,8 @@
 namespace App\Exports;
 use App\Models\Branch;
 use App\Models\PurchaseInvoice;
-use App\Models\Supervisor;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -11,8 +12,16 @@ class PurchaseExport implements FromCollection,WithHeadings
 {
     public function collection()
     {
-        $purchase =  PurchaseInvoice::select('invoice_number','date','branch_id','supervisor_id',
-            'tax_total','final_total','created_at')->get();
+        if (empty(Auth::user()->branch_id)) {
+            $purchase =  PurchaseInvoice::select('invoice_number','date','branch_id','employee_id',
+                'tax_total','final_total','created_at')->get();
+        } else {
+            $branch = Branch::FindOrFail(Auth::user()->branch_id);
+            $purchase =  PurchaseInvoice::select('invoice_number','date','branch_id','employee_id',
+                'tax_total','final_total','created_at')
+                ->where('branch_id',$branch->id)
+                ->get();
+        }
         $purchase->transform(function($i){
             if(!empty($i->branch_id)){
                 $i->branch_id = Branch::FindOrFail($i->branch_id)->branch_name;
@@ -20,7 +29,7 @@ class PurchaseExport implements FromCollection,WithHeadings
             else{
                 $i->branch_id = "كل الفروع";
             }
-            $i->supervisor_id = Supervisor::FindOrFail($i->supervisor_id)->name;
+            $i->employee_id = Employee::FindOrFail($i->employee_id)->name;
             return $i;
         });
 

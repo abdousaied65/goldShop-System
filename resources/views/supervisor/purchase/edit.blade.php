@@ -49,22 +49,64 @@
                                            value="{{$purchase->date}}"/>
                                 </div>
                             </div>
-                            <div class="col-lg-3 pull-right">
-                                <div class="form-group">
-                                    <label class="d-block">
-                                        اسم الفرع
-                                    </label>
-                                    <input required class="form-control" type="text" readonly
-                                           value="{{$purchase->branch->branch_name}}"/>
-                                </div>
+                            <div class="col-md-3 pull-right">
+                                <label> اسم الفرع <span class="text-danger">*</span></label>
+                                <?php
+                                $branches = \App\Models\Branch::all();
+                                ?>
+                                @if(empty(Auth::user()->branch_id))
+                                    <select
+                                        class="js-example-basic-single w-100" name="branch_id" id="branch_id">
+                                        <option value=""></option>
+                                        @foreach($branches as $branch)
+                                            <option
+                                                @if($branch->id == $purchase->branch_id)
+                                                selected
+                                                @endif
+                                                value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <input class="form-control" type="hidden" id="branch_id" name="branch_id"
+                                           value="{{Auth::user()->branch_id}}"/>
+                                    <input class="form-control" type="text" readonly
+                                           value="{{Auth::user()->branch->branch_name}}"/>
+                                @endif
                             </div>
                             <div class="col-lg-3 pull-right">
                                 <div class="form-group">
                                     <label class="d-block">
                                         الموظف
                                     </label>
-                                    <input required class="form-control" type="text" readonly
-                                           value="{{$purchase->supervisor->name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($employees as $employee)
+                                                <option
+                                                    @if($employee->id == $purchase->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <?php
+                                        $branch = \App\Models\Branch::FindOrFail(Auth::user()->branch_id);
+                                        $branch_employees = $branch->employees;
+                                        ?>
+                                        <select required class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($branch_employees as $employee)
+                                                <option
+                                                    @if($employee->id == $purchase->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -75,7 +117,8 @@
                                     <label class="d-block">
                                         اجمالى الضريبة
                                     </label>
-                                    <input class="form-control" value="{{$purchase->tax_total}}" type="text" dir="ltr" required name="tax_total"/>
+                                    <input class="form-control" value="{{$purchase->tax_total}}" type="text" dir="ltr"
+                                           required name="tax_total"/>
                                 </div>
                             </div>
                             <div class="col-lg-4 pull-right">
@@ -83,7 +126,8 @@
                                     <label class="d-block">
                                         اجمالى الفاتورة
                                     </label>
-                                    <input class="form-control" type="text" value="{{$purchase->final_total}}" dir="ltr" required name="final_total"/>
+                                    <input class="form-control" type="text" value="{{$purchase->final_total}}" dir="ltr"
+                                           required name="final_total"/>
                                 </div>
                             </div>
                             <div class="col-lg-4 mb-2">
@@ -107,5 +151,18 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
 @endsection
+<script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        $('#branch_id').on('change', function () {
+            let branch_id = $(this).val();
+            $.post("{{route('get.branch.employees')}}", {
+                branch_id: branch_id,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('#employee_id').html(data).trigger('change');
+            });
+        });
+    });
+</script>

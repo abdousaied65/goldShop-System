@@ -100,16 +100,25 @@ Route::group(
         'create' => 'supervisor.simplified.create',
         'destroy' => 'supervisor.simplified.destroy',
         'store' => 'supervisor.simplified.store',
+        'edit' => 'supervisor.simplified.edit',
+        'update' => 'supervisor.simplified.update',
     ]);
+
+    Route::get('redirect-to-simplified/{id?}','SimplifiedController@redirector')
+        ->name('simplified.redirector');
 
     Route::post('/export-simplified-excel', 'SimplifiedController@export_simplified_excel')->name('export.simplified.excel');
 
-    Route::post('delete-element-simplified','SimplifiedController@delete_element')->name('delete.element.simplified');
-    Route::post('delete-simplified','SimplifiedController@delete_simplified')->name('delete.simplified');
-    Route::post('save-simplified','SimplifiedController@save_simplified')->name('save.simplified');
+    Route::post('delete-element-simplified', 'SimplifiedController@delete_element')->name('delete.element.simplified');
+    Route::post('delete-simplified', 'SimplifiedController@delete_simplified')->name('delete.simplified');
+    Route::post('save-simplified', 'SimplifiedController@save_simplified')->name('save.simplified');
+    Route::post('update-simplified', 'SimplifiedController@update_simplified')->name('update.simplified');
 
-    Route::get('print-simplified/{id?}','SimplifiedController@print')->name('supervisor.simplified.print');
-    Route::post('search-simplified','SimplifiedController@search')->name('search.simplified');
+    Route::get('print-simplified/{id?}', 'SimplifiedController@print')->name('supervisor.simplified.print');
+    Route::post('search-simplified', 'SimplifiedController@search')->name('search.simplified');
+
+    Route::post('get-branch-employees', 'SimplifiedController@get_branch_employees')
+        ->name('get.branch.employees');
 
 
     // tax Routes
@@ -118,16 +127,22 @@ Route::group(
         'create' => 'supervisor.tax.create',
         'destroy' => 'supervisor.tax.destroy',
         'store' => 'supervisor.tax.store',
+        'edit' => 'supervisor.tax.edit',
+        'update' => 'supervisor.tax.update',
     ]);
+
+    Route::get('redirect-to-tax/{id?}','TaxController@redirector')
+        ->name('tax.redirector');
 
     Route::post('/export-tax-excel', 'TaxController@export_tax_excel')->name('export.tax.excel');
 
-    Route::post('delete-element-tax','TaxController@delete_element')->name('delete.element.tax');
-    Route::post('delete-tax','TaxController@delete_tax')->name('delete.tax');
-    Route::post('save-tax','TaxController@save_tax')->name('save.tax');
+    Route::post('delete-element-tax', 'TaxController@delete_element')->name('delete.element.tax');
+    Route::post('delete-tax', 'TaxController@delete_tax')->name('delete.tax');
+    Route::post('save-tax', 'TaxController@save_tax')->name('save.tax');
+    Route::post('update-tax', 'taxController@update_tax')->name('update.tax');
 
-    Route::get('print-tax/{id?}','TaxController@print')->name('supervisor.tax.print');
-    Route::post('search-tax','TaxController@search')->name('search.tax');
+    Route::get('print-tax/{id?}', 'TaxController@print')->name('supervisor.tax.print');
+    Route::post('search-tax', 'TaxController@search')->name('search.tax');
 
 
     // purchases Routes
@@ -150,7 +165,7 @@ Route::group(
         'store' => 'supervisor.simplified_return.store',
     ]);
 
-    Route::post('/get-simplified-details','SimplifiedReturnController@get_simplified_details')
+    Route::post('/get-simplified-details', 'SimplifiedReturnController@get_simplified_details')
         ->name('get.simplified.details');
 
     // tax_return Routes
@@ -160,8 +175,188 @@ Route::group(
         'store' => 'supervisor.tax_return.store',
     ]);
 
-    Route::post('/get-tax-details','TaxReturnController@get_tax_details')
+    Route::post('/get-tax-details', 'TaxReturnController@get_tax_details')
         ->name('get.tax.details');
+
+    // employees Routes
+    Route::resource('employees', 'EmployeeController')->names([
+        'index' => 'supervisor.employees.index',
+        'create' => 'supervisor.employees.create',
+        'update' => 'supervisor.employees.update',
+        'destroy' => 'supervisor.employees.destroy',
+        'edit' => 'supervisor.employees.edit',
+        'store' => 'supervisor.employees.store',
+        'show' => 'supervisor.employees.show',
+    ]);
+    Route::post('/remove-selected-employees', 'EmployeeController@remove_selected')->name('remove.selected.employees');
+    Route::get('/print-selected-employees', 'EmployeeController@print_selected')->name('print.selected.employees');
+    Route::post('/export-employees-excel', 'EmployeeController@export_employees_excel')->name('export.employees.excel');
+
+
+    // fixed Routes
+    Route::resource('fixed', 'FixedController')->names([
+        'index' => 'supervisor.fixed.index',
+        'create' => 'supervisor.fixed.create',
+        'update' => 'supervisor.fixed.update',
+        'destroy' => 'supervisor.fixed.destroy',
+        'edit' => 'supervisor.fixed.edit',
+        'store' => 'supervisor.fixed.store',
+        'show' => 'supervisor.fixed.show',
+    ]);
+    Route::post('/remove-selected-fixed', 'FixedController@remove_selected')->name('remove.selected.fixed');
+    Route::get('/print-selected-fixed', 'FixedController@print_selected')->name('print.selected.fixed');
+    Route::post('/export-fixed-excel', 'FixedController@export_fixed_excel')->name('export.fixed.excel');
+
+
+    // expense Routes
+    Route::resource('expense', 'ExpenseController')->names([
+        'index' => 'supervisor.expense.index',
+        'create' => 'supervisor.expense.create',
+        'update' => 'supervisor.expense.update',
+        'destroy' => 'supervisor.expense.destroy',
+        'edit' => 'supervisor.expense.edit',
+        'store' => 'supervisor.expense.store',
+        'show' => 'supervisor.expense.show',
+    ]);
+    Route::post('/remove-selected-expense', 'ExpenseController@remove_selected')->name('remove.selected.expense');
+    Route::get('/print-selected-expense', 'ExpenseController@print_selected')->name('print.selected.expense');
+    Route::post('/export-expense-excel', 'ExpenseController@export_expenses_excel')->name('export.expense.excel');
+
+    Route::get('/simplified-report1-get','ReportController@simplified_report1_get')->name('simplified.report1.get');
+    Route::post('/simplified-report1-print','ReportController@simplified_report1_print')->name('simplified.report1.print');
+    Route::post('/simplified-report1-post','ReportController@simplified_report1_post')->name('simplified.report1.post');
+
+    Route::get('/simplified-report2-get','ReportController@simplified_report2_get')->name('simplified.report2.get');
+    Route::post('/simplified-report2-print','ReportController@simplified_report2_print')->name('simplified.report2.print');
+    Route::post('/simplified-report2-post','ReportController@simplified_report2_post')->name('simplified.report2.post');
+
+    Route::get('/simplified-report3-get','ReportController@simplified_report3_get')->name('simplified.report3.get');
+    Route::post('/simplified-report3-print','ReportController@simplified_report3_print')->name('simplified.report3.print');
+    Route::post('/simplified-report3-post','ReportController@simplified_report3_post')->name('simplified.report3.post');
+
+    Route::get('/simplified-report4-get','ReportController@simplified_report4_get')->name('simplified.report4.get');
+    Route::post('/simplified-report4-print','ReportController@simplified_report4_print')->name('simplified.report4.print');
+    Route::post('/simplified-report4-post','ReportController@simplified_report4_post')->name('simplified.report4.post');
+
+    Route::get('/simplified-report5-get','ReportController@simplified_report5_get')->name('simplified.report5.get');
+    Route::post('/simplified-report5-print','ReportController@simplified_report5_print')->name('simplified.report5.print');
+    Route::post('/simplified-report5-post','ReportController@simplified_report5_post')->name('simplified.report5.post');
+
+    Route::get('/simplified-report6-get','ReportController@simplified_report6_get')->name('simplified.report6.get');
+    Route::post('/simplified-report6-print','ReportController@simplified_report6_print')->name('simplified.report6.print');
+    Route::post('/simplified-report6-post','ReportController@simplified_report6_post')->name('simplified.report6.post');
+
+    Route::get('/simplified-report7-get','ReportController@simplified_report7_get')->name('simplified.report7.get');
+    Route::post('/simplified-report7-print','ReportController@simplified_report7_print')->name('simplified.report7.print');
+    Route::post('/simplified-report7-post','ReportController@simplified_report7_post')->name('simplified.report7.post');
+
+    Route::get('/simplified-report8-get','ReportController@simplified_report8_get')->name('simplified.report8.get');
+    Route::post('/simplified-report8-print','ReportController@simplified_report8_print')->name('simplified.report8.print');
+    Route::post('/simplified-report8-post','ReportController@simplified_report8_post')->name('simplified.report8.post');
+
+    Route::get('/tax-report1-get','ReportController@tax_report1_get')->name('tax.report1.get');
+    Route::post('/tax-report1-print','ReportController@tax_report1_print')->name('tax.report1.print');
+    Route::post('/tax-report1-post','ReportController@tax_report1_post')->name('tax.report1.post');
+
+
+    Route::get('/simplifiedreturn-report1-get','ReportController@simplifiedreturn_report1_get')->name('simplifiedreturn.report1.get');
+    Route::post('/simplifiedreturn-report1-print','ReportController@simplifiedreturn_report1_print')->name('simplifiedreturn.report1.print');
+    Route::post('/simplifiedreturn-report1-post','ReportController@simplifiedreturn_report1_post')->name('simplifiedreturn.report1.post');
+
+    Route::get('/simplifiedreturn-report2-get','ReportController@simplifiedreturn_report2_get')->name('simplifiedreturn.report2.get');
+    Route::post('/simplifiedreturn-report2-print','ReportController@simplifiedreturn_report2_print')->name('simplifiedreturn.report2.print');
+    Route::post('/simplifiedreturn-report2-post','ReportController@simplifiedreturn_report2_post')->name('simplifiedreturn.report2.post');
+
+    Route::get('/simplifiedreturn-report3-get','ReportController@simplifiedreturn_report3_get')->name('simplifiedreturn.report3.get');
+    Route::post('/simplifiedreturn-report3-print','ReportController@simplifiedreturn_report3_print')->name('simplifiedreturn.report3.print');
+    Route::post('/simplifiedreturn-report3-post','ReportController@simplifiedreturn_report3_post')->name('simplifiedreturn.report3.post');
+
+    Route::get('/simplifiedreturn-report4-get','ReportController@simplifiedreturn_report4_get')->name('simplifiedreturn.report4.get');
+    Route::post('/simplifiedreturn-report4-print','ReportController@simplifiedreturn_report4_print')->name('simplifiedreturn.report4.print');
+    Route::post('/simplifiedreturn-report4-post','ReportController@simplifiedreturn_report4_post')->name('simplifiedreturn.report4.post');
+
+    Route::get('/simplifiedreturn-report5-get','ReportController@simplifiedreturn_report5_get')->name('simplifiedreturn.report5.get');
+    Route::post('/simplifiedreturn-report5-print','ReportController@simplifiedreturn_report5_print')->name('simplifiedreturn.report5.print');
+    Route::post('/simplifiedreturn-report5-post','ReportController@simplifiedreturn_report5_post')->name('simplifiedreturn.report5.post');
+
+    Route::get('/simplifiedreturn-report6-get','ReportController@simplifiedreturn_report6_get')->name('simplifiedreturn.report6.get');
+    Route::post('/simplifiedreturn-report6-print','ReportController@simplifiedreturn_report6_print')->name('simplifiedreturn.report6.print');
+    Route::post('/simplifiedreturn-report6-post','ReportController@simplifiedreturn_report6_post')->name('simplifiedreturn.report6.post');
+
+    Route::get('/simplifiedreturn-report7-get','ReportController@simplifiedreturn_report7_get')->name('simplifiedreturn.report7.get');
+    Route::post('/simplifiedreturn-report7-print','ReportController@simplifiedreturn_report7_print')->name('simplifiedreturn.report7.print');
+    Route::post('/simplifiedreturn-report7-post','ReportController@simplifiedreturn_report7_post')->name('simplifiedreturn.report7.post');
+
+    Route::get('/simplifiedreturn-report8-get','ReportController@simplifiedreturn_report8_get')->name('simplifiedreturn.report8.get');
+    Route::post('/simplifiedreturn-report8-print','ReportController@simplifiedreturn_report8_print')->name('simplifiedreturn.report8.print');
+    Route::post('/simplifiedreturn-report8-post','ReportController@simplifiedreturn_report8_post')->name('simplifiedreturn.report8.post');
+
+
+
+    Route::get('/taxreturn-report1-get','ReportController@taxreturn_report1_get')->name('taxreturn.report1.get');
+    Route::post('/taxreturn-report1-print','ReportController@taxreturn_report1_print')->name('taxreturn.report1.print');
+    Route::post('/taxreturn-report1-post','ReportController@taxreturn_report1_post')->name('taxreturn.report1.post');
+
+    Route::get('/taxreturn-report2-get','ReportController@taxreturn_report2_get')->name('taxreturn.report2.get');
+    Route::post('/taxreturn-report2-print','ReportController@taxreturn_report2_print')->name('taxreturn.report2.print');
+    Route::post('/taxreturn-report2-post','ReportController@taxreturn_report2_post')->name('taxreturn.report2.post');
+
+    Route::get('/taxreturn-report3-get','ReportController@taxreturn_report3_get')->name('taxreturn.report3.get');
+    Route::post('/taxreturn-report3-print','ReportController@taxreturn_report3_print')->name('taxreturn.report3.print');
+    Route::post('/taxreturn-report3-post','ReportController@taxreturn_report3_post')->name('taxreturn.report3.post');
+
+    Route::get('/taxreturn-report4-get','ReportController@taxreturn_report4_get')->name('taxreturn.report4.get');
+    Route::post('/taxreturn-report4-print','ReportController@taxreturn_report4_print')->name('taxreturn.report4.print');
+    Route::post('/taxreturn-report4-post','ReportController@taxreturn_report4_post')->name('taxreturn.report4.post');
+
+    Route::get('/taxreturn-report5-get','ReportController@taxreturn_report5_get')->name('taxreturn.report5.get');
+    Route::post('/taxreturn-report5-print','ReportController@taxreturn_report5_print')->name('taxreturn.report5.print');
+    Route::post('/taxreturn-report5-post','ReportController@taxreturn_report5_post')->name('taxreturn.report5.post');
+
+    Route::get('/taxreturn-report6-get','ReportController@taxreturn_report6_get')->name('taxreturn.report6.get');
+    Route::post('/taxreturn-report6-print','ReportController@taxreturn_report6_print')->name('taxreturn.report6.print');
+    Route::post('/taxreturn-report6-post','ReportController@taxreturn_report6_post')->name('taxreturn.report6.post');
+
+    Route::get('/taxreturn-report7-get','ReportController@taxreturn_report7_get')->name('taxreturn.report7.get');
+    Route::post('/taxreturn-report7-print','ReportController@taxreturn_report7_print')->name('taxreturn.report7.print');
+    Route::post('/taxreturn-report7-post','ReportController@taxreturn_report7_post')->name('taxreturn.report7.post');
+
+    Route::get('/taxreturn-report8-get','ReportController@taxreturn_report8_get')->name('taxreturn.report8.get');
+    Route::post('/taxreturn-report8-print','ReportController@taxreturn_report8_print')->name('taxreturn.report8.print');
+    Route::post('/taxreturn-report8-post','ReportController@taxreturn_report8_post')->name('taxreturn.report8.post');
+
+    # تقارير الاقرار الضريبى
+
+    Route::get('/declaration-report1-get','ReportController@declaration_report1_get')->name('declaration.report1.get');
+    Route::post('/declaration-report1-print','ReportController@declaration_report1_print')->name('declaration.report1.print');
+    Route::post('/declaration-report1-post','ReportController@declaration_report1_post')->name('declaration.report1.post');
+
+
+    Route::get('/declaration-report2-get','ReportController@declaration_report2_get')->name('declaration.report2.get');
+    Route::post('/declaration-report2-print','ReportController@declaration_report2_print')->name('declaration.report2.print');
+    Route::post('/declaration-report2-post','ReportController@declaration_report2_post')->name('declaration.report2.post');
+
+
+    Route::get('/declaration-report3-get','ReportController@declaration_report3_get')->name('declaration.report3.get');
+    Route::post('/declaration-report3-print','ReportController@declaration_report3_print')->name('declaration.report3.print');
+    Route::post('/declaration-report3-post','ReportController@declaration_report3_post')->name('declaration.report3.post');
+
+
+    Route::get('/declaration-report4-get','ReportController@declaration_report4_get')->name('declaration.report4.get');
+    Route::post('/declaration-report4-print','ReportController@declaration_report4_print')->name('declaration.report4.print');
+    Route::post('/declaration-report4-post','ReportController@declaration_report4_post')->name('declaration.report4.post');
+
+
+    Route::get('/declaration-report5-get','ReportController@declaration_report5_get')->name('declaration.report5.get');
+    Route::post('/declaration-report5-print','ReportController@declaration_report5_print')->name('declaration.report5.print');
+    Route::post('/declaration-report5-post','ReportController@declaration_report5_post')->name('declaration.report5.post');
+
+
+    Route::get('/declaration-report6-get','ReportController@declaration_report6_get')->name('declaration.report6.get');
+    Route::post('/declaration-report6-print','ReportController@declaration_report6_print')->name('declaration.report6.print');
+    Route::post('/declaration-report6-post','ReportController@declaration_report6_post')->name('declaration.report6.post');
+
+
 
 
 

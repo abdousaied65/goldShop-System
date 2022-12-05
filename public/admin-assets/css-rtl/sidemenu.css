@@ -31,7 +31,7 @@
     }
 
     .side-header {
-        width: 240px;
+        width: 280px;
         left: 0;
         right: 0;
         top: 0;
@@ -46,7 +46,7 @@
     }
 
     .app .app-sidebar {
-        right: -240px;
+        right: -280px;
     }
 
     .app .app-sidebar__overlay {
@@ -98,7 +98,7 @@
 
 @media (min-width: 768px) {
     .app-content {
-        margin-right: 240px;
+        margin-right: 280px;
     }
 
     .app.sidenav-toggled .avatar-xl {
@@ -241,7 +241,6 @@
 }
 
 .app-sidebar__toggle {
-    color: #fff;
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
@@ -256,7 +255,6 @@
     height: 40px;
     width: 40px;
     background: transparent;
-    margin: auto;
     text-align: center;
     border-radius: 50%;
 }
@@ -433,7 +431,7 @@
     bottom: 0;
     right: 0;
     color: #14112d;
-    width: 240px;
+    width: 280px;
     max-height: 100%;
     z-index: 1000;
     background: #fff;
@@ -639,16 +637,12 @@ slide is-expanded side-menu__item {
     color: #0162e8 !important;
 }
 
-.slide-menu .sub-slide {
-    margin: 5px 12px 5px 6px;
-}
-
 .slide-menu .sub-slide-menu {
-    padding: 0 23px;
+    padding: 0 3px;
 }
 
 .sub-slide-menu li {
-    margin: 7px 0;
+    margin: 2px 0;
 }
 
 .sub-slide .sub-angle {
@@ -668,11 +662,11 @@ slide is-expanded side-menu__item {
 }
 
 .slide.is-expanded .sub-side-menu__item:before {
-    content: "\e92f";
+    /*content: "\e92f";*/
     font-family: 'feather' !important;
     position: absolute;
     top: 9px;
-    left: 23px;
+    right: 23px;
     font-size: 9px;
 }
 
@@ -1267,7 +1261,10 @@ slide is-expanded side-menu__item {
 }
 
 .sub-slide.is-expanded .sub-side-menu__item {
-    color: #0162e8;
+
+}
+.sub-slide.is-expanded .sub-side-menu__item.active {
+    color:#0661e0!important;
 }
 
 .slide-menu .sub-slide.is-expanded {
@@ -1278,8 +1275,8 @@ slide is-expanded side-menu__item {
 }
 
 .sub-side-menu__item {
-    padding-left: 45px !important;
-    padding-right: 20px !important;
+    width: 100% !important;
+    padding-right: 56px !important;
     height: 30px !important;
 }
 
@@ -1370,7 +1367,7 @@ slide is-expanded side-menu__item {
 @media (min-width: 768px) {
     .app.sidebar-mini.sidenav-toggled-open .app-sidebar {
         right: 0;
-        width: 240px;
+        width: 280px;
     }
 
     .app.sidebar-mini.sidenav-toggled-open .side-menu__item {
@@ -1446,7 +1443,7 @@ slide is-expanded side-menu__item {
     }
 
     .app.sidebar-mini.sidenav-toggled-open .main-sidebar-header {
-        width: 240px;
+        width: 280px;
     }
 
     .app.sidebar-mini.sidenav-toggled.sidenav-toggled-open .logo-icon {

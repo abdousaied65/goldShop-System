@@ -22,3 +22,5 @@
 <link href="{{asset('admin-assets/css/select2.min.css')}}" rel="stylesheet" />
 <link href="{{asset('css/all.min.css')}}" rel="stylesheet" />
 
+<link rel="stylesheet" href="{{asset('admin-assets/css-rtl/progress-chart.css')}}">
+

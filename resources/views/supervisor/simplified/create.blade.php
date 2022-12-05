@@ -154,7 +154,29 @@
                                     <label class="d-block">
                                         اسم الفرع
                                     </label>
-                                    <input class="form-control" type="text" readonly value="{{Auth::user()->branch->branch_name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="branch_id" id="branch_id">
+                                            <option value=""></option>
+                                            @foreach($branches as $branch)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $branch->id == $open_invoice->branch_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input class="form-control" type="text" readonly
+                                               value="{{Auth::user()->branch->branch_name}}"/>
+                                        <input required class="form-control" type="hidden" id="branch_id"
+                                               name="branch_id"
+                                               value="{{Auth::user()->branch_id}}"/>
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="col-lg-3 pull-right">
@@ -162,7 +184,43 @@
                                     <label class="d-block">
                                         الموظف
                                     </label>
-                                    <input class="form-control" type="text" readonly value="{{Auth::user()->name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($employees as $employee)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $employee->id == $open_invoice->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <?php
+                                        $branch = \App\Models\Branch::FindOrFail(Auth::user()->branch_id);
+                                        $branch_employees = $branch->employees;
+                                        ?>
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($branch_employees as $employee)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $employee->id == $open_invoice->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -271,12 +329,6 @@
                                     <i class="fa fa-plus"></i>
                                     اضافة الى الفاتورة
                                 </button>
-                                @if(isset($open_invoice) && !empty($open_invoice))
-                                    <a target="_blank" href="{{route('supervisor.simplified.print',$open_invoice->id)}}" id="print" role="button" class="btn btn-md btn-info">
-                                        <i class="fa fa-print"></i>
-                                        معاينة وطباعة الفاتورة
-                                    </a>
-                                @endif
                             </div>
                         </div>
                         <hr/>
@@ -465,15 +517,14 @@
                         let total_amount = parseFloat(cash_amount) + parseFloat(visa_amount);
                         if (total_amount != final_total) {
                             alert('لابد ان يكون مجموع المبلغين مساويا لاجمالى الفاتورة');
-                        }
-                        else{
+                        } else {
                             $.post("{{route('save.simplified')}}", {
                                 simplified_id: simplified_id,
                                 cash_amount: cash_amount,
                                 visa_amount: visa_amount,
                                 "_token": "{{ csrf_token() }}"
                             }, function (data) {
-                                window.location.reload();
+                                location.href = '/supervisor/print-simplified/' + simplified_id;
                             });
                         }
                     }
@@ -483,12 +534,20 @@
                         simplified_id: simplified_id,
                         "_token": "{{ csrf_token() }}"
                     }, function (data) {
-                        window.location.reload();
+                        location.href = '/supervisor/print-simplified/' + simplified_id;
                     });
                 }
-
             });
 
+            $('#branch_id').on('change', function () {
+                let branch_id = $(this).val();
+                $.post("{{route('get.branch.employees')}}", {
+                    branch_id: branch_id,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    $('#employee_id').html(data).trigger('change');
+                });
+            });
 
         });
     </script>

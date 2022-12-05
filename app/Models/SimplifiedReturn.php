@@ -14,7 +14,7 @@ class SimplifiedReturn extends Model
     protected $table = "simplified_returns";
 
     protected $fillable = [
-        'simplified_id','unified_serial_number','date','time','notes','branch_id','supervisor_id'
+        'simplified_id','unified_serial_number','employee_id','date','time','notes','branch_id','supervisor_id'
     ];
 
     public function simplified()
@@ -28,6 +28,11 @@ class SimplifiedReturn extends Model
 
     public function supervisor(){
         return $this->belongsTo('\App\Models\Supervisor','supervisor_id','id');
+    }
+
+    public function employee()
+    {
+        return $this->belongsTo('\App\Models\Employee', 'employee_id', 'id');
     }
 
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\TaxInvoice;
 use App\Models\TaxReturn;
 use App\Models\Supervisor;
@@ -13,13 +15,13 @@ class TaxReturnController extends Controller
 {
     public function index(Request $request)
     {
-        $auth_id = Auth::user()->id;
-        if (Auth::user()->role_name == "مدير النظام") {
+        if (empty(Auth::user()->branch_id)) {
             $data = TaxReturn::all();
         } else {
-            $data = TaxReturn::where('supervisor_id', $auth_id)->get();
+            $data = TaxReturn::where('branch_id', Auth::user()->branch_id)->get();
         }
-        return view('supervisor.tax_return.index', compact('data'));
+        $branches = Branch::all();
+        return view('supervisor.tax_return.index', compact('data','branches'));
     }
 
     public function create()
@@ -31,17 +33,22 @@ class TaxReturnController extends Controller
             $old_pre_counter = TaxReturn::max('unified_serial_number');
             $unified_serial_number = $old_pre_counter + 1;
         }
-        $tax_invoices = TaxInvoice::where('status', 'done')->get();
-        return view('supervisor.tax_return.create', compact('unified_serial_number', 'tax_invoices'));
+
+        if (empty(Auth::user()->branch_id)) {
+            $tax_invoices = TaxInvoice::where('status', 'done')->get();
+        } else {
+            $tax_invoices = TaxInvoice::where('status', 'done')
+                ->where('branch_id', Auth::user()->branch_id)
+                ->get();
+        }
+        $branches = Branch::all();
+        $employees = Employee::all();
+        return view('supervisor.tax_return.create', compact('unified_serial_number','employees','branches', 'tax_invoices'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $return = TaxReturn::create($data);
         $return->tax->update([
             'status' => 'return',
@@ -111,7 +118,7 @@ class TaxReturnController extends Controller
             echo $tax->branch->branch_name;
 
         echo '</td>
-                    <td>' . $tax->supervisor->name . '</td>
+                    <td>' . $tax->employee->name . '</td>
                     <td>' . $tax->tax_total . '</td>
                     <td>' . $tax->final_total . '</td>
                 </tr>

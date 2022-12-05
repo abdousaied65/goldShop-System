@@ -90,7 +90,7 @@
                                         {{ $purchase->branch->branch_name }}
                                     @endif
                                 </td>
-                                <td>{{ $purchase->supervisor->name }}</td>
+                                <td>{{ $purchase->employee->name }}</td>
                                 <td>{{ $purchase->tax_total }}</td>
                                 <td>{{ $purchase->final_total }}</td>
                                 <td>

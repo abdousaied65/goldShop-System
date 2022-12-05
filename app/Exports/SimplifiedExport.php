@@ -3,7 +3,8 @@
 namespace App\Exports;
 use App\Models\Branch;
 use App\Models\SimplifiedInvoice;
-use App\Models\Supervisor;
+use App\Models\Employee;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -11,9 +12,20 @@ class SimplifiedExport implements FromCollection,WithHeadings
 {
     public function collection()
     {
-        $simplified =  SimplifiedInvoice::select('unified_serial_number','date','time','payment_method','branch_id'
-            ,'supervisor_id','total_count','total_weight','gram_total_price','amount_total',
-            'tax_total','final_total','created_at')->where('status','done')->get();
+        if (empty(Auth::user()->branch_id)) {
+            $simplified =  SimplifiedInvoice::select('unified_serial_number','date','time','payment_method','branch_id'
+                ,'employee_id','total_count','total_weight','gram_total_price','amount_total',
+                'tax_total','final_total','created_at')->where('status','done')->get();
+        } else {
+            $branch = Branch::FindOrFail(Auth::user()->branch_id);
+            $simplified =  SimplifiedInvoice::select('unified_serial_number','date','time','payment_method','branch_id'
+                ,'employee_id','total_count','total_weight','gram_total_price','amount_total',
+                'tax_total','final_total','created_at')
+                ->where('status','done')
+                ->where('branch_id',$branch->id)
+                ->get();
+        }
+
         $simplified->transform(function($i){
             if(!empty($i->branch_id)){
                 $i->branch_id = Branch::FindOrFail($i->branch_id)->branch_name;
@@ -21,7 +33,7 @@ class SimplifiedExport implements FromCollection,WithHeadings
             else{
                 $i->branch_id = "كل الفروع";
             }
-            $i->supervisor_id = Supervisor::FindOrFail($i->supervisor_id)->name;
+            $i->employee_id = Employee::FindOrFail($i->employee_id)->name;
             return $i;
         });
 

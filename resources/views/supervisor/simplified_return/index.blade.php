@@ -101,7 +101,7 @@
                                             {{ $return->branch->branch_name }}
                                         @endif
                                     </td>
-                                    <td>{{ $return->supervisor->name }}</td>
+                                    <td>{{ $return->employee->name }}</td>
                                     <td>{{ $return->notes }}</td>
                                 </tr>
                             @endforeach

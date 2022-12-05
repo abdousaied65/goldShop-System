@@ -32,7 +32,7 @@
                 <div class="card-header pb-0">
                     <div class="col-lg-12 margin-tb">
                         <h5 style="min-width: 300px;" class="pull-right alert alert-md alert-success">
-                            عرض كل المستخدمين
+                            عرض كل مستخدمين النظام
                         </h5>
                     </div>
                     <div class="clearfix"></div>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="card-body p-1 m-1">
                     <div class="table-responsive hoverable-table">
-                        <table class="display w-100  text-nowrap table-bordered" id="example-table"
+                        <table class="display w-100 table-bordered" id="example-table"
                                style="text-align: center;">
                             <thead>
                             <tr>
@@ -91,19 +91,20 @@
                             @endphp
 
                             @foreach ($data as $key => $supervisor)
-                                <tr>
+                                <tr @if($supervisor->id == 1) class="bg-secondary text-white" @endif>
                                     <td>
-                                        <input class="check" name="supervisors[]" form="myForm"
+                                        <input class="check @if($supervisor->id == 1) d-none @endif"
+                                               name="supervisors[]" form="myForm"
                                                value="{{$supervisor->id}}"
                                                type="checkbox">
                                     </td>
-                                    <td>{{ ++$i }}</td>
+                                    <td style="@if($supervisor->id == 1) color:#000; @endif">{{ ++$i }}</td>
                                     <td>{{ $supervisor->name}}</td>
                                     <td>{{ $supervisor->email }}</td>
                                     <td>
                                         @if(empty($supervisor->profile_pic))
                                             <img data-toggle="modal" href="#modaldemo9"
-                                                 src="{{asset('assets/img/guest.png')}}"
+                                                 src="{{asset('admin-assets/img/guest.png')}}"
                                                  style="width: 70px;cursor: pointer; height: 70px;border-radius: 100%; padding: 3px; border: 1px solid #aaa;">
                                         @else
                                             <img data-toggle="modal" href="#modaldemo9"
@@ -144,7 +145,7 @@
                                                     </a>
                                                 @endcan
                                                 @can('حذف مستخدم')
-                                                    @if (Auth::user()->role_name == "مدير النظام")
+                                                    @if ($supervisor->id != 1)
                                                         <a class="dropdown-item delete_supervisor"
                                                            supervisor_id="{{ $supervisor->id }}"
                                                            email="{{ $supervisor->email }}" data-toggle="modal"

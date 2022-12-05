@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Supervisor;
 
 use App\Exports\PurchaseExport;
 use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\PurchaseInvoice;
 use App\Http\Controllers\Controller;
-use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -15,12 +15,10 @@ class PurchaseController extends Controller
 {
     public function index(Request $request)
     {
-        $auth_id = Auth::user()->id;
-        if(Auth::user()->role_name == "مدير النظام"){
+        if (empty(Auth::user()->branch_id)) {
             $data = PurchaseInvoice::all();
-        }
-        else{
-            $data = PurchaseInvoice::where('supervisor_id',$auth_id)->get();
+        } else {
+            $data = PurchaseInvoice::where('branch_id', Auth::user()->branch_id)->get();
         }
         $branches = Branch::all();
         return view('supervisor.purchase.index', compact('data','branches'));
@@ -41,7 +39,13 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        return view('supervisor.purchase.create');
+        $branches = Branch::all();
+        if (empty(Auth::user()->branch_id)) {
+            $employees = Employee::all();
+        } else {
+            $employees = Employee::where('branch_id', Auth::user()->branch_id)->get();
+        }
+        return view('supervisor.purchase.create',compact('branches','employees'));
     }
 
     public function store(Request $request)
@@ -54,10 +58,6 @@ class PurchaseController extends Controller
             'attachment' => 'required',
         ]);
         $data = $request->all();
-        $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $purchase = PurchaseInvoice::create($data);
         if ($request->hasFile('attachment')) {
             $image = $request->file('attachment');
@@ -75,7 +75,10 @@ class PurchaseController extends Controller
     public function edit($id)
     {
         $purchase = PurchaseInvoice::findOrFail($id);
-        return view('supervisor.purchase.edit', compact('purchase'));
+        $branch = $purchase->branch;
+        $branches = Branch::all();
+        $employees = Employee::where('branch_id', $branch->id)->get();
+        return view('supervisor.purchase.edit', compact('purchase','branches','employees'));
     }
 
     public function update(Request $request, $id)
@@ -87,10 +90,6 @@ class PurchaseController extends Controller
             'final_total' => 'required',
         ]);
         $data = $request->all();
-        $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $purchase = PurchaseInvoice::findOrFail($id);
         $purchase->update($data);
         if ($request->hasFile('attachment')) {
@@ -107,7 +106,11 @@ class PurchaseController extends Controller
 
     public function print_selected()
     {
-        $purchases = PurchaseInvoice::all();
+        if (empty(Auth::user()->branch_id)) {
+            $purchases = PurchaseInvoice::all();
+        } else {
+            $purchases = PurchaseInvoice::where('branch_id', Auth::user()->branch_id)->get();
+        }
         return view('supervisor.purchase.print', compact('purchases'));
     }
 

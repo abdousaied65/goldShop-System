@@ -97,7 +97,9 @@
             page-break-after: avoid;
             page-break-inside: avoid;" class="text-center">
 <div class="pos_details  justify-content-center text-center">
-    <div class="text-center mt-3">
+    <div class="text-center">
+        <img class="text-center" src="{{asset('admin-assets/img/logo.png')}}"
+             style="width:80px!important;height:80px!important;" />
         <h3 class="text-center" style="font-weight: bold;">
             مجوهرات العقاب
         </h3>

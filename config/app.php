@@ -234,7 +234,6 @@ return [
         'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
         'Collection' => Illuminate\Database\Eloquent\Collection::class,
 
-
     ],
 
 ];

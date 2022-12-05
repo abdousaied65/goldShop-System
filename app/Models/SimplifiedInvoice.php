@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static create(array $array)
  * @method static where(string $string, $id)
  * @method static findOrFail($admin_id)
+ * @method static whereBetween(string $string, array $array)
  */
 class SimplifiedInvoice extends Model
 {
@@ -15,7 +16,7 @@ class SimplifiedInvoice extends Model
 
     protected $fillable = [
         'unified_serial_number','date','time','payment_method','cash_amount','visa_amount','branch_id','supervisor_id',
-        'total_count','total_weight','gram_total_price','amount_total','tax_total','final_total','status'
+        'employee_id','total_count','total_weight','gram_total_price','amount_total','tax_total','final_total','status'
     ];
 
     public function branch(){
@@ -28,6 +29,13 @@ class SimplifiedInvoice extends Model
     public function elements(){
         return $this->hasMany('\App\Models\SimplifiedInvoiceElement','simplified_id','id');
     }
+    public function payments(){
+        return $this->hasMany('\App\Models\SimplifiedPayment','simplified_id','id');
+    }
 
+    public function employee()
+    {
+        return $this->belongsTo('\App\Models\Employee', 'employee_id', 'id');
+    }
 
 }

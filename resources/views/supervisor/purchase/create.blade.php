@@ -28,7 +28,7 @@
                     <form action="{{route('supervisor.purchases.store')}}" method="post"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
-                        <input type="hidden" name="supervisor_id" value="{{Auth::user()->id}}" />
+                        <input type="hidden" name="supervisor_id" value="{{Auth::user()->id}}"/>
                         <div class="row m-t-3 mb-3">
                             <div class="col-lg-3 pull-right">
                                 <div class="form-group">
@@ -43,7 +43,8 @@
                                     <label class="d-block">
                                         التاريخ
                                     </label>
-                                    <input class="form-control" type="date" required name="date" value="{{date('Y-m-d')}}"
+                                    <input class="form-control" type="date" required name="date"
+                                           value="{{date('Y-m-d')}}"
                                     />
                                 </div>
                             </div>
@@ -52,8 +53,29 @@
                                     <label class="d-block">
                                         اسم الفرع
                                     </label>
-                                    <input required class="form-control" type="text" readonly
-                                           value="{{Auth::user()->branch->branch_name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="branch_id" id="branch_id">
+                                            <option value=""></option>
+                                            @foreach($branches as $branch)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $branch->id == $open_invoice->branch_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input class="form-control" type="text" readonly
+                                               value="{{Auth::user()->branch->branch_name}}"/>
+                                        <input required class="form-control" type="hidden" id="branch_id"
+                                               name="branch_id"
+                                               value="{{Auth::user()->branch_id}}"/>
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="col-lg-3 pull-right">
@@ -61,7 +83,43 @@
                                     <label class="d-block">
                                         الموظف
                                     </label>
-                                    <input required class="form-control" type="text" readonly value="{{Auth::user()->name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($employees as $employee)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $employee->id == $open_invoice->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <?php
+                                        $branch = \App\Models\Branch::FindOrFail(Auth::user()->branch_id);
+                                        $branch_employees = $branch->employees;
+                                        ?>
+                                        <select required
+                                                @if(isset($open_invoice) && !empty($open_invoice))
+                                                disabled
+                                                @endif
+                                                class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($branch_employees as $employee)
+                                                <option
+                                                    @if(isset($open_invoice) && !empty($open_invoice) && $employee->id == $open_invoice->employee_id)
+                                                    selected
+                                                    @endif
+                                                    value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -104,5 +162,18 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
 @endsection
+<script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        $('#branch_id').on('change', function () {
+            let branch_id = $(this).val();
+            $.post("{{route('get.branch.employees')}}", {
+                branch_id: branch_id,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('#employee_id').html(data).trigger('change');
+            });
+        });
+    });
+</script>

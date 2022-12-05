@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Supervisor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\SimplifiedInvoice;
 use App\Models\SimplifiedReturn;
 use App\Models\Supervisor;
@@ -13,13 +15,13 @@ class SimplifiedReturnController extends Controller
 {
     public function index(Request $request)
     {
-        $auth_id = Auth::user()->id;
-        if (Auth::user()->role_name == "مدير النظام") {
+        if (empty(Auth::user()->branch_id)) {
             $data = SimplifiedReturn::all();
         } else {
-            $data = SimplifiedReturn::where('supervisor_id', $auth_id)->get();
+            $data = SimplifiedReturn::where('branch_id', Auth::user()->branch_id)->get();
         }
-        return view('supervisor.simplified_return.index', compact('data'));
+        $branches = Branch::all();
+        return view('supervisor.simplified_return.index', compact('data', 'branches'));
     }
 
     public function create()
@@ -31,17 +33,20 @@ class SimplifiedReturnController extends Controller
             $old_pre_counter = SimplifiedReturn::max('unified_serial_number');
             $unified_serial_number = $old_pre_counter + 1;
         }
-        $simplified_invoices = SimplifiedInvoice::where('status','done')->get();
-        return view('supervisor.simplified_return.create', compact('unified_serial_number', 'simplified_invoices'));
+        if (empty(Auth::user()->branch_id)) {
+            $simplified_invoices = SimplifiedInvoice::where('status', 'done')->get();
+        } else {
+            $simplified_invoices = SimplifiedInvoice::where('branch_id', Auth::user()->branch_id)
+                ->where('status', 'done')->get();
+        }
+        $branches = Branch::all();
+        $employees = Employee::all();
+        return view('supervisor.simplified_return.create', compact('unified_serial_number','employees','branches','simplified_invoices'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $return = SimplifiedReturn::create($data);
         $return->simplified->update([
             'status' => 'return',
@@ -102,7 +107,7 @@ class SimplifiedReturnController extends Controller
             echo $simplified->branch->branch_name;
 
         echo '</td>
-                    <td>' . $simplified->supervisor->name . '</td>
+                    <td>' . $simplified->employee->name . '</td>
                     <td>' . $simplified->tax_total . '</td>
                     <td>' . $simplified->final_total . '</td>
                 </tr>

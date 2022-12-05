@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2022 at 07:21 PM
+-- Generation Time: Dec 05, 2022 at 03:28 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -44,7 +44,82 @@ CREATE TABLE `branches` (
 --
 
 INSERT INTO `branches` (`id`, `branch_name`, `branch_phone`, `branch_address`, `commercial_record`, `license_number`, `snap`, `created_at`, `updated_at`) VALUES
-(1, 'مؤسسة نايف محمد العقاب للمعادن الثمينة والاحجار الكريمة', '0163235047', 'القصيم - بريدة - سوق الذهب - قبة رشيد', '1131056240', '11\\11310302', 'ALOQAB1', '2022-11-18 00:51:49', '2022-11-18 00:51:49');
+(1, 'فرع العقاب 1', '0163235047', 'القصيم - بريدة - سوق الذهب - قبة رشيد', '1131056240', '11\\11310302', 'ALOQAB1', '2022-11-18 00:51:49', '2022-12-01 04:07:37'),
+(2, 'فرع العقاب 2', '763456278876', 'جدة', '64352678234765', '11/34536787654', 'AlOQAB2', '2022-12-01 23:54:48', '2022-12-01 23:54:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `employees`
+--
+
+INSERT INTO `employees` (`id`, `branch_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ابرهيم', '2022-12-02 03:16:27', '2022-12-02 03:16:27'),
+(2, 1, 'صالح', '2022-12-02 03:17:08', '2022-12-02 03:17:08'),
+(3, 2, 'على', '2022-12-02 03:17:20', '2022-12-02 03:17:20'),
+(4, 2, 'فهد', '2022-12-02 03:17:41', '2022-12-02 03:33:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expenses`
+--
+
+CREATE TABLE `expenses` (
+  `id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  `supervisor_id` bigint(20) UNSIGNED NOT NULL,
+  `fixed_id` int(11) NOT NULL,
+  `unified_serial_number` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `expense_details` varchar(255) NOT NULL,
+  `amount` varchar(255) NOT NULL,
+  `expense_pic` text NOT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`id`, `branch_id`, `supervisor_id`, `fixed_id`, `unified_serial_number`, `date`, `expense_details`, `amount`, `expense_pic`, `notes`, `created_at`, `updated_at`) VALUES
+(2, 1, 1, 2, '1', '2022-11-30', 'راتب ابراهيم شهر نوفمبر 2022', '2500', 'uploads/expenses/2/maxresdefault.jpg', 'راتب كامل', '2022-12-03 04:13:09', '2022-12-03 04:13:09');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fixed_expenses`
+--
+
+CREATE TABLE `fixed_expenses` (
+  `id` int(11) NOT NULL,
+  `supervisor_id` bigint(20) UNSIGNED NOT NULL,
+  `fixed_expense` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fixed_expenses`
+--
+
+INSERT INTO `fixed_expenses` (`id`, `supervisor_id`, `fixed_expense`, `created_at`, `updated_at`) VALUES
+(1, 1, 'ايجارات 2', '2022-12-03 03:38:50', '2022-12-03 03:40:45'),
+(2, 1, 'رواتب', '2022-12-03 03:39:22', '2022-12-03 03:39:22');
 
 -- --------------------------------------------------------
 
@@ -76,7 +151,9 @@ CREATE TABLE `model_has_roles` (
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\Models\\Supervisor', 1),
-(2, 'App\\Models\\Supervisor', 4);
+(1, 'App\\Models\\Supervisor', 5),
+(2, 'App\\Models\\Supervisor', 4),
+(2, 'App\\Models\\Supervisor', 6);
 
 -- --------------------------------------------------------
 
@@ -124,7 +201,22 @@ INSERT INTO `permissions` (`id`, `name`, `key`, `guard_name`, `created_at`, `upd
 (24, 'اضافة مرتجع فاتورة مبسطة', 'simplified_return', 'supervisor-web', '2022-11-29 16:42:27', '2022-11-29 16:42:27'),
 (25, 'عرض مرتجع فاتورة مبسطة', 'simplified_return', 'supervisor-web', '2022-11-29 16:42:27', '2022-11-29 16:42:27'),
 (26, 'اضافة مرتجع فاتورة ضريبية', 'tax_return', 'supervisor-web', '2022-11-29 16:42:27', '2022-11-29 16:42:27'),
-(27, 'عرض مرتجع فاتورة ضريبية', 'tax_return', 'supervisor-web', '2022-11-29 16:42:27', '2022-11-29 16:42:27');
+(27, 'عرض مرتجع فاتورة ضريبية', 'tax_return', 'supervisor-web', '2022-11-29 16:42:27', '2022-11-29 16:42:27'),
+(28, 'اضافة موظف', 'employee', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(29, 'عرض موظف', 'employee', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(30, 'تعديل موظف', 'employee', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(31, 'حذف موظف', 'employee', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(32, 'تعديل فاتورة مبسطة', 'simplified', 'supervisor-web', '2022-12-02 14:27:54', '2022-12-02 14:27:54'),
+(33, 'تعديل فاتورة ضريبية', 'tax', 'supervisor-web', '2022-12-02 14:27:54', '2022-12-02 14:27:54'),
+(34, 'اضافة مصروف ثابت', 'fixed', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(35, 'عرض مصروف ثابت', 'fixed', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(36, 'تعديل مصروف ثابت', 'fixed', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(37, 'حذف مصروف ثابت', 'fixed', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(38, 'اضافة مصروف', 'expense', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(39, 'عرض مصروف', 'expense', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(40, 'تعديل مصروف', 'expense', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(41, 'حذف مصروف', 'expense', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42'),
+(42, 'التقارير', 'reports', 'supervisor-web', '2022-03-04 14:29:42', '2022-03-04 14:29:42');
 
 -- --------------------------------------------------------
 
@@ -173,6 +265,7 @@ CREATE TABLE `purchases_invoices` (
   `date` date NOT NULL,
   `branch_id` int(11) DEFAULT NULL,
   `supervisor_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `tax_total` float NOT NULL,
   `final_total` float NOT NULL,
   `attachment` text NOT NULL,
@@ -184,8 +277,9 @@ CREATE TABLE `purchases_invoices` (
 -- Dumping data for table `purchases_invoices`
 --
 
-INSERT INTO `purchases_invoices` (`id`, `invoice_number`, `date`, `branch_id`, `supervisor_id`, `tax_total`, `final_total`, `attachment`, `created_at`, `updated_at`) VALUES
-(1, '12345', '2022-11-21', 1, 1, 521.74, 4000, 'uploads/purchases/attachments/1/maxresdefault.jpg', '2022-11-28 04:20:26', '2022-11-28 17:12:39');
+INSERT INTO `purchases_invoices` (`id`, `invoice_number`, `date`, `branch_id`, `supervisor_id`, `employee_id`, `tax_total`, `final_total`, `attachment`, `created_at`, `updated_at`) VALUES
+(1, '453678', '2022-12-02', 2, 1, 4, 391.3, 3000, 'uploads/purchases/attachments/1/maxresdefault.jpg', '2022-12-02 14:29:47', '2022-12-02 14:29:47'),
+(2, '86543', '2022-12-05', 1, 1, 1, 391, 3000, 'uploads/purchases/attachments/2/maxresdefault.jpg', '2022-12-05 03:06:53', '2022-12-05 03:06:53');
 
 -- --------------------------------------------------------
 
@@ -207,7 +301,7 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 (1, 'مدير النظام', 'supervisor-web', '2021-08-23 01:40:49', '2021-08-23 01:40:49'),
-(2, 'موظف فرع', 'supervisor-web', '2022-11-18 04:02:02', '2022-11-18 04:02:02');
+(2, 'مدير فرع', 'supervisor-web', '2022-11-18 04:02:02', '2022-11-18 04:02:02');
 
 -- --------------------------------------------------------
 
@@ -250,14 +344,42 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (18, 1),
 (18, 2),
 (19, 1),
+(19, 2),
 (20, 1),
+(20, 2),
 (21, 1),
+(21, 2),
 (22, 1),
+(22, 2),
 (23, 1),
+(23, 2),
 (24, 1),
+(24, 2),
 (25, 1),
+(25, 2),
 (26, 1),
-(27, 1);
+(26, 2),
+(27, 1),
+(27, 2),
+(28, 1),
+(28, 2),
+(29, 1),
+(29, 2),
+(30, 1),
+(30, 2),
+(31, 1),
+(31, 2),
+(32, 1),
+(33, 1),
+(34, 1),
+(35, 1),
+(36, 1),
+(37, 1),
+(38, 1),
+(39, 1),
+(40, 1),
+(41, 1),
+(42, 1);
 
 -- --------------------------------------------------------
 
@@ -275,6 +397,7 @@ CREATE TABLE `simplified_invoices` (
   `visa_amount` float DEFAULT NULL,
   `branch_id` int(11) DEFAULT NULL,
   `supervisor_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `total_count` float DEFAULT NULL,
   `total_weight` float DEFAULT NULL,
   `gram_total_price` float DEFAULT NULL,
@@ -290,14 +413,14 @@ CREATE TABLE `simplified_invoices` (
 -- Dumping data for table `simplified_invoices`
 --
 
-INSERT INTO `simplified_invoices` (`id`, `unified_serial_number`, `date`, `time`, `payment_method`, `cash_amount`, `visa_amount`, `branch_id`, `supervisor_id`, `total_count`, `total_weight`, `gram_total_price`, `amount_total`, `tax_total`, `final_total`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, '2022-11-21', '17:27:14', 'cash', 3000, NULL, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'return', '2022-11-21 05:27:29', '2022-11-29 18:50:02'),
-(2, 2, '2022-11-22', '07:27:57', 'visa', NULL, 3000, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-21 05:28:54', '2022-11-21 05:28:59'),
-(3, 3, '2022-11-23', '07:28:59', 'mixed', 1400, 1600, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-21 05:29:32', '2022-11-21 05:32:14'),
-(4, 4, '2022-11-24', '08:46:26', 'cash', 5000, NULL, 1, 1, 2, 18, 241.55, 4347.83, 652.18, 5000, 'done', '2022-11-21 06:47:38', '2022-11-21 06:49:37'),
-(5, 5, '2022-11-25', '08:49:38', 'mixed', 2000, 1000, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-21 06:49:59', '2022-11-21 06:50:40'),
-(6, 6, '2022-11-26', '18:50:41', 'visa', NULL, 3000, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-21 06:50:58', '2022-11-21 06:51:50'),
-(7, 7, '2022-11-27', '03:10:29', 'cash', 3000, NULL, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'return', '2022-11-27 01:10:51', '2022-11-29 19:00:13');
+INSERT INTO `simplified_invoices` (`id`, `unified_serial_number`, `date`, `time`, `payment_method`, `cash_amount`, `visa_amount`, `branch_id`, `supervisor_id`, `employee_id`, `total_count`, `total_weight`, `gram_total_price`, `amount_total`, `tax_total`, `final_total`, `status`, `created_at`, `updated_at`) VALUES
+(2, 1, '2022-12-02', '06:11:50', 'cash', 5000, NULL, 1, 1, 1, 2, 18, 241.55, 4347.83, 652.18, 5000, 'return', '2022-12-02 04:12:11', '2022-12-02 05:59:59'),
+(4, 2, '2022-12-02', '06:18:07', 'cash', 1, NULL, 1, 1, 2, 1, 1, 0.87, 0.87, 0.13, 1, 'done', '2022-12-02 04:18:18', '2022-12-02 04:18:59'),
+(5, 3, '2022-12-03', '22:18:59', 'cash', 1, NULL, 1, 1, 1, 1, 1, 0.87, 0.87, 0.13, 1, 'done', '2022-12-02 04:19:12', '2022-12-02 17:55:58'),
+(6, 4, '2022-12-03', '03:18:02', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-12-03 01:18:21', '2022-12-03 01:18:25'),
+(7, 5, '2022-12-05', '01:10:49', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 300, 3000, 0, 3000, 'done', '2022-12-04 23:11:13', '2022-12-04 23:12:15'),
+(8, 6, '2022-12-05', '04:17:00', 'cash', 4000, NULL, 2, 1, 4, 1, 10, 347.83, 3478.26, 521.74, 4000, 'done', '2022-12-05 02:17:13', '2022-12-05 02:17:21'),
+(9, 7, '2022-12-05', '04:59:31', 'cash', 5000, NULL, 1, 1, 1, 1, 10, 434.78, 4347.83, 652.17, 5000, 'return', '2022-12-05 02:59:57', '2022-12-05 03:00:40');
 
 -- --------------------------------------------------------
 
@@ -325,14 +448,14 @@ CREATE TABLE `simplified_invoice_elements` (
 --
 
 INSERT INTO `simplified_invoice_elements` (`id`, `simplified_id`, `product_id`, `weight`, `karat`, `count`, `gram_price`, `amount`, `tax`, `total`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 05:27:29', '2022-11-21 05:27:29'),
-(2, 2, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 05:28:54', '2022-11-21 05:28:54'),
-(3, 3, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 05:29:32', '2022-11-21 05:29:32'),
-(4, 4, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 06:47:38', '2022-11-21 06:47:38'),
-(5, 4, 2, 8, 21, 1, 217.39, 1739.13, 260.87, 2000, '2022-11-21 06:48:58', '2022-11-21 06:48:58'),
-(6, 5, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 06:49:59', '2022-11-21 06:49:59'),
-(7, 6, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-21 06:50:58', '2022-11-21 06:50:58'),
-(9, 7, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-27 01:10:51', '2022-11-27 01:10:51');
+(2, 2, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-02 04:12:11', '2022-12-02 04:12:11'),
+(3, 2, 2, 8, 21, 1, 217.39, 1739.13, 260.87, 2000, '2022-12-02 04:16:41', '2022-12-02 04:16:41'),
+(8, 4, 2, 1, 21, 1, 0.87, 0.87, 0.13, 1, '2022-12-02 04:18:53', '2022-12-02 04:18:53'),
+(9, 5, 3, 1, 21, 1, 0.87, 0.87, 0.13, 1, '2022-12-02 04:19:12', '2022-12-02 04:19:12'),
+(11, 6, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-03 01:18:21', '2022-12-03 01:18:21'),
+(12, 7, 15, 10, 21, 1, 300, 3000, 0, 3000, '2022-12-04 23:11:13', '2022-12-04 23:11:13'),
+(13, 8, 1, 10, 21, 1, 347.83, 3478.26, 521.74, 4000, '2022-12-05 02:17:13', '2022-12-05 02:17:13'),
+(14, 9, 1, 10, 21, 1, 434.78, 4347.83, 652.17, 5000, '2022-12-05 02:59:57', '2022-12-05 02:59:57');
 
 -- --------------------------------------------------------
 
@@ -354,15 +477,13 @@ CREATE TABLE `simplified_payments` (
 --
 
 INSERT INTO `simplified_payments` (`id`, `simplified_id`, `payment_method`, `amount`, `created_at`, `updated_at`) VALUES
-(1, 1, 'cash', 3000, '2022-11-21 05:27:56', '2022-11-21 05:27:56'),
-(2, 2, 'visa', 3000, '2022-11-21 05:28:59', '2022-11-21 05:28:59'),
-(3, 3, 'cash', 1400, '2022-11-21 05:32:14', '2022-11-21 05:32:14'),
-(4, 3, 'visa', 1600, '2022-11-21 05:32:14', '2022-11-21 05:32:14'),
-(5, 4, 'cash', 5000, '2022-11-21 06:49:37', '2022-11-21 06:49:37'),
-(6, 5, 'cash', 2000, '2022-11-21 06:50:40', '2022-11-21 06:50:40'),
-(7, 5, 'visa', 1000, '2022-11-21 06:50:40', '2022-11-21 06:50:40'),
-(8, 6, 'visa', 3000, '2022-11-21 06:51:50', '2022-11-21 06:51:50'),
-(9, 7, 'cash', 3000, '2022-11-27 01:11:37', '2022-11-27 01:11:37');
+(1, 2, 'cash', 5000, '2022-12-02 04:17:27', '2022-12-02 04:17:27'),
+(2, 4, 'cash', 1, '2022-12-02 04:18:59', '2022-12-02 04:18:59'),
+(23, 5, 'cash', 1, '2022-12-02 17:55:58', '2022-12-02 17:55:58'),
+(24, 6, 'cash', 3000, '2022-12-03 01:18:25', '2022-12-03 01:18:25'),
+(25, 7, 'cash', 3000, '2022-12-04 23:12:15', '2022-12-04 23:12:15'),
+(26, 8, 'cash', 4000, '2022-12-05 02:17:21', '2022-12-05 02:17:21'),
+(27, 9, 'cash', 5000, '2022-12-05 03:00:01', '2022-12-05 03:00:01');
 
 -- --------------------------------------------------------
 
@@ -376,6 +497,7 @@ CREATE TABLE `simplified_returns` (
   `supervisor_id` bigint(20) UNSIGNED NOT NULL,
   `simplified_id` int(11) NOT NULL,
   `unified_serial_number` varchar(255) NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `notes` text DEFAULT NULL,
@@ -387,9 +509,9 @@ CREATE TABLE `simplified_returns` (
 -- Dumping data for table `simplified_returns`
 --
 
-INSERT INTO `simplified_returns` (`id`, `branch_id`, `supervisor_id`, `simplified_id`, `unified_serial_number`, `date`, `time`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '1', '2022-11-29', '20:48:41', 'العميل عايز يبدل ويرجع', '2022-11-29 18:50:02', '2022-11-29 18:50:02'),
-(2, 1, 1, 7, '2', '2022-11-29', '21:00:02', 'لا يوجد', '2022-11-29 19:00:13', '2022-11-29 19:00:13');
+INSERT INTO `simplified_returns` (`id`, `branch_id`, `supervisor_id`, `simplified_id`, `unified_serial_number`, `employee_id`, `date`, `time`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 2, '1', 1, '2022-12-02', '07:59:38', NULL, '2022-12-02 05:59:59', '2022-12-02 05:59:59'),
+(2, 1, 1, 9, '2', 1, '2022-12-05', '05:00:24', 'مرتجع', '2022-12-05 03:00:40', '2022-12-05 03:00:40');
 
 -- --------------------------------------------------------
 
@@ -419,8 +541,10 @@ CREATE TABLE `supervisors` (
 --
 
 INSERT INTO `supervisors` (`id`, `name`, `email`, `branch_id`, `phone_number`, `profile_pic`, `email_verified_at`, `password`, `role_name`, `Status`, `api_token`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Abdou Shawer', 'abdoushawer93@gmail.com', 1, '01092716796', 'uploads/profiles/supervisors/1/logo.png', '2021-08-23 01:40:49', '$2y$10$kZ/pvEMG.UWZLVzlAVP0geuiOpRiUztGgynkfSaF38Y5l4T13NFIS', 'مدير النظام', 'active', NULL, 'gUf6cvexaGOE7daXshKTOUSfQvarF9SYj92cZ8xKSJYtEhwv39GkiqeuoBlh', '2021-08-23 01:40:49', '2022-11-18 04:13:54'),
-(4, 'محمد', 'mo@gmail.com', 1, NULL, NULL, NULL, '$2y$10$0Qs9cPpVHnn7D1p7If2JzuEc1AqTsw.Wbwr/kLbF.dPWfVzEMVRlG', 'موظف فرع', 'active', NULL, 'c1iDiFp0k1MZkf7bxi1Ch7F0U5LzYmuBn10ftW9Fzl8P8uknDkiKKdRPceQE', '2022-11-20 23:07:39', '2022-11-20 23:07:39');
+(1, 'Admin', 'admin@admin.com', NULL, '01092716796', 'uploads/profiles/supervisors/1/logo.png', '2021-08-23 01:40:49', '$2y$10$t4SrdNYc5gUcTeBUyZtu5e1bKWFkrcILcaTLglc816zddXkjoir3G', 'مدير النظام', 'active', NULL, 'GYSoI8ArPurNFTR7xOhlzRAbqUbA5XE3qC0F5jWueiPV849LeFdcdio5NHiy', '2021-08-23 01:40:49', '2022-12-01 02:43:40'),
+(4, 'فرع العقاب 1 الرياض', 'mo@gmail.com', 1, NULL, NULL, NULL, '$2y$10$HgTgrWaXc/Mm.Sb/LJucJ.ReDnapVmv56Z6WGSnhxKnIbfoYbBbSu', 'مديرفرع', 'active', NULL, 'c1iDiFp0k1MZkf7bxi1Ch7F0U5LzYmuBn10ftW9Fzl8P8uknDkiKKdRPceQE', '2022-11-20 23:07:39', '2022-12-01 23:56:16'),
+(5, 'مدير 2', 'admin2@admin.com', NULL, NULL, NULL, NULL, '$2y$10$9GH67S7Ahn4Y3AEI8pgR0OIgjWHwr43ZI4seMVkauE7XoByd79cqO', 'مدير النظام', 'active', NULL, NULL, '2022-11-30 22:27:37', '2022-11-30 22:27:37'),
+(6, 'فرع العقاب 2 جدة', 'oqab2@gmail.com', 2, NULL, NULL, NULL, '$2y$10$kx0TmPb5nzac7Pc5GXF.WOlBz63hbl67UQmJ6qsPyQ7yPOy30Z5/2', 'مديرفرع', 'active', NULL, NULL, '2022-12-01 23:55:55', '2022-12-01 23:55:55');
 
 -- --------------------------------------------------------
 
@@ -433,14 +557,6 @@ CREATE TABLE `supervisor_password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `supervisor_password_resets`
---
-
-INSERT INTO `supervisor_password_resets` (`email`, `token`, `created_at`) VALUES
-('abdousaied65@gmail.com', '$2y$10$w9r2ojlfMQZR30gYetKu5eZHvfQLy4i3JHMxmPmiC1oZZieAtydbm', '2022-11-27 00:58:21'),
-('abdoushawer93@gmail.com', '$2y$10$DyNxeJhMrNCS6MMRw/P/FuJABD6AioLUWU9IunuvhmpOifOe4xMhy', '2022-11-27 01:05:03');
 
 -- --------------------------------------------------------
 
@@ -460,6 +576,7 @@ CREATE TABLE `tax_invoices` (
   `visa_amount` float DEFAULT NULL,
   `branch_id` int(11) DEFAULT NULL,
   `supervisor_id` bigint(20) UNSIGNED NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `total_count` float DEFAULT NULL,
   `total_weight` float DEFAULT NULL,
   `gram_total_price` float DEFAULT NULL,
@@ -475,10 +592,11 @@ CREATE TABLE `tax_invoices` (
 -- Dumping data for table `tax_invoices`
 --
 
-INSERT INTO `tax_invoices` (`id`, `unified_serial_number`, `company_name`, `company_tax_number`, `date`, `time`, `payment_method`, `cash_amount`, `visa_amount`, `branch_id`, `supervisor_id`, `total_count`, `total_weight`, `gram_total_price`, `amount_total`, `tax_total`, `final_total`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'شركة شاور', '123456789123456', '2022-11-27', '05:54:42', 'cash', 3000, NULL, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'return', '2022-11-27 03:55:08', '2022-11-29 19:17:54'),
-(3, 2, 'شركة شاور', '123456789123456', '2022-11-27', '05:55:17', 'visa', NULL, 3000, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-27 03:56:17', '2022-11-27 03:56:21'),
-(4, 3, 'شركة شاور', '123456789123456', '2022-11-27', '05:56:22', 'mixed', 1500, 1500, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-11-27 03:57:01', '2022-11-27 04:08:44');
+INSERT INTO `tax_invoices` (`id`, `unified_serial_number`, `company_name`, `company_tax_number`, `date`, `time`, `payment_method`, `cash_amount`, `visa_amount`, `branch_id`, `supervisor_id`, `employee_id`, `total_count`, `total_weight`, `gram_total_price`, `amount_total`, `tax_total`, `final_total`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'شركة موارد الخليج', '123456789102030', '2022-12-02', '15:57:31', 'cash', 3000, NULL, 1, 1, 2, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-12-02 14:12:03', '2022-12-03 01:25:06'),
+(2, 2, 'شركة موارد', '536776545676543', '2022-12-04', '21:51:58', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'done', '2022-12-04 19:52:25', '2022-12-04 19:52:31'),
+(3, 3, 'شركة موارد', '536776545676543', '2022-12-04', '21:52:36', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'return', '2022-12-04 19:53:06', '2022-12-04 19:55:23'),
+(4, 4, 'شركة موارد', '536776545676543', '2022-12-04', '21:53:15', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 260.87, 2608.7, 391.31, 3000, 'return', '2022-12-04 19:54:45', '2022-12-04 19:55:36');
 
 -- --------------------------------------------------------
 
@@ -506,9 +624,10 @@ CREATE TABLE `tax_invoice_elements` (
 --
 
 INSERT INTO `tax_invoice_elements` (`id`, `tax_id`, `product_id`, `weight`, `karat`, `count`, `gram_price`, `amount`, `tax`, `total`, `created_at`, `updated_at`) VALUES
-(2, 2, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-27 03:55:08', '2022-11-27 03:55:08'),
-(3, 3, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-27 03:56:17', '2022-11-27 03:56:17'),
-(4, 4, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-11-27 03:57:01', '2022-11-27 03:57:01');
+(1, 1, 3, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-02 14:12:03', '2022-12-02 14:12:03'),
+(2, 2, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-04 19:52:25', '2022-12-04 19:52:25'),
+(3, 3, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-04 19:53:06', '2022-12-04 19:53:06'),
+(4, 4, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-04 19:54:45', '2022-12-04 19:54:45');
 
 -- --------------------------------------------------------
 
@@ -530,10 +649,10 @@ CREATE TABLE `tax_payments` (
 --
 
 INSERT INTO `tax_payments` (`id`, `tax_id`, `payment_method`, `amount`, `created_at`, `updated_at`) VALUES
-(1, 2, 'cash', 3000, '2022-11-27 03:55:16', '2022-11-27 03:55:16'),
-(2, 3, 'visa', 3000, '2022-11-27 03:56:21', '2022-11-27 03:56:21'),
-(3, 4, 'cash', 1500, '2022-11-27 04:08:44', '2022-11-27 04:08:44'),
-(4, 4, 'visa', 1500, '2022-11-27 04:08:44', '2022-11-27 04:08:44');
+(5, 1, 'cash', 3000, '2022-12-03 01:25:06', '2022-12-03 01:25:06'),
+(6, 2, 'cash', 3000, '2022-12-04 19:52:31', '2022-12-04 19:52:31'),
+(7, 3, 'cash', 3000, '2022-12-04 19:53:11', '2022-12-04 19:53:11'),
+(8, 4, 'cash', 3000, '2022-12-04 19:54:49', '2022-12-04 19:54:49');
 
 -- --------------------------------------------------------
 
@@ -547,6 +666,7 @@ CREATE TABLE `tax_returns` (
   `supervisor_id` bigint(20) UNSIGNED NOT NULL,
   `tax_id` int(11) NOT NULL,
   `unified_serial_number` varchar(255) NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
   `notes` text DEFAULT NULL,
@@ -558,8 +678,9 @@ CREATE TABLE `tax_returns` (
 -- Dumping data for table `tax_returns`
 --
 
-INSERT INTO `tax_returns` (`id`, `branch_id`, `supervisor_id`, `tax_id`, `unified_serial_number`, `date`, `time`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 2, '1', '2022-11-29', '21:17:15', 'غير صحيحة', '2022-11-29 19:17:54', '2022-11-29 19:17:54');
+INSERT INTO `tax_returns` (`id`, `branch_id`, `supervisor_id`, `tax_id`, `unified_serial_number`, `employee_id`, `date`, `time`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 3, '1', 1, '2022-12-04', '21:54:57', NULL, '2022-12-04 19:55:23', '2022-12-04 19:55:23'),
+(2, 1, 1, 4, '2', 1, '2022-12-04', '21:55:24', NULL, '2022-12-04 19:55:36', '2022-12-04 19:55:36');
 
 --
 -- Indexes for dumped tables
@@ -570,6 +691,29 @@ INSERT INTO `tax_returns` (`id`, `branch_id`, `supervisor_id`, `tax_id`, `unifie
 --
 ALTER TABLE `branches`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `branch_id_54` (`branch_id`);
+
+--
+-- Indexes for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `branch_id_56` (`branch_id`),
+  ADD KEY `supervisor_id_56` (`supervisor_id`),
+  ADD KEY `fixed_id_56` (`fixed_id`);
+
+--
+-- Indexes for table `fixed_expenses`
+--
+ALTER TABLE `fixed_expenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `supervisor_id_55` (`supervisor_id`);
 
 --
 -- Indexes for table `model_has_permissions`
@@ -602,8 +746,9 @@ ALTER TABLE `products`
 --
 ALTER TABLE `purchases_invoices`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `branch_id_2` (`branch_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
+  ADD KEY `branch_id_90` (`branch_id`),
+  ADD KEY `supervisor_id_90` (`supervisor_id`),
+  ADD KEY `employee_id_90` (`employee_id`);
 
 --
 -- Indexes for table `roles`
@@ -624,7 +769,8 @@ ALTER TABLE `role_has_permissions`
 ALTER TABLE `simplified_invoices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `branch_id_2` (`branch_id`),
-  ADD KEY `supervisor_id` (`supervisor_id`);
+  ADD KEY `supervisor_id` (`supervisor_id`),
+  ADD KEY `employee_id` (`employee_id`);
 
 --
 -- Indexes for table `simplified_invoice_elements`
@@ -648,7 +794,8 @@ ALTER TABLE `simplified_returns`
   ADD PRIMARY KEY (`id`),
   ADD KEY `branch_id_9` (`branch_id`),
   ADD KEY `supervisor_id_9` (`supervisor_id`),
-  ADD KEY `simplified_id_9` (`simplified_id`);
+  ADD KEY `simplified_id_9` (`simplified_id`),
+  ADD KEY `employee_id_2` (`employee_id`);
 
 --
 -- Indexes for table `supervisors`
@@ -671,7 +818,8 @@ ALTER TABLE `supervisor_password_resets`
 ALTER TABLE `tax_invoices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `branch_id_22` (`branch_id`),
-  ADD KEY `supervisor_id_22` (`supervisor_id`);
+  ADD KEY `supervisor_id_22` (`supervisor_id`),
+  ADD KEY `employee_id_3` (`employee_id`);
 
 --
 -- Indexes for table `tax_invoice_elements`
@@ -695,7 +843,8 @@ ALTER TABLE `tax_returns`
   ADD PRIMARY KEY (`id`),
   ADD KEY `branch_id_10` (`branch_id`),
   ADD KEY `supervisor_id_10` (`supervisor_id`),
-  ADD KEY `tax_id_10` (`tax_id`);
+  ADD KEY `tax_id_10` (`tax_id`),
+  ADD KEY `employee_id_4` (`employee_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -705,13 +854,31 @@ ALTER TABLE `tax_returns`
 -- AUTO_INCREMENT for table `branches`
 --
 ALTER TABLE `branches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `expenses`
+--
+ALTER TABLE `expenses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `fixed_expenses`
+--
+ALTER TABLE `fixed_expenses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -723,7 +890,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `purchases_invoices`
 --
 ALTER TABLE `purchases_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -735,19 +902,19 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `simplified_invoices`
 --
 ALTER TABLE `simplified_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `simplified_invoice_elements`
 --
 ALTER TABLE `simplified_invoice_elements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `simplified_payments`
 --
 ALTER TABLE `simplified_payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `simplified_returns`
@@ -759,7 +926,7 @@ ALTER TABLE `simplified_returns`
 -- AUTO_INCREMENT for table `supervisors`
 --
 ALTER TABLE `supervisors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tax_invoices`
@@ -771,23 +938,43 @@ ALTER TABLE `tax_invoices`
 -- AUTO_INCREMENT for table `tax_invoice_elements`
 --
 ALTER TABLE `tax_invoice_elements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tax_payments`
 --
 ALTER TABLE `tax_payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tax_returns`
 --
 ALTER TABLE `tax_returns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `employees`
+--
+ALTER TABLE `employees`
+  ADD CONSTRAINT `branch_id_54` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `expenses`
+--
+ALTER TABLE `expenses`
+  ADD CONSTRAINT `branch_id_56` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fixed_id_56` FOREIGN KEY (`fixed_id`) REFERENCES `fixed_expenses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `supervisor_id_56` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `fixed_expenses`
+--
+ALTER TABLE `fixed_expenses`
+  ADD CONSTRAINT `supervisor_id_55` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `model_has_permissions`
@@ -802,6 +989,14 @@ ALTER TABLE `model_has_roles`
   ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `purchases_invoices`
+--
+ALTER TABLE `purchases_invoices`
+  ADD CONSTRAINT `branch_id_90` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_id_90` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `supervisor_id_90` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `role_has_permissions`
 --
 ALTER TABLE `role_has_permissions`
@@ -813,6 +1008,7 @@ ALTER TABLE `role_has_permissions`
 --
 ALTER TABLE `simplified_invoices`
   ADD CONSTRAINT `branch_id_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `supervisor_id` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -833,6 +1029,7 @@ ALTER TABLE `simplified_payments`
 --
 ALTER TABLE `simplified_returns`
   ADD CONSTRAINT `branch_id_9` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_id_2` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `simplified_id_9` FOREIGN KEY (`simplified_id`) REFERENCES `simplified_invoices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `supervisor_id_9` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -847,6 +1044,7 @@ ALTER TABLE `supervisors`
 --
 ALTER TABLE `tax_invoices`
   ADD CONSTRAINT `branch_id_22` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_id_3` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `supervisor_id_22` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -867,6 +1065,7 @@ ALTER TABLE `tax_payments`
 --
 ALTER TABLE `tax_returns`
   ADD CONSTRAINT `branch_id_10` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `employee_id_4` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `supervisor_id_10` FOREIGN KEY (`supervisor_id`) REFERENCES `supervisors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tax_id_10` FOREIGN KEY (`tax_id`) REFERENCES `tax_invoices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;

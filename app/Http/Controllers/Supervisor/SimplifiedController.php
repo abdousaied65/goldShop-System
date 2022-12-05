@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Supervisor;
 use App\Exports\SimplifiedExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\SimplifiedInvoice;
 use App\Models\SimplifiedInvoiceElement;
 use App\Models\SimplifiedPayment;
-use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -18,15 +18,13 @@ class SimplifiedController extends Controller
 {
     public function index(Request $request)
     {
-        $auth_id = Auth::user()->id;
-        if(Auth::user()->role_name == "مدير النظام"){
-            $data = SimplifiedInvoice::where('status','done')->get();
-        }
-        else{
-            $data = SimplifiedInvoice::where('supervisor_id',$auth_id)->where('status','done')->get();
+        if (empty(Auth::user()->branch_id)) {
+            $data = SimplifiedInvoice::where('status', 'done')->get();
+        } else {
+            $data = SimplifiedInvoice::where('branch_id', Auth::user()->branch_id)->where('status', 'done')->get();
         }
         $branches = Branch::all();
-        return view('supervisor.simplified.index', compact('data','branches'));
+        return view('supervisor.simplified.index', compact('data', 'branches'));
     }
 
     public function search(Request $request)
@@ -34,11 +32,11 @@ class SimplifiedController extends Controller
         $branch_id = $request->branch_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $data = SimplifiedInvoice::where('branch_id',$branch_id)->where('status','done')
+        $data = SimplifiedInvoice::where('branch_id', $branch_id)->where('status', 'done')
             ->whereBetween('date', [$from_date, $to_date])
             ->get();
         $branches = Branch::all();
-        return view('supervisor.simplified.index', compact('data','branch_id','from_date','to_date','branches'));
+        return view('supervisor.simplified.index', compact('data', 'branch_id', 'from_date', 'to_date', 'branches'));
     }
 
     public function create()
@@ -60,16 +58,27 @@ class SimplifiedController extends Controller
         } else {
             $open_invoice = "";
         }
-        return view('supervisor.simplified.create', compact('products', 'open_invoice', 'unified_serial_number'));
+        $branches = Branch::all();
+        $employees = Employee::all();
+        return view('supervisor.simplified.create',
+            compact('products', 'branches', 'employees', 'open_invoice', 'unified_serial_number'));
+    }
+
+    public function edit($id)
+    {
+        $open_invoice = SimplifiedInvoice::findOrFail($id);
+        $unified_serial_number = $open_invoice->unified_serial_number;
+        $products = Product::all();
+        $branches = Branch::all();
+        $employees = Employee::all();
+        return view('supervisor.simplified.edit',
+            compact('products', 'branches', 'employees', 'open_invoice', 'unified_serial_number'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $product_id = $request->product_id;
         $open_invoice = SimplifiedInvoice::where('supervisor_id', $supervisor_id)
             ->where('status', 'open')
@@ -222,7 +231,8 @@ class SimplifiedController extends Controller
         }
     }
 
-    public function export_simplified_excel ()
+
+    public function export_simplified_excel()
     {
         return Excel::download(new SimplifiedExport(), 'كل الفواتير الضريبية المبسطة.xlsx');
     }
@@ -242,6 +252,96 @@ class SimplifiedController extends Controller
         }
     }
 
+    public function get_branch_employees(Request $request)
+    {
+        $branch_id = $request->branch_id;
+        if ($branch_id == "all"){
+            $branch_employees = Employee::all();
+        }
+        else{
+            $branch = Branch::FindOrFail($branch_id);
+            $branch_employees = $branch->employees;
+        }
+        echo '<option value=""></option>';
+        foreach ($branch_employees as $employee) {
+            echo "<option value='" . $employee->id . "'>" . $employee->name . "</option>";
+        }
+    }
 
+    public function update_simplified(Request $request)
+    {
+        $simplified_id = $request->simplified_id;
+        $payment_method = $request->payment_method;
+        $date = $request->date;
+        $time = $request->time;
+        $branch_id = $request->branch_id;
+        $employee_id = $request->employee_id;
+        $simplified = SimplifiedInvoice::FindOrFail($simplified_id);
+        $payments = $simplified->payments;
+        foreach ($payments as $payment) {
+            $payment->delete();
+        }
+        if ($payment_method == "cash" || $payment_method == "visa") {
+            $payment = SimplifiedPayment::create([
+                'simplified_id' => $simplified->id,
+                'amount' => $simplified->final_total,
+                'payment_method' => $payment_method,
+            ]);
+            if ($payment_method == "cash") {
+                $simplified->update([
+                    'status' => 'done',
+
+                    'date' => $date,
+                    'time' => $time,
+                    'branch_id' => $branch_id,
+                    'employee_id' => $employee_id,
+
+                    'cash_amount' => $simplified->final_total,
+                    'visa_amount' => null,
+                    'payment_method' => 'cash'
+                ]);
+            } elseif ($payment_method == "visa") {
+                $simplified->update([
+                    'status' => 'done',
+                    'date' => $date,
+                    'time' => $time,
+                    'branch_id' => $branch_id,
+                    'employee_id' => $employee_id,
+                    'visa_amount' => $simplified->final_total,
+                    'cash_amount' => null,
+                    'payment_method' => 'visa'
+                ]);
+            }
+        } else {
+            $cash_amount = $request->cash_amount;
+            $visa_amount = $request->visa_amount;
+            $payment = SimplifiedPayment::create([
+                'simplified_id' => $simplified->id,
+                'amount' => $cash_amount,
+                'payment_method' => "cash",
+            ]);
+            $payment = SimplifiedPayment::create([
+                'simplified_id' => $simplified->id,
+                'amount' => $visa_amount,
+                'payment_method' => "visa",
+            ]);
+            $simplified->update([
+                'status' => 'done',
+                'date' => $date,
+                'time' => $time,
+                'branch_id' => $branch_id,
+                'employee_id' => $employee_id,
+                'cash_amount' => $cash_amount,
+                'visa_amount' => $visa_amount,
+                'payment_method' => 'mixed'
+            ]);
+        }
+    }
+
+    public function redirector()
+    {
+        return redirect()->route('supervisor.simplified.index')
+            ->with('success', 'تم تعديل الفاتورة بنجاح');
+    }
 
 }

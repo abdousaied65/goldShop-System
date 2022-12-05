@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Supervisor;
 use App\Exports\TaxExport;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\TaxInvoice;
 use App\Models\TaxInvoiceElement;
 use App\Models\TaxPayment;
-use App\Models\Supervisor;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -18,15 +18,13 @@ class TaxController extends Controller
 {
     public function index(Request $request)
     {
-        $auth_id = Auth::user()->id;
-        if(Auth::user()->role_name == "مدير النظام"){
-            $data = TaxInvoice::where('status','done')->get();
-        }
-        else{
-            $data = TaxInvoice::where('supervisor_id',$auth_id)->where('status','done')->get();
+        if (empty(Auth::user()->branch_id)) {
+            $data = TaxInvoice::where('status', 'done')->get();
+        } else {
+            $data = TaxInvoice::where('branch_id', Auth::user()->branch_id)->where('status', 'done')->get();
         }
         $branches = Branch::all();
-        return view('supervisor.tax.index', compact('data','branches'));
+        return view('supervisor.tax.index', compact('data', 'branches'));
     }
 
     public function search(Request $request)
@@ -34,11 +32,11 @@ class TaxController extends Controller
         $branch_id = $request->branch_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $data = TaxInvoice::where('branch_id',$branch_id)->where('status','done')
+        $data = TaxInvoice::where('branch_id', $branch_id)->where('status', 'done')
             ->whereBetween('date', [$from_date, $to_date])
             ->get();
         $branches = Branch::all();
-        return view('supervisor.tax.index', compact('data','branch_id','from_date','to_date','branches'));
+        return view('supervisor.tax.index', compact('data', 'branch_id', 'from_date', 'to_date', 'branches'));
     }
 
     public function create()
@@ -60,16 +58,16 @@ class TaxController extends Controller
         } else {
             $open_invoice = "";
         }
-        return view('supervisor.tax.create', compact('products', 'open_invoice', 'unified_serial_number'));
+        $branches = Branch::all();
+        $employees = Employee::all();
+
+        return view('supervisor.tax.create', compact('products', 'branches', 'employees', 'open_invoice', 'unified_serial_number'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
         $supervisor_id = Auth::user()->id;
-        $supervisor = Supervisor::FindOrFail($supervisor_id);
-        $branch_id = $supervisor->branch_id;
-        $data['branch_id'] = $branch_id;
         $product_id = $request->product_id;
         $open_invoice = TaxInvoice::where('supervisor_id', $supervisor_id)
             ->where('status', 'open')
@@ -83,7 +81,6 @@ class TaxController extends Controller
         $element = TaxInvoiceElement::where('product_id', $product_id)
             ->where('tax_id', $open_invoice->id)
             ->first();
-        // 'weight','karat','count','total','gram_price','amount','tax'
         $data['product_id'] = $product_id;
 
         $product = Product::FindOrFail($product_id);
@@ -222,7 +219,7 @@ class TaxController extends Controller
         }
     }
 
-    public function export_tax_excel ()
+    public function export_tax_excel()
     {
         return Excel::download(new TaxExport(), 'كل الفواتير الضريبية للشركات والمؤسسات.xlsx');
     }
@@ -242,6 +239,98 @@ class TaxController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $open_invoice = TaxInvoice::findOrFail($id);
+        $unified_serial_number = $open_invoice->unified_serial_number;
+        $products = Product::all();
+        $branches = Branch::all();
+        $employees = Employee::all();
+        return view('supervisor.tax.edit',
+            compact('products', 'branches', 'employees', 'open_invoice', 'unified_serial_number'));
+    }
 
+    public function update_tax(Request $request)
+    {
+        $tax_id = $request->tax_id;
+        $payment_method = $request->payment_method;
+        $date = $request->date;
+        $time = $request->time;
+        $company_name = $request->company_name;
+        $company_tax_number = $request->company_tax_number;
+        $branch_id = $request->branch_id;
+        $employee_id = $request->employee_id;
+        $tax = TaxInvoice::FindOrFail($tax_id);
+        $payments = $tax->payments;
+        foreach ($payments as $payment) {
+            $payment->delete();
+        }
+        if ($payment_method == "cash" || $payment_method == "visa") {
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
+                'amount' => $tax->final_total,
+                'payment_method' => $payment_method,
+            ]);
+            if ($payment_method == "cash") {
+                $tax->update([
+                    'status' => 'done',
+                    'company_name' => $company_name,
+                    'company_tax_number' => $company_tax_number,
+                    'date' => $date,
+                    'time' => $time,
+                    'branch_id' => $branch_id,
+                    'employee_id' => $employee_id,
+                    'cash_amount' => $tax->final_total,
+                    'visa_amount' => null,
+                    'payment_method' => 'cash'
+                ]);
+            } elseif ($payment_method == "visa") {
+                $tax->update([
+                    'status' => 'done',
+                    'date' => $date,
+                    'company_name' => $company_name,
+                    'company_tax_number' => $company_tax_number,
+                    'time' => $time,
+                    'branch_id' => $branch_id,
+                    'employee_id' => $employee_id,
+                    'visa_amount' => $tax->final_total,
+                    'cash_amount' => null,
+                    'payment_method' => 'visa'
+                ]);
+            }
+        } else {
+            $cash_amount = $request->cash_amount;
+            $visa_amount = $request->visa_amount;
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
+                'amount' => $cash_amount,
+                'payment_method' => "cash",
+            ]);
+            $payment = TaxPayment::create([
+                'tax_id' => $tax->id,
+                'amount' => $visa_amount,
+                'payment_method' => "visa",
+            ]);
+            $tax->update([
+                'status' => 'done',
+                'date' => $date,
+                'company_name' => $company_name,
+                'company_tax_number' => $company_tax_number,
+                'time' => $time,
+                'branch_id' => $branch_id,
+                'employee_id' => $employee_id,
+                'cash_amount' => $cash_amount,
+                'visa_amount' => $visa_amount,
+                'payment_method' => 'mixed'
+            ]);
+        }
+    }
+
+    public function redirector($id)
+    {
+
+        return redirect()->route('supervisor.tax.index')
+            ->with('success', 'تم تعديل الفاتورة بنجاح');
+    }
 
 }

@@ -104,8 +104,21 @@
                                     <label class="d-block">
                                         اسم الفرع
                                     </label>
-                                    <input class="form-control" type="text" readonly
-                                           value="{{Auth::user()->branch->branch_name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required class="js-example-basic-single w-100" name="branch_id" id="branch_id">
+                                            <option value=""></option>
+                                            @foreach($branches as $branch)
+                                                <option value="{{$branch->id}}">{{$branch->branch_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input class="form-control" type="text" readonly
+                                               value="{{Auth::user()->branch->branch_name}}"/>
+                                        <input required class="form-control" type="hidden" id="branch_id"
+                                               name="branch_id"
+                                               value="{{Auth::user()->branch_id}}"/>
+                                    @endif
+
                                 </div>
                             </div>
                             <div class="col-lg-4 pull-right">
@@ -113,7 +126,27 @@
                                     <label class="d-block">
                                         الموظف
                                     </label>
-                                    <input class="form-control" type="text" readonly value="{{Auth::user()->name}}"/>
+                                    @if(empty(Auth::user()->branch_id))
+                                        <select required class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($employees as $employee)
+                                                <option value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <?php
+                                        $branch = \App\Models\Branch::FindOrFail(Auth::user()->branch_id);
+                                        $branch_employees = $branch->employees;
+                                        ?>
+                                        <select required class="js-example-basic-single w-100" name="employee_id"
+                                                id="employee_id">
+                                            <option value=""></option>
+                                            @foreach($branch_employees as $employee)
+                                                <option value="{{$employee->id}}">{{$employee->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-lg-4 pull-right">
@@ -158,7 +191,16 @@
                 }, function (data) {
                     $('.details').html(data);
                 });
+            });
 
+            $('#branch_id').on('change', function () {
+                let branch_id = $(this).val();
+                $.post("{{route('get.branch.employees')}}", {
+                    branch_id: branch_id,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    $('#employee_id').html(data).trigger('change');
+                });
             });
         });
     </script>

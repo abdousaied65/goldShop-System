@@ -29,7 +29,7 @@
                     <td>
                         @if(empty($supervisor->profile_pic))
                             <img data-toggle="modal" href="#modaldemo9"
-                                 src="{{asset('assets/img/guest.png')}}"
+                                 src="{{asset('admin-assets/img/guest.png')}}"
                                  style="width: 70px;cursor: pointer; height: 70px;border-radius: 100%; padding: 3px; border: 1px solid #aaa;">
                         @else
                             <img data-toggle="modal" href="#modaldemo9"
