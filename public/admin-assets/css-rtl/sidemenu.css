@@ -31,7 +31,7 @@
     }
 
     .side-header {
-        width: 280px;
+        width: 240px;
         left: 0;
         right: 0;
         top: 0;
@@ -46,7 +46,7 @@
     }
 
     .app .app-sidebar {
-        right: -280px;
+        right: -240px;
     }
 
     .app .app-sidebar__overlay {
@@ -98,7 +98,7 @@
 
 @media (min-width: 768px) {
     .app-content {
-        margin-right: 280px;
+        margin-right: 240px;
     }
 
     .app.sidenav-toggled .avatar-xl {
@@ -241,6 +241,7 @@
 }
 
 .app-sidebar__toggle {
+    color: #fff;
     -webkit-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
@@ -255,6 +256,7 @@
     height: 40px;
     width: 40px;
     background: transparent;
+    margin: auto;
     text-align: center;
     border-radius: 50%;
 }
@@ -431,7 +433,7 @@
     bottom: 0;
     right: 0;
     color: #14112d;
-    width: 280px;
+    width: 240px;
     max-height: 100%;
     z-index: 1000;
     background: #fff;
@@ -537,7 +539,7 @@
 }
 
 .side-menu .slide .side-menu__item {
-    /*padding: 0 20px 0 22px;*/
+    padding: 0 20px 0 22px;
     margin: 0;
     border-radius: 0;
 }
@@ -637,12 +639,16 @@ slide is-expanded side-menu__item {
     color: #0162e8 !important;
 }
 
+.slide-menu .sub-slide {
+    margin: 5px 12px 5px 6px;
+}
+
 .slide-menu .sub-slide-menu {
-    padding: 0 3px;
+    padding: 0 23px;
 }
 
 .sub-slide-menu li {
-    margin: 2px 0;
+    margin: 7px 0;
 }
 
 .sub-slide .sub-angle {
@@ -662,20 +668,21 @@ slide is-expanded side-menu__item {
 }
 
 .slide.is-expanded .sub-side-menu__item:before {
-    /*content: "\e92f";*/
+    content: "\e92f";
     font-family: 'feather' !important;
     position: absolute;
     top: 9px;
-    right: 23px;
+    left: 23px;
     font-size: 9px;
 }
 
 .side-menu .side-menu__icon {
     font-size: 23px;
-    /*margin-left: 14px;*/
+    line-height: 0;
+    margin-left: 14px;
     width: 22px;
     height: 22px;
-    line-height: 20px;
+    line-height: 34px;
     border-radius: 3px;
     text-align: center;
     color: #a8b1c7;
@@ -1261,10 +1268,7 @@ slide is-expanded side-menu__item {
 }
 
 .sub-slide.is-expanded .sub-side-menu__item {
-
-}
-.sub-slide.is-expanded .sub-side-menu__item.active {
-    color:#0661e0!important;
+    color: #0162e8;
 }
 
 .slide-menu .sub-slide.is-expanded {
@@ -1275,8 +1279,8 @@ slide is-expanded side-menu__item {
 }
 
 .sub-side-menu__item {
-    width: 100% !important;
-    padding-right: 56px !important;
+    padding-left: 45px !important;
+    padding-right: 20px !important;
     height: 30px !important;
 }
 
@@ -1367,7 +1371,7 @@ slide is-expanded side-menu__item {
 @media (min-width: 768px) {
     .app.sidebar-mini.sidenav-toggled-open .app-sidebar {
         right: 0;
-        width: 280px;
+        width: 240px;
     }
 
     .app.sidebar-mini.sidenav-toggled-open .side-menu__item {
@@ -1443,7 +1447,7 @@ slide is-expanded side-menu__item {
     }
 
     .app.sidebar-mini.sidenav-toggled-open .main-sidebar-header {
-        width: 280px;
+        width: 240px;
     }
 
     .app.sidebar-mini.sidenav-toggled.sidenav-toggled-open .logo-icon {

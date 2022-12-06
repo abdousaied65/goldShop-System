@@ -37,14 +37,14 @@ class HomeController extends Controller
     {
         $auth_id = Auth::user()->id;
         $user = Supervisor::findOrFail($auth_id);
-        $roles = Role::where('guard_name','supervisor-web')->get();
+        $roles = Role::where('guard_name', 'supervisor-web')->get();
         $supervisors = Supervisor::all();
         $branches = Branch::all();
         $products = Product::all();
         $employees = Employee::all();
 
 
-        if(empty(Auth::user()->branch_id)){
+        if (empty(Auth::user()->branch_id)) {
             $last_simplified_invoices = SimplifiedInvoice::where('status', 'done')
                 ->latest()->paginate(5);
             $simplified_invoices = SimplifiedInvoice::where('status', 'done')
@@ -57,8 +57,7 @@ class HomeController extends Controller
                 ->get();
             $purchases_invoices = PurchaseInvoice::all();
             $expenses = Expense::all();
-        }
-        else{
+        } else {
             $branch_id = Auth::user()->branch_id;
             $last_simplified_invoices = SimplifiedInvoice::where('status', 'done')
                 ->where('branch_id', $branch_id)
@@ -80,12 +79,69 @@ class HomeController extends Controller
         }
         $fixed_expenses = FixedExpense::all();
 
-        return view('supervisor.home',compact('user','roles','supervisors','branches',
-            'products','employees','simplified_invoices','tax_invoices','simplified_return_invoices',
-            'tax_return_invoices','purchases_invoices','last_simplified_invoices','fixed_expenses','expenses'));
+        return view('supervisor.home', compact('user', 'roles', 'supervisors', 'branches',
+            'products', 'employees', 'simplified_invoices', 'tax_invoices', 'simplified_return_invoices',
+            'tax_return_invoices', 'purchases_invoices', 'last_simplified_invoices', 'fixed_expenses', 'expenses'));
     }
-    public function lock_screen(){
+
+    public function lock_screen()
+    {
         return view('supervisor.lockscreen');
+    }
+
+    public function get_sales_details(Request $request)
+    {
+        $today = date('Y-m-d');
+        $branches = Branch::all();
+        echo '
+        <div class="results row mt-1 mb-3 p-3">
+
+            <table class="table table-condensed table-bordered text-center table-striped table-hover">
+                <thead>
+
+                <tr>
+                    <th style="font-size: 16px!important;">
+                        اسم الفرع
+                    </th>
+                    <th style="font-size: 16px!important;">
+                        اجمالى المبيعات
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color:white!important;font-size:16px!important;">
+                        '.$today.'
+                    </td>
+                </tr>
+                </thead>
+                <tbody>';
+        foreach($branches as $branch){
+            $simplified_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
+                ->where('status', 'done')
+                ->where('branch_id', $branch->id)
+                ->get();
+            $tax_invoices = \App\Models\TaxInvoice::where('date', $today)
+                ->where('status', 'done')
+                ->where('branch_id', $branch->id)
+                ->get();
+            $sum_final_total = 0;
+            foreach ($simplified_invoices as $invoice) {
+                $sum_final_total = round(($sum_final_total + $invoice->final_total), 2);
+            }
+            foreach ($tax_invoices as $invoice) {
+                $sum_final_total = round(($sum_final_total + $invoice->final_total), 2);
+            }
+            echo '
+                    <tr>
+                        <td class="tx-16">
+                            '.$branch->branch_name.'
+                        </td>
+                        <td class="tx-16">'.$sum_final_total.'</td>
+                    </tr>';
+        }
+        echo '
+                </tbody>
+            </table>
+        </div>';
     }
 
 }

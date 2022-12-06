@@ -8,7 +8,7 @@
     <meta name="Author" content="مجوهرات العقاب">
     <link rel="icon" href="{{asset('admin-assets/img/logo.png')}}" type="image/png">
     <meta name="Keywords" content=""/>
-    @include('supervisor.layouts.head')
+    @include('site.layouts.head')
 
     <style type="text/css" media="print">
         @media print {
@@ -116,17 +116,17 @@
 </head>
 
 <body class="main-body app sidebar-mini">
-@include('supervisor.layouts.main-sidebar')
+@include('site.layouts.main-sidebar')
 <!-- main-content -->
 <div class="main-content app-content">
-@include('supervisor.layouts.main-header')
+@include('site.layouts.main-header')
 <!-- container -->
     <div class="container-fluid">
         @yield('page-header')
         @yield('content')
     </div>
 </div>
-@include('supervisor.layouts.footer')
-@include('supervisor.layouts.footer-scripts')
+@include('site.layouts.footer')
+@include('site.layouts.footer-scripts')
 </body>
 </html>

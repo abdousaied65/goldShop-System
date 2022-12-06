@@ -36,65 +36,70 @@
             </h2>
         </div>
         @if(empty(Auth::user()->branch_id))
-            {{--             super admin--}}
             <?php
             $today = date('Y-m-d');
-            $simplified_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
+            $today_simplified_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
                 ->where('status', 'done')
                 ->get();
-            $tax_invoices = \App\Models\TaxInvoice::where('date', $today)
+            $today_tax_invoices = \App\Models\TaxInvoice::where('date', $today)
                 ->where('status', 'done')
                 ->get();
             $sum_final_total = 0;
-            foreach ($simplified_invoices as $simplified_invoice) {
+            foreach ($today_simplified_invoices as $simplified_invoice) {
                 $sum_final_total = round(($sum_final_total + $simplified_invoice->final_total), 2);
             }
-            foreach ($tax_invoices as $tax_invoice) {
+            foreach ($today_tax_invoices as $tax_invoice) {
                 $sum_final_total = round(($sum_final_total + $tax_invoice->final_total), 2);
             }
 
-            $simplified_return_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
+            $today_simplified_return_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
                 ->where('status', 'return')
                 ->get();
-            $tax_return_invoices = \App\Models\TaxInvoice::where('date', $today)
+            $today_tax_return_invoices = \App\Models\TaxInvoice::where('date', $today)
                 ->where('status', 'return')
                 ->get();
 
             $sum_return_final_total = 0;
-            foreach ($simplified_return_invoices as $invoice) {
+            foreach ($today_simplified_return_invoices as $invoice) {
                 $sum_return_final_total = round(($sum_return_final_total + $invoice->final_total), 2);
             }
-            foreach ($tax_return_invoices as $invoice) {
+            foreach ($today_tax_return_invoices as $invoice) {
                 $sum_return_final_total = round(($sum_return_final_total + $invoice->final_total), 2);
             }
 
-            $purchases_invoices = \App\Models\PurchaseInvoice::where('date', $today)
+            $today_purchases_invoices = \App\Models\PurchaseInvoice::where('date', $today)
                 ->get();
             $sum_purchases_final_total = 0;
-            foreach ($purchases_invoices as $invoice) {
+            foreach ($today_purchases_invoices as $invoice) {
                 $sum_purchases_final_total = round(($sum_purchases_final_total + $invoice->final_total), 2);
             }
 
             ?>
             <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
                 <a href="javascript:;">
-                    <div class="card overflow-hidden sales-card bg-secondary-gradient">
-                        <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
-                            <div class="">
-                                <h3 class="mb-3 text-white">اجمالى مبيعات اليوم</h3>
-                            </div>
-                            <div class="pb-0 mt-0">
-                                <div class="d-flex">
-                                    <div class="">
-                                        <h1 class="tx-30 font-weight-bold mb-1 text-white">{{$sum_final_total}}</h1>
+                    <a class="get_details" data-toggle="modal"
+                       href="#modaldemo8">
+                        <div class="card overflow-hidden sales-card bg-secondary-gradient">
+
+                            <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
+
+                                <div class="">
+                                    <h3 class="mb-3 text-white">اجمالى مبيعات اليوم</h3>
+                                </div>
+                                <div class="pb-0 mt-0">
+                                    <div class="d-flex">
+                                        <div class="">
+                                            <h1 class="tx-30 font-weight-bold mb-1 text-white">{{$sum_final_total}}</h1>
+                                        </div>
+                                        <span class="float-right my-auto mr-auto">
+                                            <i class="fas fa-money-bill fa-2x text-white"></i>
+                                        </span>
                                     </div>
-                                    <span class="float-right my-auto mr-auto">
-                                <i class="fas fa-money-bill fa-2x text-white"></i>
-                            </span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
+
                 </a>
             </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
@@ -146,44 +151,44 @@
             <?php
             $branch_id = Auth::user()->branch_id;
             $today = date('Y-m-d');
-            $simplified_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
+            $today_simplified_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
                 ->where('status', 'done')
                 ->where('branch_id', $branch_id)
                 ->get();
-            $tax_invoices = \App\Models\TaxInvoice::where('date', $today)
+            $today_tax_invoices = \App\Models\TaxInvoice::where('date', $today)
                 ->where('status', 'done')
                 ->where('branch_id', $branch_id)
                 ->get();
             $sum_final_total = 0;
-            foreach ($simplified_invoices as $simplified_invoice) {
+            foreach ($today_simplified_invoices as $simplified_invoice) {
                 $sum_final_total = round(($sum_final_total + $simplified_invoice->final_total), 2);
             }
-            foreach ($tax_invoices as $tax_invoice) {
+            foreach ($today_tax_invoices as $tax_invoice) {
                 $sum_final_total = round(($sum_final_total + $tax_invoice->final_total), 2);
             }
 
-            $simplified_return_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
+            $today_simplified_return_invoices = \App\Models\SimplifiedInvoice::where('date', $today)
                 ->where('status', 'return')
                 ->where('branch_id', $branch_id)
                 ->get();
-            $tax_return_invoices = \App\Models\TaxInvoice::where('date', $today)
+            $today_tax_return_invoices = \App\Models\TaxInvoice::where('date', $today)
                 ->where('status', 'return')
                 ->where('branch_id', $branch_id)
                 ->get();
 
             $sum_return_final_total = 0;
-            foreach ($simplified_return_invoices as $invoice) {
+            foreach ($today_simplified_return_invoices as $invoice) {
                 $sum_return_final_total = round(($sum_return_final_total + $invoice->final_total), 2);
             }
-            foreach ($tax_return_invoices as $invoice) {
+            foreach ($today_tax_return_invoices as $invoice) {
                 $sum_return_final_total = round(($sum_return_final_total + $invoice->final_total), 2);
             }
 
-            $purchases_invoices = \App\Models\PurchaseInvoice::where('date', $today)
+            $today_purchases_invoices = \App\Models\PurchaseInvoice::where('date', $today)
                 ->where('branch_id', $branch_id)
                 ->get();
             $sum_purchases_final_total = 0;
-            foreach ($purchases_invoices as $invoice) {
+            foreach ($today_purchases_invoices as $invoice) {
                 $sum_purchases_final_total = round(($sum_purchases_final_total + $invoice->final_total), 2);
             }
             ?>
@@ -328,6 +333,7 @@
             </div>
         </div>
     </div>
+    @if(Auth::user()->role_name == "مدير النظام" || empty(Auth::user()->branch_id))
     <div class="row row-sm">
         <div class="col-lg-8">
             <div class="card">
@@ -343,9 +349,12 @@
                 $sales_count = $simplified_invoices->count() + $tax_invoices->count();
                 $return_count = $simplified_return_invoices->count() + $tax_return_invoices->count();
                 $total_count = $return_count + $sales_count;
-                $ratio = ($return_count / $total_count) * 100;
-                $ratio = round($ratio, 2);
-
+                if ($total_count == 0) {
+                    $ratio = 0;
+                } else {
+                    $ratio = ($return_count / $total_count) * 100;
+                    $ratio = round($ratio, 2);
+                }
                 $sum_sales_final_total = 0;
                 foreach ($simplified_invoices as $invoice) {
                     $sum_sales_final_total = round(($sum_sales_final_total + $invoice->final_total), 2);
@@ -463,8 +472,7 @@
             </div>
         </div>
     </div>
-
-
+    @endif
     <div class="row">
         <div class="col-lg-12 text-right mb-4">
             <h2 class="mt-2">
@@ -759,9 +767,30 @@
                     </div>
                 </a>
             </div>
-        @endcan
+    @endcan
 
 
+    <!-- Modal effects -->
+
+        <div class="modal" id="modaldemo8">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content modal-content-demo">
+                    <div class="modal-header text-center">
+                        <h6 class="modal-title w-100" style="font-family: 'Almarai'; ">
+                            تفاصيل مبيعات اليوم لكل فرع على حدة
+                        </h6>
+                        <button aria-label="Close" class="close"
+                                data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body details">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- row closed -->
     <hr>
@@ -769,6 +798,12 @@
 <script src="{{asset('admin-assets/js/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-
+        $('.get_details').on('click', function () {
+            $.post("{{route('get.sales.details')}}", {
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('.details').html(data);
+            });
+        });
     });
 </script>

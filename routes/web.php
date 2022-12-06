@@ -7,6 +7,29 @@ Route::get('/', function () {
     return view('supervisor.auth.login');
 })->name('index');
 
+// simplified Routes
+Route::resource('simplified', 'SimplifiedController')->names([
+    'index' => 'simplified.index',
+    'create' => 'simplified.create',
+    'destroy' => 'simplified.destroy',
+    'store' => 'simplified.store',
+    'edit' => 'simplified.edit',
+    'update' => 'simplified.update',
+]);
+
+Route::post('/export-simplified', 'SimplifiedController@export_simplified')->name('export.simplified');
+
+Route::post('delete-element-simplified', 'SimplifiedController@delete_element')->name('delete.element');
+Route::post('delete-simplified', 'SimplifiedController@delete_simplified')->name('delete');
+Route::post('save-simplified', 'SimplifiedController@save_simplified')->name('save');
+Route::post('update-simplified', 'SimplifiedController@update_simplified')->name('update');
+
+Route::get('print-simplified/{id?}', 'SimplifiedController@print')->name('simplified.print');
+Route::post('search-simplified', 'SimplifiedController@search')->name('simplified.search');
+
+Route::post('get-branch-employees', 'SimplifiedController@get_branch_employees')
+    ->name('get.employees');
+
 // *********  Supervisor Routes ******** //
 Route::group(
     [
@@ -351,11 +374,12 @@ Route::group(
     Route::post('/declaration-report5-print','ReportController@declaration_report5_print')->name('declaration.report5.print');
     Route::post('/declaration-report5-post','ReportController@declaration_report5_post')->name('declaration.report5.post');
 
-
     Route::get('/declaration-report6-get','ReportController@declaration_report6_get')->name('declaration.report6.get');
     Route::post('/declaration-report6-print','ReportController@declaration_report6_print')->name('declaration.report6.print');
     Route::post('/declaration-report6-post','ReportController@declaration_report6_post')->name('declaration.report6.post');
 
+    Route::get('/reports','ReportController@reports')->name('reports');
+    Route::post('/get-sales-details','HomeController@get_sales_details')->name('get.sales.details');
 
 
 

@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    public function reports()
+    {
+        return view('supervisor.reports.reports');
+    }
+
     public function simplified_report1_get()
     {
         $branches = Branch::all();
