@@ -38,26 +38,50 @@
                     <span class="side-menu__label"> الرئيسية </span></a>
             </li>
 
-                <li class="slide">
-                    <a class="side-menu__item" data-toggle="slide" href="#">
-                        <i class="fa fa-copy side-menu__icon"></i>
-                        <span class="side-menu__label">
+            <li class="slide">
+                <a class="side-menu__item" data-toggle="slide" href="#">
+                    <i class="fa fa-copy side-menu__icon"></i>
+                    <span class="side-menu__label">
                         الفواتير الضريبية المبسطة
                     </span><i class="angle fe fe-chevron-down"></i>
-                    </a>
-                    <ul class="slide-menu">
-                            <li>
-                                <a class="slide-item" href="{{ route('simplified.create') }}">
-                                    اضافة فاتورة ضريبية مبسطة
-                                </a>
-                            </li>
-                            <li>
-                                <a class="slide-item" href="{{ route('simplified.index') }}">
-                                    عرض الفواتير الضريبية المبسطة
-                                </a>
-                            </li>
-                    </ul>
-                </li>
+                </a>
+                <ul class="slide-menu">
+                    <li>
+                        <a class="slide-item" href="{{ route('simplified.create') }}">
+                            اضافة فاتورة ضريبية مبسطة
+                        </a>
+                    </li>
+                    <li>
+                        <a class="slide-item" href="{{ route('simplified.index') }}">
+                            عرض الفواتير الضريبية المبسطة
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="slide">
+                <a class="side-menu__item" data-toggle="slide" href="#">
+                    <i class="fa fa-copy side-menu__icon"></i>
+                    <span class="side-menu__label">
+                        مرتجع الفواتير الضريبية المبسطة
+                    </span><i class="angle fe fe-chevron-down"></i>
+                </a>
+                <ul class="slide-menu">
+                    <li>
+                        <a class="slide-item" href="{{ route('simplified_return.create') }}">
+                            اضافة مرتجع فاتورة ضريبية مبسطة
+                        </a>
+                    </li>
+                    <li>
+                        <a class="slide-item" href="{{ route('simplified_return.index') }}">
+                            عرض مرتجع الفواتير الضريبية المبسطة
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
         </ul>
     </div>
 </aside>

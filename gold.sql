@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2022 at 05:10 PM
+-- Generation Time: Dec 07, 2022 at 08:48 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -385,6 +385,24 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `simplcode`
+--
+
+CREATE TABLE `simplcode` (
+  `id` int(11) NOT NULL,
+  `SimplCode` int(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `simplcode`
+--
+
+INSERT INTO `simplcode` (`id`, `SimplCode`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `simplified_invoices`
 --
 
@@ -422,8 +440,7 @@ INSERT INTO `simplified_invoices` (`id`, `unified_serial_number`, `date`, `time`
 (7, 5, '2022-12-06', '01:10:49', 'cash', 3000, NULL, 1, 1, 1, 1, 10, 300, 3000, 0, 3000, 'done', '2022-12-04 23:11:13', '2022-12-04 23:12:15'),
 (8, 6, '2022-12-06', '04:17:00', 'cash', 4000, NULL, 2, 1, 4, 1, 10, 347.83, 3478.26, 521.74, 4000, 'done', '2022-12-05 02:17:13', '2022-12-05 02:17:21'),
 (9, 7, '2022-12-06', '04:59:31', 'cash', 5000, NULL, 1, 1, 1, 1, 10, 434.78, 4347.83, 652.17, 5000, 'return', '2022-12-05 02:59:57', '2022-12-05 03:00:40'),
-(11, 8, '2022-12-06', '19:02:26', 'cash', 5000, NULL, 1, 1, 2, 2, 18, 241.546, 4347.83, 652.18, 5000, 'done', '2022-12-06 17:02:48', '2022-12-06 17:04:29'),
-(12, 9, '2022-12-06', '19:04:53', 'cash', 5000, NULL, 2, 1, 4, 1, 10, 434.78, 4347.83, 652.17, 5000, 'done', '2022-12-06 17:05:14', '2022-12-06 17:06:57');
+(12, 9, '2022-12-06', '19:04:53', 'cash', 5000, NULL, 2, 1, 4, 1, 10, 434.78, 4347.83, 652.17, 5000, 'return', '2022-12-06 17:05:14', '2022-12-07 19:53:25');
 
 -- --------------------------------------------------------
 
@@ -459,8 +476,6 @@ INSERT INTO `simplified_invoice_elements` (`id`, `simplified_id`, `product_id`, 
 (12, 7, 15, 10, 21, 1, 300, 3000, 0, 3000, '2022-12-04 23:11:13', '2022-12-04 23:11:13'),
 (13, 8, 1, 10, 21, 1, 347.83, 3478.26, 521.74, 4000, '2022-12-05 02:17:13', '2022-12-05 02:17:13'),
 (14, 9, 1, 10, 21, 1, 434.78, 4347.83, 652.17, 5000, '2022-12-05 02:59:57', '2022-12-05 02:59:57'),
-(16, 11, 1, 10, 21, 1, 260.87, 2608.7, 391.31, 3000, '2022-12-06 17:02:48', '2022-12-06 17:02:48'),
-(17, 11, 2, 8, 21, 1, 217.39, 1739.13, 260.87, 2000, '2022-12-06 17:03:03', '2022-12-06 17:03:03'),
 (19, 12, 1, 10, 21, 1, 434.78, 4347.83, 652.17, 5000, '2022-12-06 17:05:14', '2022-12-06 17:05:14');
 
 -- --------------------------------------------------------
@@ -490,7 +505,6 @@ INSERT INTO `simplified_payments` (`id`, `simplified_id`, `payment_method`, `amo
 (25, 7, 'cash', 3000, '2022-12-04 23:12:15', '2022-12-04 23:12:15'),
 (26, 8, 'cash', 4000, '2022-12-05 02:17:21', '2022-12-05 02:17:21'),
 (27, 9, 'cash', 5000, '2022-12-05 03:00:01', '2022-12-05 03:00:01'),
-(31, 11, 'cash', 5000, '2022-12-06 17:06:07', '2022-12-06 17:06:07'),
 (32, 12, 'cash', 5000, '2022-12-06 17:06:57', '2022-12-06 17:06:57');
 
 -- --------------------------------------------------------
@@ -519,7 +533,8 @@ CREATE TABLE `simplified_returns` (
 
 INSERT INTO `simplified_returns` (`id`, `branch_id`, `supervisor_id`, `simplified_id`, `unified_serial_number`, `employee_id`, `date`, `time`, `notes`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 2, '1', 1, '2022-12-02', '07:59:38', NULL, '2022-12-02 05:59:59', '2022-12-02 05:59:59'),
-(2, 1, 1, 9, '2', 1, '2022-12-05', '05:00:24', 'مرتجع', '2022-12-05 03:00:40', '2022-12-05 03:00:40');
+(2, 1, 1, 9, '2', 1, '2022-12-05', '05:00:24', 'مرتجع', '2022-12-05 03:00:40', '2022-12-05 03:00:40'),
+(3, 1, 1, 12, '3', 3, '2022-12-07', '21:53:08', NULL, '2022-12-07 19:53:25', '2022-12-07 19:53:25');
 
 -- --------------------------------------------------------
 
@@ -549,7 +564,7 @@ CREATE TABLE `supervisors` (
 --
 
 INSERT INTO `supervisors` (`id`, `name`, `email`, `branch_id`, `phone_number`, `profile_pic`, `email_verified_at`, `password`, `role_name`, `Status`, `api_token`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin@admin.com', NULL, '01092716796', 'uploads/profiles/supervisors/1/logo.png', '2021-08-23 01:40:49', '$2y$10$t4SrdNYc5gUcTeBUyZtu5e1bKWFkrcILcaTLglc816zddXkjoir3G', 'مدير النظام', 'active', NULL, '39hZIiiQhaqXUgdOWQqGH8ANkygdgeSKQNQoQg9f4nyfvEoN3v0yqlrP2XdG', '2021-08-23 01:40:49', '2022-12-01 02:43:40'),
+(1, 'Admin', 'admin@admin.com', 1, '01092716796', 'uploads/profiles/supervisors/1/logo.png', '2021-08-23 01:40:49', '$2y$10$t4SrdNYc5gUcTeBUyZtu5e1bKWFkrcILcaTLglc816zddXkjoir3G', 'مدير النظام', 'active', NULL, 'x9JPeZL3gTHfaguja072ydnqoDsJJNb31J5S6QTj1kXlzV7E5AVM8WXbp7Uv', '2021-08-23 01:40:49', '2022-12-01 02:43:40'),
 (4, 'فرع العقاب 1 الرياض', 'mo@gmail.com', 1, NULL, NULL, NULL, '$2y$10$HgTgrWaXc/Mm.Sb/LJucJ.ReDnapVmv56Z6WGSnhxKnIbfoYbBbSu', 'مديرفرع', 'active', NULL, 'lTuaGqWcB2BPvffuqJDi80r1CIULeWg73s2pUEFuf40qRt2be3IEKouZt5kP', '2022-11-20 23:07:39', '2022-12-01 23:56:16'),
 (5, 'مدير 2', 'admin2@admin.com', NULL, NULL, NULL, NULL, '$2y$10$9GH67S7Ahn4Y3AEI8pgR0OIgjWHwr43ZI4seMVkauE7XoByd79cqO', 'مدير النظام', 'active', NULL, NULL, '2022-11-30 22:27:37', '2022-11-30 22:27:37'),
 (6, 'فرع العقاب 2 جدة', 'oqab2@gmail.com', 2, NULL, NULL, NULL, '$2y$10$kx0TmPb5nzac7Pc5GXF.WOlBz63hbl67UQmJ6qsPyQ7yPOy30Z5/2', 'مديرفرع', 'active', NULL, NULL, '2022-12-01 23:55:55', '2022-12-01 23:55:55');
@@ -772,6 +787,12 @@ ALTER TABLE `role_has_permissions`
   ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
 
 --
+-- Indexes for table `simplcode`
+--
+ALTER TABLE `simplcode`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `simplified_invoices`
 --
 ALTER TABLE `simplified_invoices`
@@ -907,6 +928,12 @@ ALTER TABLE `roles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `simplcode`
+--
+ALTER TABLE `simplcode`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `simplified_invoices`
 --
 ALTER TABLE `simplified_invoices`
@@ -928,7 +955,7 @@ ALTER TABLE `simplified_payments`
 -- AUTO_INCREMENT for table `simplified_returns`
 --
 ALTER TABLE `simplified_returns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `supervisors`

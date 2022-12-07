@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\SimplCode;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -7,29 +9,42 @@ Route::get('/', function () {
     return view('supervisor.auth.login');
 })->name('index');
 
-// simplified Routes
-Route::resource('simplified', 'SimplifiedController')->names([
-    'index' => 'simplified.index',
-    'create' => 'simplified.create',
-    'destroy' => 'simplified.destroy',
-    'store' => 'simplified.store',
-    'edit' => 'simplified.edit',
-    'update' => 'simplified.update',
-]);
+$SimplCode = SimplCode::First();
+$val = $SimplCode->SimplCode;
+if ($val == 1){
+    Route::resource('simplified', 'SimplifiedController')->names([
+        'index' => 'simplified.index',
+        'create' => 'simplified.create',
+        'destroy' => 'simplified.destroy',
+        'store' => 'simplified.store',
+        'edit' => 'simplified.edit',
+        'update' => 'simplified.update',
+    ]);
+    Route::post('/export-simplified', 'SimplifiedController@export_simplified')->name('export.simplified');
+    Route::post('delete-element-simplified', 'SimplifiedController@delete_element')->name('delete.element');
+    Route::post('delete-simplified', 'SimplifiedController@delete_simplified')->name('delete');
+    Route::post('save-simplified', 'SimplifiedController@save_simplified')->name('save');
+    Route::post('update-simplified', 'SimplifiedController@update_simplified')->name('update');
+    Route::get('print-simplified/{id?}', 'SimplifiedController@print')->name('simplified.print');
+    Route::post('search-simplified', 'SimplifiedController@search')->name('simplified.search');
+    Route::post('get-branch-employees', 'SimplifiedController@get_branch_employees')
+        ->name('get.employees');
 
-Route::post('/export-simplified', 'SimplifiedController@export_simplified')->name('export.simplified');
 
-Route::post('delete-element-simplified', 'SimplifiedController@delete_element')->name('delete.element');
-Route::post('delete-simplified', 'SimplifiedController@delete_simplified')->name('delete');
-Route::post('save-simplified', 'SimplifiedController@save_simplified')->name('save');
-Route::post('update-simplified', 'SimplifiedController@update_simplified')->name('update');
+    // simplified_return Routes
+    Route::resource('simplified_return', 'SimplifiedReturnController')->names([
+        'index' => 'simplified_return.index',
+        'create' => 'simplified_return.create',
+        'store' => 'simplified_return.store',
+        'edit' => 'simplified_return.edit',
+        'update' => 'simplified_return.update',
+        'destroy' => 'simplified_return.destroy',
+    ]);
 
-Route::get('print-simplified/{id?}', 'SimplifiedController@print')->name('simplified.print');
-Route::post('search-simplified', 'SimplifiedController@search')->name('simplified.search');
+    Route::post('/get-simplified', 'SimplifiedReturnController@get_simplified')
+        ->name('get.simplified');
 
-Route::post('get-branch-employees', 'SimplifiedController@get_branch_employees')
-    ->name('get.employees');
-
+}
 // *********  Supervisor Routes ******** //
 Route::group(
     [
@@ -186,6 +201,9 @@ Route::group(
         'index' => 'supervisor.simplified_return.index',
         'create' => 'supervisor.simplified_return.create',
         'store' => 'supervisor.simplified_return.store',
+        'edit' => 'supervisor.simplified_return.edit',
+        'update' => 'supervisor.simplified_return.update',
+        'destroy' => 'supervisor.simplified_return.destroy',
     ]);
 
     Route::post('/get-simplified-details', 'SimplifiedReturnController@get_simplified_details')

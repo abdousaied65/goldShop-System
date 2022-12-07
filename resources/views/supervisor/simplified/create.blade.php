@@ -125,11 +125,15 @@
                                     <label class="d-block">
                                         التاريخ
                                     </label>
-                                    <input class="form-control" type="date" name="date"
-                                           @if(isset($open_invoice) && !empty($open_invoice))
-                                           value="{{$open_invoice->date}}" readonly
-                                           @else
-                                           value="{{date('Y-m-d')}}"
+                                    <input
+                                        @if(!empty(Auth::user()->branch_id))
+                                        readonly
+                                        @endif
+                                        class="form-control" type="date" name="date"
+                                        @if(isset($open_invoice) && !empty($open_invoice))
+                                        value="{{$open_invoice->date}}" readonly
+                                        @else
+                                        value="{{date('Y-m-d')}}"
                                         @endif
                                     />
                                 </div>
@@ -139,7 +143,11 @@
                                     <label class="d-block">
                                         الوقت
                                     </label>
-                                    <input class="form-control" type="time" name="time"
+                                    <input
+                                        @if(!empty(Auth::user()->branch_id))
+                                        readonly
+                                        @endif
+                                        class="form-control" type="time" name="time"
                                            @if(isset($open_invoice) && !empty($open_invoice))
                                            value="{{$open_invoice->time}}" readonly
                                            @else

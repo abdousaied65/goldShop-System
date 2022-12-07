@@ -73,7 +73,11 @@
                                     <label class="d-block">
                                         التاريخ
                                     </label>
-                                    <input class="form-control" type="date" name="date" value="{{date('Y-m-d')}}" />
+                                    <input
+                                        @if(!empty(Auth::user()->branch_id))
+                                        readonly
+                                        @endif
+                                        class="form-control" type="date" name="date" value="{{date('Y-m-d')}}" />
                                 </div>
                             </div>
                             <div class="col-lg-4 pull-right">
@@ -81,7 +85,11 @@
                                     <label class="d-block">
                                         الوقت
                                     </label>
-                                    <input class="form-control" type="time" name="time" value="{{date('H:i:s')}}"
+                                    <input
+                                        @if(!empty(Auth::user()->branch_id))
+                                        readonly
+                                        @endif
+                                        class="form-control" type="time" name="time" value="{{date('H:i:s')}}"
                                     />
                                 </div>
                             </div>
