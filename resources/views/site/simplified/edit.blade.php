@@ -283,7 +283,7 @@
                                     <label class="d-block">
                                         العدد
                                     </label>
-                                    <input dir="ltr" min="1" type="number" value="0" name="count" id="count"
+                                    <input dir="ltr" min="1" type="text" value="0" name="count" id="count"
                                            class="form-control"/>
                                 </div>
                             </div>
@@ -293,7 +293,7 @@
                                     <label class="d-block">
                                         الوزن
                                     </label>
-                                    <input dir="ltr" min="1" type="number" value="0" name="weight"
+                                    <input dir="ltr" min="1" type="text" value="0" name="weight"
                                            class="form-control" id="weight"/>
                                 </div>
                             </div>
@@ -303,7 +303,7 @@
                                     <label class="d-block">
                                         الاجمالى
                                     </label>
-                                    <input dir="ltr" min="1" type="number" id="total" value="0" name="total"
+                                    <input dir="ltr" min="1" type="text" id="total" value="0" name="total"
                                            class="form-control"/>
                                 </div>
                             </div>
@@ -421,12 +421,12 @@
                                         @if($open_invoice->payment_method == "mixed")
                                             <div class="row mixed">
                                                 <div class="col-lg-4 pull-right">
-                                                    <input id="cash_amount" type="number" min="1" class="form-control"
+                                                    <input id="cash_amount" type="text" min="1" class="form-control"
                                                            dir="ltr" value="{{$open_invoice->cash_amount}}"
                                                            placeholder="المبلغ كاش"/>
                                                 </div>
                                                 <div class="col-lg-4 pull-right">
-                                                    <input id="visa_amount" type="number" min="1" class="form-control"
+                                                    <input id="visa_amount" type="text" min="1" class="form-control"
                                                            dir="ltr" value="{{$open_invoice->visa_amount}}"
                                                            placeholder="المبلغ فيزا"/>
                                                 </div>

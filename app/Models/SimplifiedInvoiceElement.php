@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 class SimplifiedInvoiceElement extends Model
 {
     protected $table = "simplified_invoice_elements";
+    public $timestamps = false;
+    // const UPDATED_AT = null;
 
     protected $fillable = [
         'simplified_id','product_id','weight','karat','count','gram_price','amount','tax','total'

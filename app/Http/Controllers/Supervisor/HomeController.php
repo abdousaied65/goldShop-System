@@ -143,5 +143,109 @@ class HomeController extends Controller
             </table>
         </div>';
     }
+    
+    
+    public function get_sales_details_2(Request $request)
+    {
+        $from_date = date('Y-m-d');
+        $to_date = date('Y-m-d');
+        $auth_id = Auth::user()->id;
+        $user = Supervisor::findOrFail($auth_id);
+        $branch = $user->branch;
+        $branch_id = $branch->id;
+        $invoices = SimplifiedInvoice::where('branch_id', $branch_id)
+                    ->whereBetween('date', [$from_date, $to_date])
+                    ->where('status', 'done')
+                    ->get();
+        
+        $sum_amount_total = 0;
+        $sum_total_weight = 0;
+        $sum_final_total = 0;
+        $sum_tax_total = 0;
+        foreach ($invoices as $invoice) {
+            $sum_amount_total = round(($sum_amount_total + $invoice->amount_total), 2);
+            $sum_total_weight = round(($sum_total_weight + $invoice->total_weight), 2);
+            $sum_final_total = round(($sum_final_total + $invoice->final_total), 2);
+            $sum_tax_total = round(($sum_tax_total + $invoice->tax_total), 2);
+        }
+        if ($sum_total_weight == 0) {
+            $sum_gram_price = 0;
+        } else {
+            $sum_gram_price = round(($sum_amount_total / $sum_total_weight), 2);
+        }
+    
+        echo '
+        <div class="results row mt-1 mb-3 p-3">
+            <table class="table w-100 table-bordered table-striped table-condensed table-hover" dir="rtl">
+                <tr>
+                    <td>
+                        مجموع المبلغ ( بدون ضريبة )
+                    </td>
+                    <td>'.$sum_amount_total.'</td>
+                </tr>
+                <tr>
+                    <td>
+                        مجموع الذهب
+                        ( مجموع الاوزان )
+                    </td>
+                    <td>'.$sum_total_weight.'</td>
+                </tr>
+                <tr>
+                    <td>
+                        الأجمالي للمبلغ ( شامل الضريبة )
+                    </td>
+                    <td>'.$sum_final_total.'</td>
+                </tr>
+                <tr>
+                    <td>
+                        اجمالى الضريبة
+                    </td>
+                    <td>'.$sum_tax_total.'</td>
+                </tr>
+                <tr>
+                    <td>
+                        سعر الجرام
+                    </td>
+                    <td>'.$sum_gram_price.'</td>
+                </tr>
+            </table>
+        </div>';
+    }
+    
+    public function report_print(Request $request)
+    {
+        $from_date = date('Y-m-d');
+        $to_date = date('Y-m-d');
+        $auth_id = Auth::user()->id;
+        $user = Supervisor::findOrFail($auth_id);
+        $branch = $user->branch;
+        $branch_id = $branch->id;
+        
+        $invoices = SimplifiedInvoice::where('branch_id', $branch_id)
+                    ->whereBetween('date', [$from_date, $to_date])
+                    ->where('status', 'done')
+                    ->get();
+        
+        $sum_amount_total = 0;
+        $sum_total_weight = 0;
+        $sum_final_total = 0;
+        $sum_tax_total = 0;
+        foreach ($invoices as $invoice) {
+            $sum_amount_total = round(($sum_amount_total + $invoice->amount_total), 2);
+            $sum_total_weight = round(($sum_total_weight + $invoice->total_weight), 2);
+            $sum_final_total = round(($sum_final_total + $invoice->final_total), 2);
+            $sum_tax_total = round(($sum_tax_total + $invoice->tax_total), 2);
+        }
+        if ($sum_total_weight == 0) {
+            $sum_gram_price = 0;
+        } else {
+            $sum_gram_price = round(($sum_amount_total / $sum_total_weight), 2);
+        }
+        
+        return view('supervisor.report_print', compact('sum_amount_total', 'sum_final_total', 'sum_gram_price', 'sum_tax_total', 'sum_total_weight'));
+
+    }
+    
+    
 
 }

@@ -103,8 +103,8 @@
                             <tr>
                                 <th>#</th>
                                 <th class="text-center">اسم الصلاحية</th>
-                                <th class="text-center">عرض</th>
                                 <th class="text-center">اضافة</th>
+                                <th class="text-center">عرض</th>
                                 <th class="text-center">تعديل</th>
                                 <th class="text-center">حذف</th>
                             </tr>
@@ -296,13 +296,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]"
-                                               <?php if (in_array("32", $rolePermissions)) {
-                                                   echo "checked";
-                                               } ?> value="32">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    
                                 </td>
                                 <td></td>
                             </tr>
@@ -328,13 +322,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]"
-                                               <?php if (in_array("33", $rolePermissions)) {
-                                                   echo "checked";
-                                               } ?> value="33">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    
                                 </td>
                                 <td></td>
                             </tr>
@@ -360,13 +348,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]"
-                                               <?php if (in_array("23", $rolePermissions)) {
-                                                   echo "checked";
-                                               } ?> value="23">
-                                        <span class="slider round"></span>
-                                    </label>
+                                   
                                 </td>
                                 <td></td>
                             </tr>

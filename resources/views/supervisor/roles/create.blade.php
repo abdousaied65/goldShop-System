@@ -239,10 +239,10 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]" value="32">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    <!--<label class="switch">-->
+                                    <!--    <input type="checkbox" name="permission[]" value="32">-->
+                                    <!--    <span class="slider round"></span>-->
+                                    <!--</label>-->
                                 </td>
                                 <td></td>
                             </tr>
@@ -264,10 +264,10 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]" value="33">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    <!--<label class="switch">-->
+                                    <!--    <input type="checkbox" name="permission[]" value="33">-->
+                                    <!--    <span class="slider round"></span>-->
+                                    <!--</label>-->
                                 </td>
                                 <td></td>
                             </tr>
@@ -287,10 +287,10 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <label class="switch">
-                                        <input type="checkbox" name="permission[]" value="23">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    <!--<label class="switch">-->
+                                    <!--    <input type="checkbox" name="permission[]" value="23">-->
+                                    <!--    <span class="slider round"></span>-->
+                                    <!--</label>-->
                                 </td>
                                 <td></td>
                             </tr>

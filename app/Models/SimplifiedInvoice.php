@@ -14,6 +14,8 @@ class SimplifiedInvoice extends Model
 {
     protected $table = "simplified_invoices";
 
+    // public $timestamps = false;
+    const UPDATED_AT = null;
     protected $fillable = [
         'unified_serial_number','date','time','payment_method','cash_amount','visa_amount','branch_id','supervisor_id',
         'employee_id','total_count','total_weight','gram_total_price','amount_total','tax_total','final_total','status'

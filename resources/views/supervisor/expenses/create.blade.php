@@ -33,7 +33,7 @@
                         <div class="row m-t-3 mb-3">
                             <div class="col-md-3">
                                 <label> المصروف الثابت <span class="text-danger">*</span></label>
-                                <select
+                                <select required
                                     class="js-example-basic-single w-100" name="fixed_id" id="fixed_id">
                                     <option value=""></option>
                                     @foreach($fixed as $item)
@@ -79,7 +79,7 @@
 
                             <div class="col-md-4">
                                 <label> ملاحظات <span class="text-danger">*</span></label>
-                                <input class="form-control mg-b-20" name="notes" required="" type="text">
+                                <input class="form-control mg-b-20" name="notes" type="text">
                             </div>
                             <div class="col-lg-4">
                                 <label for=""> ارفاق صورة </label>

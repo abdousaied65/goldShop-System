@@ -32,9 +32,16 @@ class SimplifiedController extends Controller
         $branch_id = $request->branch_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $data = SimplifiedInvoice::where('branch_id', $branch_id)->where('status', 'done')
+        if(!empty($branch_id)){
+            $data = SimplifiedInvoice::where('branch_id', $branch_id)->where('status', 'done')
             ->whereBetween('date', [$from_date, $to_date])
             ->get();
+        }
+        else{
+            $data = SimplifiedInvoice::where('status', 'done')
+            ->whereBetween('date', [$from_date, $to_date])
+            ->get();
+        }
         $branches = Branch::all();
         return view('supervisor.simplified.index', compact('data', 'branch_id', 'from_date', 'to_date', 'branches'));
     }

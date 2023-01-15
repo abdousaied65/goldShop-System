@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 class SimplifiedReturn extends Model
 {
     protected $table = "simplified_returns";
+    
+    // public $timestamps = false;
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'simplified_id','unified_serial_number','employee_id','date','time','notes','branch_id','supervisor_id'

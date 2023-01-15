@@ -194,7 +194,9 @@
             ?>
             {{--            branch--}}
             <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
-                <a href="javascript:;">
+                    <a class="get_details_2" data-toggle="modal"
+                       href="#modaldemo9">
+                        
                     <div class="card overflow-hidden sales-card bg-secondary-gradient">
                         <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                             <div class="">
@@ -791,6 +793,39 @@
                 </div>
             </div>
         </div>
+        
+        
+        <div class="modal" id="modaldemo9">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content modal-content-demo">
+                    <div class="modal-header text-center">
+                        <h6 class="modal-title w-100" style="font-family: 'Almarai'; ">
+                            تفاصيل مبيعات اليوم
+                        </h6>
+                        <button aria-label="Close" class="close"
+                                data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="details_2">
+                            
+                        </div>
+                        <form action="{{route('report.print')}}" method="POST">
+                            @csrf
+                            @method('POST')
+                            <button type="submit" class="btn btn-success btn-md">
+                                <i class="fa fa-print"></i>
+                                طباعة
+                            </button>
+                        </form>    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
     <!-- row closed -->
     <hr>
@@ -803,6 +838,13 @@
                 "_token": "{{ csrf_token() }}"
             }, function (data) {
                 $('.details').html(data);
+            });
+        });
+        $('.get_details_2').on('click', function () {
+            $.post("{{route('get.sales.details2')}}", {
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('.details_2').html(data);
             });
         });
     });

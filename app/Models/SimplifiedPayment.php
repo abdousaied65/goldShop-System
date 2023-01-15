@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class SimplifiedPayment extends Model
 {
     protected $table = "simplified_payments";
+    public $timestamps = false;
     protected $fillable = [
         'simplified_id',
         'payment_method',

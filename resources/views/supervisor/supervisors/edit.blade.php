@@ -80,7 +80,7 @@
                         <div class="parsley-input branch col-md-4 mg-t-20 mg-md-t-0" id="lnWrapper" style="@if($supervisor->role_name == "مدير النظام") display:none; @endif">
                             <label class="form-label"> الفرع </label>
                             <select data-live-search="true" data-style="btn-warning" title="اختر الفرع"
-                                    class="form-control selectpicker" name="branch_id" required id="branch_id">
+                                    class="form-control selectpicker" name="branch_id" id="branch_id">
                                 @foreach($branches as $branch)
                                     <option
                                         @if($supervisor->branch_id == $branch->id)

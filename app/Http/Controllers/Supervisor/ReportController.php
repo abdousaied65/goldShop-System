@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Supervisor;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Models\Expense;
+use App\Models\FixedExpense;
 use App\Models\Product;
 use App\Models\PurchaseInvoice;
 use App\Models\SimplifiedInvoice;
@@ -3630,7 +3632,7 @@ class ReportController extends Controller
             $sum_tax_total = round(($sum_tax_total + $invoice->tax_total), 2);
         }
         return view('supervisor.reports.declaration.report5.view',
-            compact('sum_tax_total','sum_final_total'));
+            compact('sum_tax_total', 'sum_final_total'));
     }
 
     public function declaration_report5_print(Request $request)
@@ -3645,7 +3647,7 @@ class ReportController extends Controller
             $sum_tax_total = round(($sum_tax_total + $invoice->tax_total), 2);
         }
         return view('supervisor.reports.declaration.report5.print',
-            compact('sum_tax_total','sum_final_total'));
+            compact('sum_tax_total', 'sum_final_total'));
     }
 
 
@@ -3668,6 +3670,49 @@ class ReportController extends Controller
             compact('branches'));
     }
 
+    public function expenses_report_get()
+    {
+        $branches = Branch::all();
+        return view('supervisor.reports.expenses.report1.view', compact('branches'));
+    }
+
+    public function expenses_report_post(Request $request)
+    {
+        $branches = Branch::all();
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $branch_id = $request->branch_id;
+        if ($branch_id == "all") {
+            $expenses = Expense::whereBetween('date', [$from_date, $to_date])
+                ->get();
+        } else {
+            $expenses = Expense::where('branch_id', $branch_id)
+                ->whereBetween('date', [$from_date, $to_date])
+                ->get();
+        }
+        $fixed = FixedExpense::all();
+        return view('supervisor.reports.expenses.report1.view',
+            compact('branches', 'expenses', 'fixed'));
+    }
+
+    public function expenses_report_print(Request $request)
+    {
+        $branches = Branch::all();
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        $branch_id = $request->branch_id;
+        if ($branch_id == "all") {
+            $expenses = Expense::whereBetween('date', [$from_date, $to_date])
+                ->get();
+        } else {
+            $expenses = Expense::where('branch_id', $branch_id)
+                ->whereBetween('date', [$from_date, $to_date])
+                ->get();
+        }
+        $fixed = FixedExpense::all();
+        return view('supervisor.reports.expenses.report1.print',
+            compact('branches', 'expenses', 'fixed'));
+    }
 
 
 }

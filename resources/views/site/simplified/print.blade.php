@@ -103,6 +103,11 @@
         <h3 class="text-center" style="font-weight: bold;">
             مجوهرات العقاب
         </h3>
+        <h6 class="text-center" style="font-weight: bold;">
+            مؤسسة نايف بن محمد العقاب للمعادن
+            <br/>
+            الثمينة والاحجار الكريمة 
+        </h6>
         <h6 class="text-center mt-1" style="font-weight: bold;">
             {{$simplified->branch->branch_address}}
         </h6>

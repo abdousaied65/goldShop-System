@@ -398,6 +398,13 @@ Route::group(
 
     Route::get('/reports','ReportController@reports')->name('reports');
     Route::post('/get-sales-details','HomeController@get_sales_details')->name('get.sales.details');
+    Route::post('/get-sales-details-2','HomeController@get_sales_details_2')->name('get.sales.details2');
+
+    Route::post('/report-print','HomeController@report_print')->name('report.print');
+
+    Route::get('/expenses-report-get','ReportController@expenses_report_get')->name('expenses.report.get');
+    Route::post('/expenses-report-print','ReportController@expenses_report_print')->name('expenses.report.print');
+    Route::post('/expenses-report-post','ReportController@expenses_report_post')->name('expenses.report.post');
 
 
 

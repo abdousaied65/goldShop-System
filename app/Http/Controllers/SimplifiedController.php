@@ -26,9 +26,17 @@ class SimplifiedController extends Controller
         $branch_id = $request->branch_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
-        $data = SimplifiedInvoice::where('branch_id', $branch_id)->where('status', 'done')
+        if(!empty($branch_id)){
+            $data = SimplifiedInvoice::where('branch_id', $branch_id)->where('status', 'done')
             ->whereBetween('date', [$from_date, $to_date])
             ->get();
+        }
+        else{
+            $data = SimplifiedInvoice::where('status', 'done')
+            ->whereBetween('date', [$from_date, $to_date])
+            ->get();
+        }
+        
         $branches = Branch::all();
         return view('site.simplified.index', compact('data', 'branch_id', 'from_date', 'to_date', 'branches'));
     }
@@ -64,6 +72,10 @@ class SimplifiedController extends Controller
         $products = Product::all();
         $branches = Branch::all();
         $employees = Employee::all();
+        $open_invoice->update([
+        'status' => 'open'
+        ]);
+        
         return view('site.simplified.edit',
             compact('products', 'branches', 'employees', 'open_invoice', 'unified_serial_number'));
     }
@@ -73,9 +85,15 @@ class SimplifiedController extends Controller
         $data = $request->all();
         $supervisor_id = 1;
         $product_id = $request->product_id;
-        $open_invoice = SimplifiedInvoice::where('supervisor_id', $supervisor_id)
+        $simplified_id = $request->simplified_id;
+        if(!empty($simplified_id)){
+            $open_invoice = SimplifiedInvoice::FindOrFail($simplified_id);
+        }
+        else{
+            $open_invoice = SimplifiedInvoice::where('supervisor_id', $supervisor_id)
             ->where('status', 'open')
             ->first();
+        }
         if (empty($open_invoice)) {
             $open_invoice = SimplifiedInvoice::create($data);
         } else {
@@ -135,8 +153,7 @@ class SimplifiedController extends Controller
 
         $open_invoice->update($data);
 
-        return redirect()->route('simplified.create')
-            ->with('success', 'تمت الاضافة بنجاح');
+        return redirect()->back()->with('success', 'تمت الاضافة بنجاح');
     }
 
     public function delete_element(Request $request)

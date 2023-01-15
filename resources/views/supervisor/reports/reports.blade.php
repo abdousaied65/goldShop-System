@@ -108,6 +108,25 @@
                                     </ul>
                                 </div>
                             </div>
+
+                            <div class="card">
+                                <div class="card-header pb-0">
+                                    <div class="col-lg-12 margin-tb">
+                                        <h5 class="text-center alert alert-md alert-outline-info">
+                                            تقارير المصروفات
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-1 m-1">
+                                    <ul>
+                                        <li>
+                                            <a class="sub-side-menu__item" href="{{ route('expenses.report.get') }}">
+                                                تقرير المصروفات
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="card">
